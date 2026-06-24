@@ -1,0 +1,111 @@
+/* ===== Sidebar ===== */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1002;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.sidebar__divider {
+  width: 20px;
+  height: 1px;
+  background: var(--color-gray-light);
+}
+
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--color-gray-dark);
+  background: none;
+  transition: var(--transition-fast);
+}
+
+.sidebar__link:hover {
+  color: var(--color-gold);
+  background: rgba(201, 169, 110, 0.08);
+}
+
+.sidebar__contact {
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+/* QR Code Popover */
+.qr-popover {
+  position: fixed;
+  left: 70px;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.qr-popover__card {
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  text-align: center;
+}
+
+.qr-popover__qr-placeholder {
+  width: 140px;
+  height: 140px;
+  background: var(--color-cream);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-gray);
+  margin-bottom: 12px;
+  border: 2px dashed var(--color-gray-light);
+}
+
+.qr-popover__qr-placeholder span {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+}
+
+.qr-popover__text {
+  font-size: 0.8rem;
+  color: var(--color-gray-dark);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

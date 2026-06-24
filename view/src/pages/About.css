@@ -1,0 +1,409 @@
+/* ===== About Page ===== */
+.about {
+  padding-left: var(--sidebar-width);
+  padding-top: var(--header-height);
+}
+
+/* ===== Hero ===== */
+.about-hero {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.5) 100%),
+    linear-gradient(45deg, rgba(201, 169, 110, 0.15) 0%, transparent 60%);
+  padding: 120px 0 100px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.06) 0%, transparent 60%);
+}
+
+.about-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.about-hero__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin-bottom: 40px;
+  transition: var(--transition-fast);
+}
+
+.about-hero__back:hover {
+  color: var(--color-gold);
+}
+
+.about-hero__tag {
+  display: block;
+  font-family: var(--font-en-display);
+  font-size: 0.85rem;
+  letter-spacing: 6px;
+  color: var(--color-gold);
+  margin-bottom: 20px;
+}
+
+.about-hero__title {
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+}
+
+.about-hero__subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== Brand Story ===== */
+.about-story {
+  padding: 120px 0;
+  background: var(--color-white);
+}
+
+.about-story__grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 80px;
+}
+
+.about-story__label {
+  padding-top: 8px;
+}
+
+.about-story__label-tag {
+  display: block;
+  font-family: var(--font-en-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-gold);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.about-story__label h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.about-story__lead {
+  font-size: 1.2rem;
+  color: var(--color-dark);
+  line-height: 1.9;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.about-story__lead strong {
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.about-story__content p {
+  color: var(--color-gray-dark);
+  line-height: 2.1;
+  margin-bottom: 20px;
+}
+
+/* ===== Services ===== */
+.about-services {
+  padding: 120px 0;
+  background: var(--color-cream);
+}
+
+.about-services__header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.about-services__tag {
+  display: block;
+  font-family: var(--font-en-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-gold);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.about-services__header h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.about-services__header p {
+  color: var(--color-gray-dark);
+  font-size: 0.95rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.service-card {
+  background: var(--color-white);
+  padding: 40px 28px;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.service-card__icon {
+  color: var(--color-gold);
+  margin-bottom: 20px;
+}
+
+.service-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-dark);
+}
+
+.service-card__en {
+  display: block;
+  font-family: var(--font-en-display);
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--color-gray);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.service-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--color-gray-dark);
+}
+
+.service-card__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ===== Advantages ===== */
+.about-advantages {
+  padding: 120px 0;
+  background: var(--color-white);
+}
+
+.about-advantages__header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.about-advantages__tag {
+  display: block;
+  font-family: var(--font-en-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-gold);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.about-advantages__header h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.advantage-card {
+  text-align: center;
+  padding: 48px 32px;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+}
+
+.advantage-card:hover {
+  background: var(--color-cream);
+}
+
+.advantage-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(201, 169, 110, 0.1);
+  color: var(--color-gold);
+  margin-bottom: 24px;
+  transition: var(--transition-smooth);
+}
+
+.advantage-card:hover .advantage-card__icon {
+  background: var(--color-gold);
+  color: var(--color-white);
+}
+
+.advantage-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-dark);
+}
+
+.advantage-card p {
+  font-size: 0.85rem;
+  color: var(--color-gray-dark);
+  line-height: 1.9;
+}
+
+/* ===== CTA ===== */
+.about-cta {
+  padding: 80px 0 120px;
+  background: var(--color-white);
+}
+
+.about-cta__card {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-secondary) 100%);
+  border-radius: 4px;
+  padding: 70px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-cta__card::before {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.about-cta__card h2 {
+  font-size: 1.8rem;
+  color: var(--color-white);
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.about-cta__card p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.about-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 44px;
+  background: var(--color-gold);
+  color: var(--color-white);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+  position: relative;
+  z-index: 1;
+}
+
+.about-cta__btn:hover {
+  background: var(--color-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(201, 169, 110, 0.3);
+}
+
+/* ===== Reveal Animation (reuse from Home) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .about-story__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .advantages-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding-left: 0;
+  }
+
+  .about-hero__title {
+    font-size: 2rem;
+  }
+
+  .about-hero {
+    padding: 80px 0 60px;
+  }
+
+  .about-story,
+  .about-services,
+  .about-advantages {
+    padding: 60px 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-cta__card {
+    padding: 40px 24px;
+  }
+
+  .about-cta__card h2 {
+    font-size: 1.3rem;
+  }
+}

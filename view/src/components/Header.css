@@ -1,0 +1,136 @@
+/* ===== Header ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--header-height);
+  transition: var(--transition-smooth);
+  padding-left: var(--sidebar-width);
+}
+
+.header--scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.06);
+}
+
+.header__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.header__logo-img {
+  height: 48px;
+  width: auto;
+  transition: var(--transition-fast);
+}
+
+.header--scrolled .header__logo-img {
+  height: 38px;
+}
+
+/* Nav */
+.header__nav-list {
+  display: flex;
+  gap: 40px;
+}
+
+.header__nav-link {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-charcoal);
+  letter-spacing: 1px;
+  position: relative;
+  padding: 4px 0;
+  transition: var(--transition-fast);
+}
+
+.header__nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: var(--transition-smooth);
+}
+
+.header__nav-link:hover,
+.header__nav-link--active {
+  color: var(--color-gold);
+}
+
+.header__nav-link:hover::after,
+.header__nav-link--active::after {
+  width: 100%;
+}
+
+/* Mobile Menu Button */
+.header__menu-btn {
+  display: none;
+  background: none;
+  color: var(--color-dark);
+  padding: 8px;
+  transition: var(--transition-fast);
+}
+
+.header__menu-btn:hover {
+  color: var(--color-gold);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding-left: 0;
+  }
+
+  .header__inner {
+    padding: 0 20px;
+  }
+
+  .header__menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+
+  .header__nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: var(--color-white);
+    padding: 100px 40px 40px;
+    transition: var(--transition-smooth);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .header__nav--open {
+    right: 0;
+  }
+
+  .header__nav-list {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .header__nav-link {
+    font-size: 1.1rem;
+  }
+}

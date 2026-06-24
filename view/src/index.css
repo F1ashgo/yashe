@@ -1,0 +1,108 @@
+/* ===== CSS Reset & Global Styles ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Color Palette - Interior Design Elegance */
+  --color-dark: #1a1a1a;
+  --color-dark-secondary: #2a2a2a;
+  --color-charcoal: #333333;
+  --color-gold: #c9a96e;
+  --color-gold-light: #d4b87a;
+  --color-gold-dark: #b8944a;
+  --color-cream: #f5f5f0;
+  --color-white: #ffffff;
+  --color-gray: #999999;
+  --color-gray-light: #e0e0e0;
+  --color-gray-dark: #666666;
+
+  /* Typography */
+  --font-display: 'Noto Serif SC', 'Cormorant Garamond', serif;
+  --font-body: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+  --font-en-display: 'Cormorant Garamond', serif;
+
+  /* Spacing */
+  --header-height: 80px;
+  --sidebar-width: 60px;
+  --max-width: 1200px;
+  --section-padding: 100px 0;
+
+  /* Transitions */
+  --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-fast: all 0.2s ease;
+
+  font: 16px/1.8 var(--font-body);
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 3px;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-white);
+}

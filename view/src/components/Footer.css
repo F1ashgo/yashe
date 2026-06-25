@@ -27,7 +27,6 @@
   width: auto;
   filter: brightness(1) saturate(1);
 }
-
 .footer__desc {
   font-size: 0.85rem;
   line-height: 2;
@@ -128,7 +127,6 @@
   display: flex;
   gap: 16px;
 }
-
 .footer__social-link {
   display: flex;
   align-items: center;

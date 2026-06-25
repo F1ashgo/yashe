@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yashe.mapper.UserMapper">
+
+  <select id="findByEmail" resultType="com.yashe.entity.User">
+    SELECT id, name, email, phone, password, promo_code, role, status, created_at, updated_at
+    FROM users WHERE email = #{email}
+  </select>
+
+  <select id="findById" resultType="com.yashe.entity.User">
+    SELECT id, name, email, phone, password, promo_code, role, status, created_at, updated_at
+    FROM users WHERE id = #{id}
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO users (name, email, phone, password, promo_code, role)
+    VALUES (#{name}, #{email}, #{phone}, #{password}, #{promoCode}, #{role})
+  </insert>
+
+  <update id="updatePassword">
+    UPDATE users SET password = #{password} WHERE id = #{id}
+  </update>
+
+</mapper>

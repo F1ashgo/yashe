@@ -1,7 +1,62 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowDown, Award, Target, Eye, Compass } from 'lucide-react'
+import { ArrowDown, Award, Target, Eye, Compass, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import './Home.css'
+
+/* Hero 背景图 — 轮播专用图 */
+const HERO_IMAGES = [
+  '/lunbotu/小泳池.jpeg',
+  '/lunbotu/泳池2.JPG',
+  '/lunbotu/泳池側面.jpeg',
+  '/lunbotu/课室侧面.jpeg',
+  '/lunbotu/閱讀室-帶白板.jpeg',
+]
+
+/* 精选作品 — 每个项目2张 */
+const FEATURED_PROJECTS = [
+  {
+    image: '/幼儿园/课室正面.jpeg',
+    title: '蒙特梭利幼儿园',
+    category: '教育空间',
+    style: '自然成长',
+    desc: '以儿童视角为设计原点，打造安全、温暖、激发探索欲的成长乐园。',
+  },
+  {
+    image: '/幼儿园/閱讀室.jpeg',
+    title: '幼儿园阅读室',
+    category: '教育空间',
+    style: '趣味阅读',
+    desc: '圆形下沉式阅读区与自然采光结合，让孩子爱上阅读的每个角落。',
+  },
+  {
+    image: '/中药铺/中药铺3.jpeg',
+    title: '同仁堂中药体验馆',
+    category: '商业空间',
+    style: '新中式',
+    desc: '将传统中医药文化与现代零售体验融合，以木作与铜件传递匠心温度。',
+  },
+  {
+    image: '/中药铺/中藥鋪2.jpeg',
+    title: '中药铺调剂区',
+    category: '商业空间',
+    style: '新中式',
+    desc: '开放式调剂台与百子柜的现代演绎，让抓药成为一种可视化的文化体验。',
+  },
+  {
+    image: '/ice bath/休息區1.jpeg',
+    title: 'Ice Bath 冷疗空间',
+    category: '康体空间',
+    style: '极简工业',
+    desc: '冷暖材质的对比碰撞，为冷疗体验营造既专业又放松的空间氛围。',
+  },
+  {
+    image: '/ice bath/咖啡厅.jpeg',
+    title: 'Ice Bath 休闲咖啡厅',
+    category: '康体空间',
+    style: '现代简约',
+    desc: '冷疗后的温暖休憩区，以柔和灯光与天然材质打造舒适的社交场景。',
+  },
+]
 
 /* 核心价值卡片數据 */
 const CORE_VALUES = [
@@ -70,7 +125,33 @@ const JOURNEY_PHASES = [
 
 function Home() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [slideChanging, setSlideChanging] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
 
+  /* Hero 轮播 */
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideChanging(true)
+      setTimeout(() => {
+        setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length)
+        setSlideChanging(false)
+      }, 600)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const goToSlide = (index: number) => {
+    if (index === currentSlide) return
+    setSlideChanging(true)
+    setTimeout(() => {
+      setCurrentSlide(index)
+      setSlideChanging(false)
+    }, 600)
+  }
+
+  /* Scroll reveal */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -94,11 +175,51 @@ function Home() {
     sectionRefs.current[index] = el
   }
 
+  /* Lightbox */
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index)
+    setLightboxOpen(true)
+    document.body.style.overflow = 'hidden'
+  }
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+    document.body.style.overflow = ''
+  }
+  const lightboxNext = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setLightboxIndex((prev) => (prev + 1) % FEATURED_PROJECTS.length)
+  }
+  const lightboxPrev = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setLightboxIndex((prev) => (prev - 1 + FEATURED_PROJECTS.length) % FEATURED_PROJECTS.length)
+  }
+
   return (
     <main className="home">
-      {/* ===== Hero Section ===== */}
+      {/* ===== Hero Section with Background Carousel ===== */}
       <section className="hero-section">
+        {/* Background slides */}
+        {HERO_IMAGES.map((img, i) => (
+          <div
+            key={img}
+            className={`hero-carousel__slide ${i === currentSlide ? 'hero-carousel__slide--active' : ''} ${slideChanging && i === currentSlide ? 'hero-carousel__slide--fading' : ''}`}
+            style={{ backgroundImage: `url(${img})` }}
+          />
+        ))}
         <div className="hero-section__overlay" />
+
+        {/* Slide indicators */}
+        <div className="hero-carousel__dots">
+          {HERO_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-carousel__dot ${i === currentSlide ? 'hero-carousel__dot--active' : ''}`}
+              onClick={() => goToSlide(i)}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
         <div className="hero-section__content">
           <p className="hero-section__subtitle">ATELIER DES MIYABI</p>
           <h1 className="hero-section__title hero-section__title--quote">
@@ -121,10 +242,10 @@ function Home() {
           </p>
           <div className="hero-section__actions">
             <a
-              href="#intro"
+              href="#portfolio"
               className="hero-section__btn hero-section__btn--primary"
             >
-              探索更多
+              精选作品
             </a>
             <Link
               to="/about"
@@ -139,6 +260,57 @@ function Home() {
           <ArrowDown size={16} />
         </div>
       </section>
+
+      {/* ===== 精选作品 ===== */}
+      <section id="portfolio" className="portfolio-section">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-header__tag">Selected Works</span>
+            <h2 className="section-header__title">精选作品</h2>
+            <p className="section-header__en">Projets Sélectionnés</p>
+          </div>
+          <div className="portfolio-grid">
+            {FEATURED_PROJECTS.map((project, i) => (
+              <div
+                key={project.title}
+                className="portfolio-card"
+                onClick={() => openLightbox(i)}
+              >
+                <div className="portfolio-card__image">
+                  <img src={project.image} alt={project.title} loading="lazy" />
+                  <div className="portfolio-card__overlay">
+                    <span className="portfolio-card__view">查看大图</span>
+                  </div>
+                </div>
+                <div className="portfolio-card__info">
+                  <span className="portfolio-card__category">{project.category}</span>
+                  <h3 className="portfolio-card__title">{project.title}</h3>
+                  <span className="portfolio-card__style">{project.style}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Lightbox ===== */}
+      {lightboxOpen && (
+        <div className="lightbox" onClick={closeLightbox}>
+          <button className="lightbox__close" onClick={closeLightbox}><X size={28} /></button>
+          <button className="lightbox__prev" onClick={lightboxPrev}><ChevronLeft size={40} /></button>
+          <img
+            src={FEATURED_PROJECTS[lightboxIndex].image}
+            alt={FEATURED_PROJECTS[lightboxIndex].title}
+            className="lightbox__image"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button className="lightbox__next" onClick={lightboxNext}><ChevronRight size={40} /></button>
+          <div className="lightbox__caption">
+            <h3>{FEATURED_PROJECTS[lightboxIndex].title}</h3>
+            <span>{FEATURED_PROJECTS[lightboxIndex].style} · {FEATURED_PROJECTS[lightboxIndex].category}</span>
+          </div>
+        </div>
+      )}
 
       {/* ===== 公司背景 ===== */}
       <section
@@ -155,37 +327,50 @@ function Home() {
           <div className="intro-section__grid">
             <div className="intro-section__text">
               <p className="intro-section__lead">
-                「雅舍」— 一个将时间、光影与日常生活温柔编织的室內设计工作室。
-                其外文名称 <strong>Atelier des Miyabi</strong>，不仅是一串名字，更是一场橫跨东西方的美学对话、
-                一处将设计升华为艺术的灵魂居所。
+                源于对现实的敬畏，忠于纯粹的设计。
               </p>
               <p>
-                我们始终专注于纯粹的空间设计与美学转译，像手作坊里的老匠人般，
-                在感性与理性之间反覆推敲比例与材质，以设计本身为空间注入灵魂。
-                不追逐短暫的流行趋势，而是创造经得起时间考验的空间作品。
+                雅舍（<strong>Atelier des Miyabi</strong>）的故事，孕育于对「图纸与现实之间巨大落差」的深刻反思。
+                几位联合创始人曾深耕于建筑工程与高端空间营造领域多年，在无数个施工现场，
+                亲历了太多因脱离实际而无法落地的华丽图纸，也见证了太多因缺乏美学把控而失去灵魂的居住空间。
+                出于对纯粹设计的渴望与对工程客观规律的敬畏，雅舍在这样的契机下应运而生。
               </p>
+              <h4 className="intro-section__sub">剥离繁杂，回归工坊本质</h4>
               <p>
-                从概念規划、方案深化到施工落地，雅舍建立了完整的设计服务体系。
-                迄今已为超过<strong>800个</strong>高端住宅及商业项目提供设计服务，
-                业务遍及广州、深圳、上海、北京、杭州等一线城市。
+                为了打破行业内「设计与落地脱节」的壁垒，我们做出了一个果断的决定：剥离繁杂的施工业务，
+                转型为一家只专注于「纯粹空间设计」的精品工作室。这不仅是一次商业模式的取舍，更是对匠人精神的回归。
+                雅舍汇聚了拥有国际视野的美学设计师与具备深厚现场经验的图纸深化专家。我们将巴黎工坊（Atelier）的专注
+                与日式风雅（Miyabi）的细腻相融合，致力于在「天马行空的艺术感」与「脚踏实地的工程性」之间找到完美的平衡点。
+              </p>
+              <h4 className="intro-section__sub">空间美学的严密把关人</h4>
+              <p>
+                如今的雅舍，已成为业内独树一帜的「空间美学把关人」。我们不追求工业化流水线的快速扩张，
+                而是坚持以「慢工出细活」的工坊模式，严格把控每一位委托人的空间品质。我们交付的不仅仅是一幅幅渲染图，
+                更是一套套经得起现场检验、极具执行力的严密图纸。雅舍以理性构建为骨架，以感性光影为灵魂，
+                确保您的美学愿景能够无损、安全、精准地交由任何优秀的施工团队化为现实。
               </p>
             </div>
-            <div className="intro-section__stats">
-              <div className="stat-item">
-                <span className="stat-item__number">10+</span>
-                <span className="stat-item__label">年行业经验</span>
+            <div className="intro-section__sidebar">
+              <div className="intro-section__image">
+                <img src="/ice bath/小泳池.jpeg" alt="雅舍设计作品" loading="lazy" />
               </div>
-              <div className="stat-item">
-                <span className="stat-item__number">800+</span>
-                <span className="stat-item__label">完成项目</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-item__number">50+</span>
-                <span className="stat-item__label">专业设计师</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-item__number">3</span>
-                <span className="stat-item__label">城市设立分公司</span>
+              <div className="intro-section__stats">
+                <div className="stat-item">
+                  <span className="stat-item__number">10+</span>
+                  <span className="stat-item__label">年行业经验</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-item__number">800+</span>
+                  <span className="stat-item__label">完成项目</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-item__number">50+</span>
+                  <span className="stat-item__label">专业设计师</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-item__number">3</span>
+                  <span className="stat-item__label">城市设立分公司</span>
+                </div>
               </div>
             </div>
           </div>

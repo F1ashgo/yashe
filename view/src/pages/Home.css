@@ -66,7 +66,7 @@
   transform: translateY(0);
 }
 
-/* ===== Hero Section ===== */
+/* ===== Hero Section with Background Carousel ===== */
 .hero-section {
   position: relative;
   height: calc(100vh - var(--header-height));
@@ -75,18 +75,65 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background:
-    linear-gradient(135deg, rgba(26, 26, 26, 0.85) 0%, rgba(26, 26, 26, 0.4) 100%),
-    linear-gradient(45deg, rgba(201, 169, 110, 0.15) 0%, transparent 60%);
   overflow: hidden;
+  background: var(--color-dark);
+}
+
+/* Carousel slides */
+.hero-carousel__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.hero-carousel__slide--active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-carousel__slide--fading {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Dots */
+.hero-carousel__dots {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+}
+
+.hero-carousel__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  padding: 0;
+}
+
+.hero-carousel__dot--active {
+  background: var(--color-gold);
+  box-shadow: 0 0 8px rgba(201, 169, 110, 0.5);
 }
 
 .hero-section__overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 50%, rgba(201, 169, 110, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 20%, rgba(201, 169, 110, 0.05) 0%, transparent 50%);
+    linear-gradient(135deg, rgba(26, 26, 26, 0.75) 0%, rgba(26, 26, 26, 0.35) 100%),
+    radial-gradient(ellipse at 30% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 50%);
+  z-index: 1;
 }
 
 .hero-section__content {
@@ -239,6 +286,175 @@
   50% { transform: translateX(-50%) translateY(8px); }
 }
 
+/* ===== Portfolio Section ===== */
+.portfolio-section {
+  padding: 120px 0 80px;
+  background: var(--color-white);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.portfolio-card {
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.portfolio-card__image {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.portfolio-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.portfolio-card:hover .portfolio-card__image img {
+  transform: scale(1.05);
+}
+
+.portfolio-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-card:hover .portfolio-card__overlay {
+  opacity: 1;
+}
+
+.portfolio-card__view {
+  color: var(--color-white);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  padding: 10px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+}
+
+.portfolio-card__info {
+  padding: 20px 0 0;
+}
+
+.portfolio-card__category {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+.portfolio-card__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 8px 0 4px;
+  color: var(--color-dark);
+}
+
+.portfolio-card__style {
+  font-size: 0.8rem;
+  color: var(--color-gray);
+  letter-spacing: 1px;
+}
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.lightbox__image {
+  max-width: 85vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px;
+  transition: var(--transition-fast);
+  z-index: 1;
+}
+
+.lightbox__close:hover {
+  color: var(--color-white);
+}
+
+.lightbox__prev,
+.lightbox__next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 16px;
+  transition: var(--transition-fast);
+}
+
+.lightbox__prev { left: 20px; }
+.lightbox__next { right: 20px; }
+
+.lightbox__prev:hover,
+.lightbox__next:hover {
+  color: var(--color-white);
+}
+
+.lightbox__caption {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--color-white);
+}
+
+.lightbox__caption h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.lightbox__caption span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 2px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ===== Intro Section (公司背景) ===== */
 .intro-section {
   padding: 120px 0;
@@ -248,8 +464,25 @@
 .intro-section__grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 80px;
+  gap: 60px;
   align-items: start;
+}
+
+/* Sidebar: image + stats */
+.intro-section__image {
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  aspect-ratio: 4/3;
+}
+.intro-section__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.intro-section__image:hover img {
+  transform: scale(1.03);
 }
 
 .intro-section__lead {
@@ -258,6 +491,15 @@
   line-height: 1.8;
   margin-bottom: 24px;
   font-weight: 500;
+}
+
+.intro-section__sub {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin: 28px 0 12px;
+  letter-spacing: 1px;
 }
 
 .intro-section__lead strong {
@@ -620,6 +862,10 @@
     font-size: 2.8rem;
   }
 
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .intro-section__grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -675,6 +921,21 @@
   .hero-section__actions {
     flex-direction: column;
     align-items: center;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-carousel__dots {
+    bottom: 80px;
+  }
+
+  .lightbox__prev { left: 8px; padding: 8px; }
+  .lightbox__next { right: 8px; padding: 8px; }
+  .lightbox__image {
+    max-width: 95vw;
+    max-height: 70vh;
   }
 
   .journey-phase__header {

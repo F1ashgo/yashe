@@ -45,7 +45,7 @@ function Footer() {
                 </li>
                 <li>
                   <MapPin size={16} />
-                  <span>广州市天河区珠江新城</span>
+                  <span>广州市南沙区凯翔路1号1702</span>
                 </li>
               </ul>
             </div>

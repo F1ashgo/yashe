@@ -38,5 +38,6 @@ desktop.ini
 # Sensitive
 # =====================
 application-prod.yml
+my.cnf
 *.pem
 *.key

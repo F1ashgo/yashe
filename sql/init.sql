@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS user_promos (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (promo_id) REFERENCES promo_codes(id)
 ) ENGINE=InnoDB COMMENT='用户优惠码使用记录';
-
 -- ==========================================
 -- 示例数据
 -- ==========================================

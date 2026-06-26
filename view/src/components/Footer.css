@@ -122,7 +122,18 @@
   font-size: 0.8rem;
   color: var(--color-gray-dark);
 }
-
+.footer__admin-link {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 1px;
+  transition: var(--transition-fast);
+}
+.footer__admin-link:hover {
+  color: var(--color-gold);
+}
 .footer__social-row {
   display: flex;
   gap: 16px;
@@ -138,12 +149,10 @@
   background: var(--color-dark-secondary);
   transition: var(--transition-fast);
 }
-
 .footer__social-link:hover {
   color: var(--color-gold);
   background: rgba(201, 169, 110, 0.12);
 }
-
 /* Responsive */
 @media (max-width: 1024px) {
   .footer__grid {

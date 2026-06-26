@@ -69,6 +69,7 @@ function Footer() {
         <div className="container footer__bottom-inner">
           <p className="footer__copyright">
             &copy; {new Date().getFullYear()} Atelier des Miyabi 雅舍. All Rights Reserved.
+            <Link to="/admin/login" className="footer__admin-link">管理员入口</Link>
           </p>
           <div className="footer__social-row">
             <a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer" className="footer__social-link" aria-label="小红书">

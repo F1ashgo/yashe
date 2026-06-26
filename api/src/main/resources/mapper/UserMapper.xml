@@ -22,4 +22,28 @@
     UPDATE users SET password = #{password} WHERE id = #{id}
   </update>
 
+  <!-- 管理员 -->
+  <select id="findAll" resultType="com.yashe.entity.User">
+    SELECT id, name, email, phone, promo_code, role, status, created_at, updated_at
+    FROM users ORDER BY created_at DESC LIMIT #{offset}, #{limit}
+  </select>
+
+  <select id="countAll" resultType="int">
+    SELECT COUNT(*) FROM users
+  </select>
+
+  <select id="countToday" resultType="int">
+    SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()
+  </select>
+
+  <select id="searchByEmail" resultType="com.yashe.entity.User">
+    SELECT id, name, email, phone, promo_code, role, status, created_at, updated_at
+    FROM users WHERE email LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY created_at DESC LIMIT #{offset}, #{limit}
+  </select>
+
+  <select id="countSearch" resultType="int">
+    SELECT COUNT(*) FROM users WHERE email LIKE CONCAT('%', #{keyword}, '%')
+  </select>
+
 </mapper>

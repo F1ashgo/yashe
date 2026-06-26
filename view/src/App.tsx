@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
@@ -9,9 +9,23 @@ import Expertise from './pages/Expertise'
 import Projects from './pages/Projects'
 import Member from './pages/Member'
 import Contact from './pages/Contact'
+import AdminLogin from './pages/AdminLogin'
+import Dashboard from './pages/Dashboard'
 import './App.css'
 
 function App() {
+  const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
+
+  if (isAdmin) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+      </Routes>
+    )
+  }
+
   return (
     <div className="app-layout">
       <Sidebar />

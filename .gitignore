@@ -40,3 +40,9 @@ desktop.ini
 application-prod.yml
 *.pem
 *.key
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example

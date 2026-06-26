@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS promo_codes (
   UNIQUE KEY uk_code (code)
 ) ENGINE=InnoDB COMMENT='优惠码表';
 
+
 -- ==========================================
 -- 用户优惠码关联表
 -- ==========================================

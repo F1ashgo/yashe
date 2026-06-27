@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy } from 'lucide-react'
 import './Member.css'
 
-const API = 'http://localhost:8080/api'
+const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
 
 interface UserInfo { id: number; name: string; email: string; phone: string; role: string }
 

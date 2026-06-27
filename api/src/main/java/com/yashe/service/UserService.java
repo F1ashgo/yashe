@@ -13,12 +13,11 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public UserService(UserMapper userMapper, JwtUtil jwtUtil, BCryptPasswordEncoder encoder) {
+    public UserService(UserMapper userMapper, JwtUtil jwtUtil) {
         this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
-        this.encoder = encoder;
     }
 
     /* 注册 */

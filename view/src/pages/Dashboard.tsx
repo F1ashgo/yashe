@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Users, UserPlus, Search, LogOut, ChevronDown, ChevronUp, RefreshCw, Home } from 'lucide-react'
 import './Dashboard.css'
 
-const API = 'http://localhost:8080/api'
+const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
 
 interface Member {
   id: number; name: string; email: string; phone: string | null;

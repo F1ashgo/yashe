@@ -30,6 +30,10 @@ public class AuthController {
             return ResponseEntity.ok(
                 ApiResponse.success("注册成功").put("token", token)
             );
+
+//            catch (RuntimeException E)
+//
+
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(
                 ApiResponse.error(400, e.getMessage())
@@ -52,7 +56,6 @@ public class AuthController {
             );
         }
     }
-
 
     /* 获取当前用户信息 */
     @GetMapping("/me")

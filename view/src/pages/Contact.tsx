@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, MessageCircle, Loader2 } from 'lucide-react'
 import './Contact.css'
 
-const API = 'http://localhost:8080/api'
+const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })

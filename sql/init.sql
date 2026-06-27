@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS promo_codes (
   id          BIGINT AUTO_INCREMENT PRIMARY KEY,
   code        VARCHAR(50)  NOT NULL COMMENT '优惠码',
-  discount    DECIMAL(5,2) DEFAULT NULL COMMENT '折扣比例（如0.9=9折）',
+  discount    DECIMAL(5,2) NOT NULL COMMENT '折扣比例（如0.9=9折）',
   amount      DECIMAL(10,2) DEFAULT NULL COMMENT '抵扣金额（如2000.00=抵扣2000元）',
   max_uses    INT          DEFAULT 100 COMMENT '最大使用次数',
   used_count  INT          DEFAULT 0 COMMENT '已使用次数',
@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS user_promos (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (promo_id) REFERENCES promo_codes(id)
 ) ENGINE=InnoDB COMMENT='用户优惠码使用记录';
+
 
 -- ==========================================
 -- 联络表单

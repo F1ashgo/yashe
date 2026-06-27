@@ -19,3 +19,4 @@ public interface UserMapper {
     List<User> searchByEmail(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
     int countSearch(@Param("keyword") String keyword);
 }
+

@@ -21,9 +21,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()   // 登录注册公开
-                .anyRequest().authenticated()                   // 其余需要登录
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").permitAll()   // 控制器内 JWT 自行验证
+                .requestMatchers("/api/contact/**").permitAll() // 联络表单公开
+                .anyRequest().authenticated()
             );
         return http.build();
     }
 }
+
+

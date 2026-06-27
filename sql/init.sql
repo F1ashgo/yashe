@@ -54,6 +54,23 @@ CREATE TABLE IF NOT EXISTS user_promos (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (promo_id) REFERENCES promo_codes(id)
 ) ENGINE=InnoDB COMMENT='用户优惠码使用记录';
+
+-- ==========================================
+-- 联络表单
+-- ==========================================
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(50)  NOT NULL COMMENT '姓名',
+  email       VARCHAR(100) NOT NULL COMMENT '邮箱',
+  phone       VARCHAR(20)  DEFAULT NULL COMMENT '电话',
+  subject     VARCHAR(100) DEFAULT NULL COMMENT '主题',
+  message     TEXT         NOT NULL COMMENT '留言内容',
+  is_read     TINYINT      DEFAULT 0 COMMENT '0=未读 1=已读',
+  created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='联络表单留言';
+
+
+
 -- ==========================================
 -- 示例数据
 -- ==========================================

@@ -1,20 +1,41 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react'
+import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, MessageCircle, Loader2 } from 'lucide-react'
 import './Contact.css'
+
+const API = 'http://localhost:8080/api'
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [k]: e.target.value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    // 预留后端接口
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch(`${API}/contact/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+        setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+      } else {
+        setError('发送失败，请稍后再试')
+      }
+    } catch {
+      setError('无法连接服务器，请确保后端已启动')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -37,6 +58,7 @@ function Contact() {
               <h2>发送讯息</h2>
               <p className="con-form-card__sub">填写以下表单，我们将在 24 小时内与您联系</p>
 
+              {error && <div className="con-error">{error}</div>}
               {submitted ? (
                 <div className="con-success">
                   <Send size={40} />
@@ -72,8 +94,9 @@ function Contact() {
                     <label>留言内容 *</label>
                     <textarea value={form.message} onChange={update('message')} placeholder="请描述您的项目需求、预算范围及期望风格..." rows={5} required />
                   </div>
-                  <button type="submit" className="con-form__submit">
-                    <Send size={16} /> 发送讯息
+                  <button type="submit" className="con-form__submit" disabled={loading}>
+                    {loading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
+                    {loading ? '发送中...' : '发送讯息'}
                   </button>
                 </form>
               )}

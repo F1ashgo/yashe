@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Award, Trophy, Medal, Building2, Users, Briefcase, Clock, Star } from 'lucide-react'
+import { ArrowLeft, Award, Trophy, Medal, Building2, Users, Briefcase, Clock } from 'lucide-react'
 import './About.css'
 
 /* 荣誉奖项 */
@@ -225,3 +225,4 @@ function About() {
 }
 
 export default About
+

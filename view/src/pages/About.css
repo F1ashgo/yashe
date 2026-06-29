@@ -84,6 +84,13 @@
 .honors-banner__year { display: block; font-family: var(--font-en-display); font-size: 0.8rem; color: var(--color-gray); letter-spacing: 2px; margin-bottom: 8px; }
 .honors-banner__name { display: block; font-size: 0.82rem; color: var(--color-dark); font-weight: 500; line-height: 1.6; }
 
+/* ===== 资质认证 ===== */
+.about-cert { padding: 100px 0; background: var(--color-white); }
+.cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 800px; margin: 0 auto; }
+.cert-card { border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: var(--transition-smooth); }
+.cert-card:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0,0,0,0.1); }
+.cert-card img { width: 100%; height: auto; display: block; }
+
 /* ===== CTA ===== */
 .about-cta { padding: 80px 0 100px; background: var(--color-white); }
 .about-cta__card { background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-secondary) 100%); border-radius: 4px; padding: 70px 60px; text-align: center; position: relative; overflow: hidden; }

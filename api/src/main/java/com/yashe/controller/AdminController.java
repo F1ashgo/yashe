@@ -34,6 +34,7 @@ public class AdminController {
         }
     }
 
+
     /* 统计概览 */
     @GetMapping("/stats")
     public ResponseEntity<ApiResponse> stats(@RequestHeader("Authorization") String auth) {
@@ -74,3 +75,8 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("OK").put("data", data));
     }
 }
+
+
+/*
+*       data.put("list, list);
+*       data.put("total", total);*/

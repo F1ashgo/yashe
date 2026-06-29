@@ -26,13 +26,7 @@ const HONORS = [
     icon: <Medal size={28} />,
     desc: '作品「西湖茶室」凭借东西方美学的融合表达，赢得国际评审团肯定。',
   },
-  {
-    year: '2021',
-    title: '广州设计周',
-    category: '年度十佳设计机构',
-    icon: <Star size={28} />,
-    desc: '连续三年入选，作品「珠江新城顶层公寓」成为当届最受关注案例。',
-  },
+
   {
     year: '2020',
     title: '中国建筑装饰协会',
@@ -192,6 +186,25 @@ function About() {
                   <span className="honors-banner__name">{h.title}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== 资质认证 ===== */}
+      <section className="about-cert reveal" ref={setRef(2)}>
+        <div className="container">
+          <div className="about-honors__header">
+            <span className="about-honors__tag">Certifications</span>
+            <h2>资质认证</h2>
+            <p>国家认证，品质保障</p>
+          </div>
+          <div className="cert-grid">
+            <div className="cert-card">
+              <img src="/IMG_5395.JPG" alt="资质证书" loading="lazy" />
+            </div>
+            <div className="cert-card">
+              <img src="/IMG_5396.JPG" alt="资质证书" loading="lazy" />
             </div>
           </div>
         </div>

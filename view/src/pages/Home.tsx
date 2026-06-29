@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowDown, Award, Target, Eye, Compass, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import './Home.css'
 
-/* Hero 背景图 — 轮播专用图 */
+/* Hero 轮播图 */
 const HERO_IMAGES = [
   '/lunbotu/小泳池.jpeg',
   '/lunbotu/泳池2.JPG',
@@ -324,53 +324,55 @@ function Home() {
             <h2 className="section-header__title">公司背景</h2>
             <p className="section-header__en">Notre Histoire</p>
           </div>
-          <div className="intro-section__grid">
-            <div className="intro-section__text">
-              <p className="intro-section__lead">
-                源于对现实的敬畏，忠于纯粹的设计。
+          {/* 宽幅品牌视频 */}
+          <div className="intro-section__video-wrap">
+            <video src="/introduction.mp4" autoPlay muted loop playsInline className="intro-section__video" />
+          </div>
+
+          {/* 三幕叙事卡片 */}
+          <div className="narrative-cards">
+            <div className="narrative-card">
+              <span className="narrative-card__num">01</span>
+              <h3 className="narrative-card__title">原点</h3>
+              <p className="narrative-card__sub">始于对真实的敬畏</p>
+              <p className="narrative-card__desc">
+                雅舍的故事孕育于对「图纸与现实落差」的深刻反思。创始团队曾深耕工程营造多年，
+                亲历华丽图纸无法落地的困境，也见证缺乏美学把控的空间。出于对纯粹设计的渴望，
+                雅舍应运而生。
               </p>
-              <p>
-                雅舍（<strong>Atelier des Miyabi</strong>）的故事，孕育于对「图纸与现实之间巨大落差」的深刻反思。
-                几位联合创始人曾深耕于建筑工程与高端空间营造领域多年，在无数个施工现场，
-                亲历了太多因脱离实际而无法落地的华丽图纸，也见证了太多因缺乏美学把控而失去灵魂的居住空间。
-                出于对纯粹设计的渴望与对工程客观规律的敬畏，雅舍在这样的契机下应运而生。
-              </p>
-              <h4 className="intro-section__sub">剥离繁杂，回归工坊本质</h4>
-              <p>
-                为了打破行业内「设计与落地脱节」的壁垒，我们做出了一个果断的决定：剥离繁杂的施工业务，
-                转型为一家只专注于「纯粹空间设计」的精品工作室。这不仅是一次商业模式的取舍，更是对匠人精神的回归。
-                雅舍汇聚了拥有国际视野的美学设计师与具备深厚现场经验的图纸深化专家。我们将巴黎工坊（Atelier）的专注
-                与日式风雅（Miyabi）的细腻相融合，致力于在「天马行空的艺术感」与「脚踏实地的工程性」之间找到完美的平衡点。
-              </p>
-              <h4 className="intro-section__sub">空间美学的严密把关人</h4>
-              <p>
-                如今的雅舍，已成为业内独树一帜的「空间美学把关人」。我们不追求工业化流水线的快速扩张，
-                而是坚持以「慢工出细活」的工坊模式，严格把控每一位委托人的空间品质。我们交付的不仅仅是一幅幅渲染图，
-                更是一套套经得起现场检验、极具执行力的严密图纸。雅舍以理性构建为骨架，以感性光影为灵魂，
-                确保您的美学愿景能够无损、安全、精准地交由任何优秀的施工团队化为现实。
-              </p>
-            </div>
-            <div className="intro-section__sidebar">
-              <div className="intro-section__image">
-                <img src="/ice bath/小泳池.jpeg" alt="雅舍设计作品" loading="lazy" />
+              <div className="narrative-card__stat">
+                <span className="narrative-card__num-big">10+</span>
+                <span>年行业深耕</span>
               </div>
-              <div className="intro-section__stats">
-                <div className="stat-item">
-                  <span className="stat-item__number">10+</span>
-                  <span className="stat-item__label">年行业经验</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-item__number">800+</span>
-                  <span className="stat-item__label">完成项目</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-item__number">50+</span>
-                  <span className="stat-item__label">专业设计师</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-item__number">3</span>
-                  <span className="stat-item__label">城市设立分公司</span>
-                </div>
+            </div>
+
+            <div className="narrative-card narrative-card--accent">
+              <span className="narrative-card__num">02</span>
+              <h3 className="narrative-card__title">共生</h3>
+              <p className="narrative-card__sub">理性构建与感性表达的交织</p>
+              <p className="narrative-card__desc">
+                我们果断剥离施工业务，转型为只专注于纯粹空间设计的精品工坊。
+                将巴黎工坊（Atelier）的专注与日式风雅（Miyabi）的细腻相融合，
+                在「天马行空的艺术感」与「脚踏实地的工程性」之间找到完美平衡。
+              </p>
+              <div className="narrative-card__stat">
+                <span className="narrative-card__num-big">800+</span>
+                <span>项目圆满交付</span>
+              </div>
+            </div>
+
+            <div className="narrative-card">
+              <span className="narrative-card__num">03</span>
+              <h3 className="narrative-card__title">使命</h3>
+              <p className="narrative-card__sub">空间美学的严密把关人</p>
+              <p className="narrative-card__desc">
+                坚持以「慢工出细活」的工坊模式，为每位委托人严格把控空间品质。
+                交付的不仅是渲染图，更是经得起现场检验的严密图纸——
+                理性为骨架，光影为灵魂，让美学愿景精准化为现实。
+              </p>
+              <div className="narrative-card__stat">
+                <span className="narrative-card__num-big">15+</span>
+                <span>核心设计师团队</span>
               </div>
             </div>
           </div>

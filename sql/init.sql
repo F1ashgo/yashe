@@ -70,8 +70,6 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='联络表单留言';
 
-
-
 -- ==========================================
 -- 示例数据
 -- ==========================================

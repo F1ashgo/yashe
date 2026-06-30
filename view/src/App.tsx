@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Sidebar from './components/Sidebar'
@@ -19,10 +20,13 @@ function App() {
 
   if (isAdmin) {
     return (
-      <Routes>
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-      </Routes>
+      <>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+        </Routes>
+      </>
     )
   }
 
@@ -30,6 +34,7 @@ function App() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
+        <ScrollToTop />
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

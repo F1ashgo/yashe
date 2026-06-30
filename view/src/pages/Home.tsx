@@ -449,21 +449,21 @@ function Home() {
               <div className="positioning-card__num">01</div>
               <h3>高端客群</h3>
               <p>
-                服务于追求品质生活的精英阶层，涵盖企业家、高管、艺术收藏家等对空间美学有高标准要求的客戶群体。
+                服务于追求品质生活的精英阶层，涵盖企业家、高管、艺术收藏家等对空间美学有高标准要求的客户群体。
               </p>
             </div>
             <div className="positioning-card">
               <div className="positioning-card__num">02</div>
               <h3>全案设计</h3>
               <p>
-                提供从建筑規划、室內设计、软装陈设到园林景观的整体设计方案，确保空间的整体性与一致性。
+                提供从建筑规划、室内设计、软装陈设到园林景观的整体设计方案，确保空间的整体性与一致性。
               </p>
             </div>
             <div className="positioning-card">
               <div className="positioning-card__num">03</div>
               <h3>国际标准</h3>
               <p>
-                以国际頂级设计标准为标杆，引进全球优质材料与工艺，确保每个项目的设计品质与落地效果达到国际水准。
+                以国际顶级设计标准为标杆，引进全球优质材料与工艺，确保每个项目的设计品质与落地效果达到国际水准。
               </p>
             </div>
           </div>

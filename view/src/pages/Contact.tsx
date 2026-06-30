@@ -6,12 +6,12 @@ import './Contact.css'
 const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
 
 function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', budget: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [k]: e.target.value })
   }
 
@@ -27,7 +27,7 @@ function Contact() {
       })
       if (res.ok) {
         setSubmitted(true)
-        setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+        setForm({ name: '', email: '', phone: '', subject: '', message: '', budget: '' })
       } else {
         setError('发送失败，请稍后再试')
       }
@@ -64,7 +64,7 @@ function Contact() {
                   <Send size={40} />
                   <h3>感谢您的来信！</h3>
                   <p>我们已收到您的讯息，将在 24 小时内与您联系。</p>
-                  <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', subject: '', message: '' }) }}>
+                  <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', subject: '', message: '', budget: '' }) }}>
                     发送新讯息
                   </button>
                 </div>
@@ -92,7 +92,18 @@ function Contact() {
                   </div>
                   <div className="con-form__group">
                     <label>留言内容 *</label>
-                    <textarea value={form.message} onChange={update('message')} placeholder="请描述您的项目需求、预算范围及期望风格..." rows={5} required />
+                    <textarea value={form.message} onChange={update('message')} placeholder="请描述您的项目需求及期望风格..." rows={5} required />
+                  </div>
+                  <div className="con-form__group">
+                    <label>预算范围</label>
+                    <select value={form.budget} onChange={update('budget')}>
+                      <option value="">请选择预算范围</option>
+                      <option value="10万以下">10万以下</option>
+                      <option value="10-30万">10-30万</option>
+                      <option value="30-50万">30-50万</option>
+                      <option value="50-100万">50-100万</option>
+                      <option value="100万以上">100万以上</option>
+                    </select>
                   </div>
                   <button type="submit" className="con-form__submit" disabled={loading}>
                     {loading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}

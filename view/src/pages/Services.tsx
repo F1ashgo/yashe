@@ -266,7 +266,7 @@ function Services() {
           <div className="svc-cta__card">
             <h2>准备好开启您的设计之旅了吗？</h2>
             <p>联系我们，预约一次免费的设计咨询</p>
-            <a href="#contact" className="svc-cta__btn">预约咨询</a>
+            <Link to="/contact" className="svc-cta__btn">联络我们</Link>
           </div>
         </div>
       </section>

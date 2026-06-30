@@ -55,6 +55,25 @@
 .mem-logout { display: flex; align-items: center; gap: 8px; padding: 12px 24px; margin-top: 8px; background: none; border: 1px solid var(--color-gray-light); border-radius: 4px; font-size: 0.85rem; color: var(--color-gray); transition: var(--transition-fast); }
 .mem-logout:hover { border-color: #cc3333; color: #cc3333; }
 
+/* Reviews */
+.mem-reviews { padding: 28px; background: var(--color-cream); border-radius: 4px; margin-bottom: 16px; }
+.mem-reviews h3 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; letter-spacing: 1px; }
+.mem-reviews__list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.mem-reviews__card { background: var(--color-white); padding: 16px 20px; border-radius: 4px; border: 1px solid var(--color-gray-light); }
+.mem-reviews__card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.mem-reviews__project { font-weight: 600; font-size: 0.9rem; }
+.mem-reviews__stars { display: flex; gap: 2px; }
+.mem-reviews__card p { font-size: 0.85rem; color: var(--color-gray-dark); line-height: 1.8; }
+.mem-reviews__date { font-size: 0.72rem; color: var(--color-gray); display: block; margin-top: 8px; }
+.mem-reviews__form { display: flex; flex-direction: column; gap: 12px; }
+.mem-reviews__form input, .mem-reviews__form textarea { padding: 10px 14px; border: 1px solid var(--color-gray-light); border-radius: 4px; font-size: 0.88rem; font-family: var(--font-body); outline: none; resize: vertical; }
+.mem-reviews__form input:focus, .mem-reviews__form textarea:focus { border-color: var(--color-gold); }
+.mem-reviews__rating { display: flex; gap: 4px; }
+.mem-reviews__star-btn { background: none; padding: 0; line-height: 1; }
+.mem-reviews__msg { font-size: 0.82rem; color: #4a9e5c; }
+.mem-reviews__submit { padding: 10px; background: var(--color-gold); color: #fff; font-size: 0.9rem; letter-spacing: 1px; border-radius: 4px; transition: var(--transition-fast); }
+.mem-reviews__submit:hover { background: var(--color-gold-dark); }
+
 /* Promo codes (logged-in) */
 .mem-promo-section { padding: 28px; background: var(--color-cream); border-radius: 4px; margin-bottom: 16px; }
 .mem-promo-section h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; letter-spacing: 1px; }

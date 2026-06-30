@@ -20,8 +20,8 @@
 .con-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .con-form__group { display: flex; flex-direction: column; gap: 6px; }
 .con-form__group label { font-size: 0.8rem; letter-spacing: 1px; color: var(--color-gray-dark); }
-.con-form__group input, .con-form__group textarea { padding: 12px 16px; border: 1px solid var(--color-gray-light); border-radius: 4px; font-size: 0.9rem; font-family: var(--font-body); outline: none; transition: var(--transition-fast); resize: vertical; }
-.con-form__group input:focus, .con-form__group textarea:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.08); }
+.con-form__group input, .con-form__group textarea, .con-form__group select { padding: 12px 16px; border: 1px solid var(--color-gray-light); border-radius: 4px; font-size: 0.9rem; font-family: var(--font-body); outline: none; transition: var(--transition-fast); resize: vertical; background: var(--color-white); }
+.con-form__group input:focus, .con-form__group textarea:focus, .con-form__group select:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.08); }
 .con-form__submit { display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; background: var(--color-gold); color: var(--color-white); font-size: 0.9rem; letter-spacing: 2px; border-radius: 4px; transition: var(--transition-smooth); align-self: flex-start; }
 .con-form__submit:hover { background: var(--color-gold-dark); }
 

@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").permitAll()   // 控制器内 JWT 自行验证
                 .requestMatchers("/api/contact/**").permitAll() // 联络表单公开
+                .requestMatchers("/api/reviews/**").permitAll() // 控制器内 JWT 自行验证
                 .anyRequest().authenticated()
             );
         return http.build();

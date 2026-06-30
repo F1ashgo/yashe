@@ -216,7 +216,7 @@ function About() {
           <div className="about-cta__card">
             <h2>准备好开始您的设计之旅了吗？</h2>
             <p>与我们的设计师预约一次免费咨询，让我们了解您的需求与愿景</p>
-            <a href="#contact" className="about-cta__btn">预约咨询</a>
+            <Link to="/contact" className="about-cta__btn">联络我们</Link>
           </div>
         </div>
       </section>

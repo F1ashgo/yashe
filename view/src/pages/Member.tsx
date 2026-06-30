@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy } from 'lucide-react'
+import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy, Star } from 'lucide-react'
 import './Member.css'
 
 const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
@@ -17,10 +17,50 @@ function Member() {
     name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '',
   })
 
+  // 评价
+  const [reviews, setReviews] = useState<Array<{ id: number; project: string; rating: number; content: string; createdAt: string }>>([])
+  const [reviewForm, setReviewForm] = useState({ project: '', rating: 5, content: '' })
+  const [reviewSubmitting, setReviewSubmitting] = useState(false)
+  const [reviewMsg, setReviewMsg] = useState('')
+
+  const fetchReviews = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    try {
+      const res = await fetch(`${API}/reviews/my`, { headers: { Authorization: `Bearer ${token}` } })
+      if (res.ok) {
+        const json = await res.json()
+        setReviews(json.data.list)
+      }
+    } catch {}
+  }
+
+  const submitReview = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (reviewForm.content.length < 10) { setReviewMsg('评价内容至少10个字'); return }
+    setReviewSubmitting(true)
+    setReviewMsg('')
+    const token = localStorage.getItem('token')
+    try {
+      const res = await fetch(`${API}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(reviewForm),
+      })
+      if (res.ok) {
+        setReviewForm({ project: '', rating: 5, content: '' })
+        fetchReviews()
+        setReviewMsg('评价提交成功！')
+      }
+    } catch {
+      setReviewMsg('提交失败，请稍后重试')
+    } finally { setReviewSubmitting(false) }
+  }
+
   // 页面加载时检查本地 token
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (token) fetchUser(token)
+    if (token) { fetchUser(token); fetchReviews() }
   }, [])
 
   const fetchUser = async (token: string) => {
@@ -164,6 +204,42 @@ function Member() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* 我的评价 */}
+              <div className="mem-reviews">
+                <h3>我的评价</h3>
+                {reviews.length > 0 && (
+                  <div className="mem-reviews__list">
+                    {reviews.map((r) => (
+                      <div key={r.id} className="mem-reviews__card">
+                        <div className="mem-reviews__card-header">
+                          <span className="mem-reviews__project">{r.project}</span>
+                          <span className="mem-reviews__stars">
+                            {[...Array(r.rating)].map((_, i) => <Star key={i} size={12} fill="#c9a96e" color="#c9a96e" />)}
+                          </span>
+                        </div>
+                        <p>{r.content}</p>
+                        <span className="mem-reviews__date">{r.createdAt?.slice(0, 10)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <form className="mem-reviews__form" onSubmit={submitReview}>
+                  <input type="text" value={reviewForm.project} onChange={(e) => setReviewForm({ ...reviewForm, project: e.target.value })} placeholder="项目名称" required />
+                  <div className="mem-reviews__rating">
+                    {[1,2,3,4,5].map((n) => (
+                      <button type="button" key={n} onClick={() => setReviewForm({ ...reviewForm, rating: n })} className="mem-reviews__star-btn">
+                        <Star size={18} fill={n <= reviewForm.rating ? '#c9a96e' : 'none'} color="#c9a96e" />
+                      </button>
+                    ))}
+                  </div>
+                  <textarea value={reviewForm.content} onChange={(e) => setReviewForm({ ...reviewForm, content: e.target.value })} placeholder="分享您的设计体验..." rows={3} required />
+                  {reviewMsg && <p className="mem-reviews__msg">{reviewMsg}</p>}
+                  <button type="submit" disabled={reviewSubmitting} className="mem-reviews__submit">
+                    {reviewSubmitting ? '提交中...' : '提交评价'}
+                  </button>
+                </form>
               </div>
 
               <button className="mem-logout" onClick={logout}>

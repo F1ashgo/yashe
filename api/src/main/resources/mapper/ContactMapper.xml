@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yashe.mapper.ContactMapper">
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO contact_messages (name, email, phone, subject, message)
-    VALUES (#{name}, #{email}, #{phone}, #{subject}, #{message})
+    INSERT INTO contact_messages (name, email, phone, subject, budget, message)
+    VALUES (#{name}, #{email}, #{phone}, #{subject}, #{budget}, #{message})
   </insert>
 </mapper>

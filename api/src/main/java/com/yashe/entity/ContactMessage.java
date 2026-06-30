@@ -8,6 +8,7 @@ public class ContactMessage {
     private String email;
     private String phone;
     private String subject;
+    private String budget;
     private String message;
     private Integer isRead;
     private LocalDateTime createdAt;
@@ -22,6 +23,8 @@ public class ContactMessage {
     public void setPhone(String phone) { this.phone = phone; }
     public String getSubject() { return subject; }
     public void setSubject(String subject) { this.subject = subject; }
+    public String getBudget() { return budget; }
+    public void setBudget(String budget) { this.budget = budget; }
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
     public Integer getIsRead() { return isRead; }

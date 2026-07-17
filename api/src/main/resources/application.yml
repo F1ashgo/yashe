@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    url: ${YASHE_DB_URL:jdbc:mysql://localhost:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
-    username: ${YASHE_DB_USERNAME}
-    password: ${YASHE_DB_PASSWORD}
+    url: ${YASHE_DB_URL:${DB_URL:jdbc:mysql://localhost:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}}
+    username: ${YASHE_DB_USERNAME:${DB_USERNAME:root}}
+    password: ${YASHE_DB_PASSWORD:${DB_PASSWORD:}}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
@@ -20,13 +20,13 @@ mybatis:
     map-underscore-to-camel-case: true
 
 jwt:
-  secret: ${YASHE_JWT_SECRET}
-  expiration: ${YASHE_JWT_ACCESS_TTL:PT60M}
+  secret: ${YASHE_JWT_SECRET:${JWT_SECRET:YasheAtelierDesMiyabiLongSuperSecretKey12345}}
+  expiration: ${YASHE_JWT_ACCESS_TTL:${JWT_EXPIRATION:PT60M}}
   issuer: ${YASHE_JWT_ISSUER:yashe-api}
   audience: ${YASHE_JWT_AUDIENCE:yashe-web}
 
 app:
   cors:
-    allowed-origins: ${YASHE_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+    allowed-origins: ${YASHE_ALLOWED_ORIGINS:${ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}}
   turnstile:
-    secret: ${YASHE_TURNSTILE_SECRET_KEY}
+    secret: ${YASHE_TURNSTILE_SECRET_KEY:${TURNSTILE_SECRET_KEY:}}

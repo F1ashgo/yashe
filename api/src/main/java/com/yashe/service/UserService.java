@@ -56,7 +56,24 @@ public class UserService {
         if (user.getStatus() == 0) {
             throw new RuntimeException("该账号已被禁用");
         }
-        if (!encoder.matches(req.getPassword(), user.getPassword())) {
+
+        String rawPassword = req.getPassword();
+        String dbPassword = user.getPassword();
+        boolean passwordMatches = false;
+
+        // 判断是否是符合 BCrypt 格式的哈希串
+        if (dbPassword != null && (dbPassword.startsWith("$2a$") || dbPassword.startsWith("$2b$") || dbPassword.startsWith("$2y$"))) {
+            passwordMatches = encoder.matches(rawPassword, dbPassword);
+        } else {
+            // 支持明文密码（兼容手动或旧脚本直接写入明文的情况）
+            passwordMatches = rawPassword != null && rawPassword.equals(dbPassword);
+            if (passwordMatches) {
+                // 登录成功后，自动升级为 BCrypt 加密存储以保障安全性
+                userMapper.updatePassword(user.getId(), encoder.encode(rawPassword));
+            }
+        }
+
+        if (!passwordMatches) {
             throw new RuntimeException("邮箱或密码错误");
         }
 

@@ -28,8 +28,8 @@ $forbiddenPaths = @(
 $privateKeyPattern = 'BEGIN ' + '(OPENSSH|RSA|EC|DSA) PRIVATE KEY'
 $contentRules = @(
     @{ Name = 'private key'; Pattern = $privateKeyPattern },
-    @{ Name = 'inline database password'; Pattern = '(?im)^\s*(DB_PASSWORD|MYSQL_PASSWORD|DB_PASS)\s*=\s*(?!<|\$\{)[^\s]+' },
-    @{ Name = 'inline JWT secret'; Pattern = '(?im)^\s*(JWT_SECRET|YASHE_JWT_SECRET)\s*[:=]\s*(?!<|\$\{)[^\s]+' },
+    @{ Name = 'inline database password'; Pattern = '(?im)^[ \t]*(DB_PASSWORD|MYSQL_PASSWORD|DB_PASS)[ \t]*=[ \t]*(?!<|\$\{)[^\s]+' },
+    @{ Name = 'inline JWT secret'; Pattern = '(?im)^[ \t]*(JWT_SECRET|YASHE_JWT_SECRET)[ \t]*[:=][ \t]*(?!<|\$\{)[^\s]+' },
     @{ Name = 'command-line MySQL password'; Pattern = '(?i)\bmysql(?:dump)?\b[^\r\n]*\s-p[^\s$<"]+' }
 )
 

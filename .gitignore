@@ -48,3 +48,7 @@ my.cnf
 .env.development
 !.env.example
 backup/
+
+# Git Worktrees
+.worktrees/
+

@@ -70,6 +70,13 @@ docs: 补充部署与提交规范说明
 - 已安装 Gitleaks 时同时运行：`gitleaks dir . --config .gitleaks.toml --redact --no-banner`。
 - `.github/workflows/security.yml` 会在 Pull Request、`master` 推送和手动触发时扫描当前仓库快照；历史泄露另行人工审计，不通过把旧秘密加入允许列表来绕过。
 
+上线前必须完成以下人工轮换，不能仅依赖代码脱敏：
+
+- [ ] 撤销旧 SSH 公钥，创建非 root 部署密钥并更新 GitHub Secrets。
+- [ ] 轮换 MySQL、Redis 和 JWT 密钥。
+- [ ] 重启 API 并验证旧 JWT 已失效。
+- [ ] 关闭临时公网测试端口并复核源站访问控制。
+
 ---
 
 ## 📚 部署与运维文档汇总 (点击跳转)

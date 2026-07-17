@@ -23,6 +23,7 @@
 4. [数据库紧急运维与锁表处理](#四-数据库紧急运维与锁表处理)
 5. [系统内置防火墙（Firewalld）控制](#五-系统内置防火墙firewalld控制)
 6. [数据压缩备份与文件传输](#六-数据压缩备份与文件传输)
+7. [安全凭据轮换上线门禁](#七-安全凭据轮换上线门禁)
 
 ---
 
@@ -197,3 +198,17 @@ curl -I https://www.baidu.com
 # 2. 检查服务器本地后端接口是否通畅
 curl -i http://127.0.0.1:8080/api/auth/me
 ```
+
+---
+
+## 七、 安全凭据轮换上线门禁
+
+代码脱敏不能撤销已经泄露的凭据。每次安全整改上线前，由运维人员逐项确认：
+
+- [ ] 从所有服务器账号的 `authorized_keys` 撤销旧部署公钥。
+- [ ] 为非 root 部署账号创建新密钥，并更新 GitHub `SERVER_KEY`、`SERVER_USER`。
+- [ ] 轮换 MySQL 应用密码并更新服务器 Secret 文件。
+- [ ] 轮换 Redis 密码并更新服务器 Secret 文件。
+- [ ] 生成新的 JWT 签名密钥、重启 API，并确认旧 Token 返回 401。
+- [ ] 关闭临时公网测试端口，限制源站只接受必要的 Cloudflare/Nginx 流量。
+- [ ] 运行 `scripts/check_repository_security.ps1` 和 Gitleaks 当前快照扫描。

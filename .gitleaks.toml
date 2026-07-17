@@ -1,0 +1,33 @@
+title = "Yashe repository secret policy"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "yashe-environment-secret"
+description = "Password or JWT secret assigned directly in tracked content"
+regex = '''(?im)^\s*(?:DB_PASSWORD|MYSQL_PASSWORD|DB_PASS|JWT_SECRET|YASHE_JWT_SECRET)\s*[:=]\s*["']?([^<\s$][^"'\r\n]*)'''
+secretGroup = 1
+keywords = ["DB_PASSWORD", "MYSQL_PASSWORD", "DB_PASS", "JWT_SECRET", "YASHE_JWT_SECRET"]
+
+[[rules]]
+id = "yashe-mysql-command-password"
+description = "MySQL password exposed in a process argument"
+regex = '''(?i)\bmysql(?:dump|admin)?\b[^\r\n]*\s-p([^\s$<"']+)'''
+secretGroup = 1
+keywords = ["mysql", "mysqldump", "mysqladmin"]
+
+[[rules]]
+id = "yashe-redis-inline-auth"
+description = "Redis authentication secret embedded in tracked content"
+regex = '''(?i)(?:requirepass|auth)\s+([^<\s$][^\s\r\n]*)'''
+secretGroup = 1
+keywords = ["requirepass", "auth"]
+
+[allowlist]
+description = "Explicit documentation placeholders only"
+regexTarget = "match"
+regexes = [
+  '''<YASHE_[A-Z0-9_]+>''',
+  '''<PASTE_INTO_GITHUB_SECRET_ONLY>'''
+]

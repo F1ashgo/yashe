@@ -1,0 +1,37 @@
+name: Repository Security
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    name: Secret and dump scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out current snapshot
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+
+      - name: Reject prohibited tracked files and content
+        shell: pwsh
+        run: ./scripts/check_repository_security.ps1
+
+      - name: Scan current snapshot with Gitleaks
+        run: >-
+          docker run --rm
+          -v "${{ github.workspace }}:/repo"
+          zricethezav/gitleaks:v8.28.0
+          dir /repo
+          --config /repo/.gitleaks.toml
+          --redact
+          --no-banner

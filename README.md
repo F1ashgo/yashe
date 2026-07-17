@@ -67,6 +67,8 @@ docs: 补充部署与提交规范说明
 - 禁止提交生产数据库转储、备份文件或包含真实用户数据的测试数据。
 - 本地与生产配置必须通过未跟踪的环境文件或密钥管理服务注入；仓库仅保留明确的占位符示例。
 - 提交前须运行仓库安全检查：`powershell -NoProfile -File scripts/check_repository_security.ps1`。
+- 已安装 Gitleaks 时同时运行：`gitleaks dir . --config .gitleaks.toml --redact --no-banner`。
+- `.github/workflows/security.yml` 会在 Pull Request、`master` 推送和手动触发时扫描当前仓库快照；历史泄露另行人工审计，不通过把旧秘密加入允许列表来绕过。
 
 ---
 

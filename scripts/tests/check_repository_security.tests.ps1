@@ -101,3 +101,21 @@ finally {
         Remove-Item -LiteralPath $defaultRootRepo -Recurse -Force
     }
 }
+
+$repositoryRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$workflowPath = Join-Path $repositoryRoot '.github/workflows/security.yml'
+$gitleaksConfigPath = Join-Path $repositoryRoot '.gitleaks.toml'
+
+if (-not (Test-Path -LiteralPath $workflowPath -PathType Leaf)) {
+    throw "security workflow does not exist"
+}
+if (-not (Test-Path -LiteralPath $gitleaksConfigPath -PathType Leaf)) {
+    throw "Gitleaks configuration does not exist"
+}
+
+$workflow = [IO.File]::ReadAllText($workflowPath)
+if ($workflow -notmatch 'pull_request') { throw 'missing pull_request trigger' }
+if ($workflow -match 'pull_request_target') { throw 'unsafe pull_request_target trigger' }
+if ($workflow -notmatch 'scripts/check_repository_security.ps1') { throw 'missing repository scanner' }
+if ($workflow -notmatch 'gitleaks') { throw 'missing Gitleaks scan' }
+if ($workflow -notmatch 'contents:\s*read') { throw 'workflow permissions must be read-only' }

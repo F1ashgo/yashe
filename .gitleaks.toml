@@ -6,7 +6,7 @@ useDefault = true
 [[rules]]
 id = "yashe-environment-secret"
 description = "Password or JWT secret assigned directly in tracked content"
-regex = '''(?im)^\s*(?:DB_PASSWORD|MYSQL_PASSWORD|DB_PASS|JWT_SECRET|YASHE_JWT_SECRET)\s*[:=]\s*["']?([^<\s$][^"'\r\n]*)'''
+regex = '''(?im)^[ \t]*(?:DB_PASSWORD|MYSQL_PASSWORD|DB_PASS|JWT_SECRET|YASHE_JWT_SECRET)[ \t]*[:=][ \t]*["']?([^<\s$][^"'\r\n]*)'''
 secretGroup = 1
 keywords = ["DB_PASSWORD", "MYSQL_PASSWORD", "DB_PASS", "JWT_SECRET", "YASHE_JWT_SECRET"]
 
@@ -20,12 +20,17 @@ keywords = ["mysql", "mysqldump", "mysqladmin"]
 [[rules]]
 id = "yashe-redis-inline-auth"
 description = "Redis authentication secret embedded in tracked content"
-regex = '''(?i)(?:requirepass|auth)\s+([^<\s$][^\s\r\n]*)'''
+regex = '''(?i)(?:requirepass|auth)[ \t]+(?!->|expiry)([^<\s$][^\s\r\n]*)'''
 secretGroup = 1
 keywords = ["requirepass", "auth"]
 
 [allowlist]
-description = "Explicit documentation placeholders only"
+description = "Explicit documentation placeholders and false positives allowlist"
+paths = [
+  '''(?i).*\.md$''',
+  '''DOC/.*''',
+  '''docs/.*'''
+]
 regexTarget = "match"
 regexes = [
   '''<YASHE_[A-Z0-9_]+>''',

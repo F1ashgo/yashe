@@ -34,17 +34,17 @@ VITE_API_BASE_URL=https://api.admys.cn/api
 SERVER_PORT=8080
 SERVER_ADDRESS=127.0.0.1
 DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-DB_USERNAME=yashe_app
-DB_PASSWORD=replace-with-strong-password
-JWT_SECRET=replace-with-a-long-random-secret-at-least-32-chars
-JWT_EXPIRATION=604800000
+DB_USERNAME=<YASHE_DB_USERNAME>
+DB_PASSWORD=<YASHE_DB_PASSWORD>
+YASHE_JWT_SECRET=<YASHE_JWT_SECRET>
+JWT_EXPIRATION=3600000
 CORS_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
 ```
 
 生产环境必须替换：
 
 - 数据库密码
-- JWT_SECRET
+- YASHE_JWT_SECRET
 - CORS_ALLOWED_ORIGINS
 - API 域名
 
@@ -95,7 +95,7 @@ server {
 - 前端环境变量 `VITE_API_BASE_URL` 已指向正式 API
 - 后端 `CORS_ALLOWED_ORIGINS` 已设置为正式前端域名
 - MySQL 3306 未暴露公网
-- `JWT_SECRET` 已更换为生产随机密钥
+- `YASHE_JWT_SECRET` 已更换为至少 32 字节的生产随机密钥
 - 管理员账号密码已更换
 - Cloudflare SSL 模式使用 Full strict
 - API 域名证书有效

@@ -5,7 +5,7 @@
 ### 📋 项目技术栈与环境要求
 * **前端**：Vite + React + TS (在 `view` 目录下)
 * **后端**：Spring Boot 3.2.0 + Java 17 + MyBatis (在 `api` 目录下)
-* **数据库**：原生 MySQL 8.0 (库名为 `yashe_db`，账户为 `dengshanzu`)
+* **数据库**：原生 MySQL 8.0 (库名为 `yashe_db`，账户从受保护环境配置读取)
 * **缓存**：原生 Redis
 * **部署平台**：阿里云服务器 (ECS) + 阿里云域名备案
 * **操作系统建议**：Ubuntu Server 22.04 LTS 或 Alibaba Cloud Linux 3
@@ -33,8 +33,8 @@ graph TD
 ## 🚀 部署前的代码优化 (已完成)
 前端有 4 个页面文件（`Contact.tsx`、`AdminLogin.tsx`、`Member.tsx`、`Dashboard.tsx`）存在**硬编码局域网 IP** 的问题：
 ```javascript
-// ❌ 优化前：如果不是 localhost，则会请求 192.168.31.236（这在云端是无法访问的）
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.168.31.236:8080/api'
+// ❌ 优化前：如果不是 localhost，则会请求固定示例地址（云端无法访问）
+const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : 'http://192.0.2.10:8080/api'
 ```
 **优化方案 (已在本地代码中应用)**：
 我们已将上述地址修改为**基于当前访问地址动态生成**：
@@ -102,11 +102,11 @@ const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/ap
    -- 1. 创建雅舍项目专属数据库
    CREATE DATABASE yashe_db DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
-   -- 2. 创建本地连接账户 dengshanzu 并分配密码 wsad824600
-   CREATE USER 'dengshanzu'@'localhost' IDENTIFIED BY 'wsad824600';
+   -- 2. 创建最小权限应用账户；部署时从安全密码管理器取得真实值
+   CREATE USER '<YASHE_DB_USERNAME>'@'localhost' IDENTIFIED BY '<YASHE_DB_PASSWORD>';
 
    -- 3. 授予该账户对 yashe_db 数据库的所有操作权限
-   GRANT ALL PRIVILEGES ON yashe_db.* TO 'dengshanzu'@'localhost';
+   GRANT SELECT, INSERT, UPDATE, DELETE ON yashe_db.* TO '<YASHE_DB_USERNAME>'@'localhost';
 
    -- 4. 刷新权限表并退出
    FLUSH PRIVILEGES;
@@ -116,8 +116,8 @@ const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/ap
    * 创建应用根目录并将本地项目的 `sql/init.sql` 上传至服务器的 `/var/www/yashe/sql/init.sql`。
    * 在服务器终端执行导入命令：
      ```bash
-     mysql -u dengshanzu -p yashe_db < /var/www/yashe/sql/init.sql
-     # 系统会提示输入密码，输入 wsad824600 即可完成初始化建表
+     mysql -u '<YASHE_DB_USERNAME>' -p yashe_db < /var/www/yashe/sql/init.sql
+     # 系统会交互式提示输入密码，不要把密码写入命令或脚本
      ```
 
 ### 2. 原生安装 Redis 并配置密码安全
@@ -139,7 +139,7 @@ const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/ap
      ```
    * 找到 `# requirepass foobared` 行，去掉前面的 `#` 符号，并设置复杂密码：
      ```ini
-     requirepass SuperStrongRedisPassword_5678
+     requirepass <YASHE_REDIS_PASSWORD>
      ```
 3. **重启并激活 Redis**：
    ```bash
@@ -176,12 +176,12 @@ SERVER_PORT=8080
 SERVER_ADDRESS=127.0.0.1
 
 DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-DB_USERNAME=dengshanzu
-DB_PASSWORD=wsad824600
+DB_USERNAME=<YASHE_DB_USERNAME>
+DB_PASSWORD=<YASHE_DB_PASSWORD>
 
-# 请替换为不少于32字符的随机长字符串作为 JWT 签名密钥
-JWT_SECRET=YasheAtelierDesMiyabiLongSuperSecretKey12345
-JWT_EXPIRATION=604800000
+# 从安全密码管理器生成并注入不少于 32 字节的随机签名密钥
+YASHE_JWT_SECRET=<YASHE_JWT_SECRET>
+JWT_EXPIRATION=3600000
 
 # 跨域白名单（允许前端部署的域名访问接口）
 CORS_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
@@ -195,7 +195,7 @@ Description=Yashe Atelier des Miyabi API Service
 After=syslog.target network.target mysql.service redis-server.service
 
 [Service]
-User=root
+User=<NON_ROOT_DEPLOY_USER>
 WorkingDirectory=/var/www/yashe/backend
 # 加载 .env 环境变量文件进入 Systemd
 EnvironmentFile=/var/www/yashe/backend/.env

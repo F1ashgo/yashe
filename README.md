@@ -74,23 +74,23 @@ docs: 补充部署与提交规范说明
 
 为了方便开发团队与运维人员维护服务器，我们整理了全套的实操文档，您可直接点击下方链接进行阅读和查阅：
 
-### 1. [🚀 阿里云服务部署与实施指南](file:///D:/CTEXT/实习/yashe/DOC/deployment_preparation_guide.md)
+### 1. [🚀 阿里云服务部署与实施指南](DOC/deployment_preparation_guide.md)
 * **简介**：详细阐述了如何在阿里云 ECS 原生（Native）环境下安装与配置 Java 17、MySQL 8.0、Redis 与 Nginx，配置 Nginx 动静分离反向代理，以及在备案期间通过 `8000` 端口和 hosts 欺骗进行联调的合规过渡方案。
 
-### 2. [⚙️ GitHub Actions 自动化部署 Secrets 配置指南](file:///D:/CTEXT/实习/yashe/DOC/github_secrets_guide.md)
+### 2. [⚙️ GitHub Actions 自动化部署 Secrets 配置指南](DOC/github_secrets_guide.md)
 * **简介**：指导如何为 GitHub 流水线配置机器专属的 Deploy Key（免密 SSH 登录钥对），并在 GitHub 仓库的 Secrets 中加密配置 `SERVER_IP`、`SERVER_USER`、`SERVER_PORT` 与 `SERVER_KEY`，实现安全地“推送代码即自动部署”。
 
-### 3. [💾 MySQL 数据库日常运维与备份恢复指南](file:///D:/CTEXT/实习/yashe/DOC/db_maintenance_guide.md)
+### 3. [💾 MySQL 数据库日常运维与备份恢复指南](DOC/db_maintenance_guide.md)
 * **简介**：提供了关于本地 MySQL 数据库 `yashe_db` 的手动备份与恢复指令、自动化定时备份脚本以及数据库碎片整理、读写性能监控的常用 SQL 操作。
 
-### 4. [🛠️ 阿里云服务器日常运维操作手册 (Runbook)](file:///D:/CTEXT/实习/yashe/DOC/server_operations_runbook.md)
-* **简介**：全栈运维速查手册。内置了 MySQL 与 Redis 的安全强密码，包含了排查系统卡顿的硬件负载命令（CPU、内存、IO）、全栈服务进程启停命令、Nginx 流量分析与 SSH 安全防爆破审计命令。
+### 4. [🛠️ 阿里云服务器日常运维操作手册 (Runbook)](DOC/server_operations_runbook.md)
+* **简介**：全栈运维速查手册。凭据由受保护的服务器配置读取，包含排查系统卡顿的硬件负载命令（CPU、内存、IO）、全栈服务进程启停命令、Nginx 流量分析与 SSH 安全防爆破审计命令。
 
 ---
 
 ## ⚙️ 核心运维脚本说明
 
-* **[yashe_daily_scheduler.sh](file:///D:/CTEXT/实习/yashe/scripts/yashe_daily_scheduler.sh)**：
+* **[yashe_daily_scheduler.sh](scripts/yashe_daily_scheduler.sh)**：
   配置在服务器 `crontab` 每日凌晨 3:00 运行的脚本。能一键串联数据库备份、日志滚动压缩与过期清理、系统资源红线检测，以及自动检测并重启宕机服务（MySQL/Redis/Tomcat/Nginx）的健康自愈。
 
 ---
@@ -106,7 +106,7 @@ docs: 补充部署与提交规范说明
   * 修复了 MySQL 8.0 普通用户缺乏全局 `PROCESS` 权限导致 `mysqldump` 备份表空间失败的报错（添加了 `--no-tablespaces` 参数）。
 * 🛠️ **文档规范化重构**：
   * 建立了统一的 `DOC/` 归档文件夹，移除了根目录下临时散落的 Markdown 文件。
-  * 重构了项目 [README.md](file:///D:/CTEXT/实习/yashe/README.md) 主页，整合了团队的分支合并与 Commit 提交规范，并生成了全套文档的快捷跳转。
+  * 重构了项目 [README.md](README.md) 主页，整合了团队的分支合并与 Commit 提交规范，并生成了全套文档的快捷跳转。
 * 🐛 **流水线与仓库配置优化**：
   * 修正了 `.github/workflows/deploy.yml` 构建触发分支，由 `main` 更改为本仓库实际的默认主分支 `master`。
   * 在根目录 `.gitignore` 中追加了 `.worktrees/` 规则，防止开发中的本地 worktree 零散文件被误提交。

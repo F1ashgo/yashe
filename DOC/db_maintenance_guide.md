@@ -10,14 +10,16 @@
 使用 `mysqldump` 进行逻辑备份，并通过 `gzip` 压缩以节省磁盘空间：
 ```bash
 # 备份并压缩 yashe_db，文件名带上时间戳
-mysqldump -u dengshanzu -pwsad824600 yashe_db | gzip > /var/www/yashe/sql/yashe_db_backup_$(date +%Y%m%d_%H%M%S).sql.gz
+mysqldump --defaults-extra-file=/etc/yashe/mysql-client.cnf yashe_db | gzip > /var/www/yashe/sql/yashe_db_backup_$(date +%Y%m%d_%H%M%S).sql.gz
 ```
+
+`/etc/yashe/mysql-client.cnf` 必须归部署账号所有且权限为 `0600`，内容由服务器 Secret 管理，不提交到仓库。
 
 ### 2. 手动恢复数据库
 当发生数据误删需要回滚时，使用以下命令解压并导入数据：
 ```bash
 # 解压并导入指定的备份文件
-gunzip < /var/www/yashe/sql/yashe_db_backup_XXXXXXXX.sql.gz | mysql -u dengshanzu -pwsad824600 yashe_db
+gunzip < /var/www/yashe/sql/yashe_db_backup_XXXXXXXX.sql.gz | mysql --defaults-extra-file=/etc/yashe/mysql-client.cnf yashe_db
 ```
 
 ---
@@ -36,9 +38,8 @@ nano /var/www/yashe/sql/mysql_backup.sh
 ```bash
 #!/bin/bash
 
-# 配置信息
-DB_USER="dengshanzu"
-DB_PASS="wsad824600"
+# 非敏感配置信息；凭据仅存于 MYSQL_DEFAULTS_FILE
+MYSQL_DEFAULTS_FILE="/etc/yashe/mysql-client.cnf"
 DB_NAME="yashe_db"
 BACKUP_DIR="/var/www/yashe/sql/backups"
 KEEP_DAYS=30 # 备份保留天数
@@ -51,7 +52,7 @@ FILE_NAME="$BACKUP_DIR/${DB_NAME}_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
 
 # 执行备份并记录日志
 echo "[$(date)] 开始备份数据库 $DB_NAME..."
-mysqldump -u$DB_USER -p$DB_PASS $DB_NAME | gzip > $FILE_NAME
+mysqldump --defaults-extra-file="$MYSQL_DEFAULTS_FILE" "$DB_NAME" | gzip > "$FILE_NAME"
 
 if [ $? -eq 0 ]; then
     echo "[$(date)] 备份成功，文件保存至: $FILE_NAME"
@@ -88,14 +89,14 @@ crontab -e
 ### 1. 查看数据库基本运行状态
 查看当前并发连接数、运行时间、查询吞吐量等指标：
 ```bash
-mysqladmin -u dengshanzu -pwsad824600 status
+mysqladmin --defaults-extra-file=/etc/yashe/mysql-client.cnf status
 ```
 *输出示例：`Uptime: 20432  Threads: 2  Questions: 154  Slow queries: 0  Opens: 121  Flush tables: 3  Open tables: 114  Queries per second avg: 0.007`*
 
 ### 2. 查看当前正在执行的 SQL 线程 (排查锁表/死锁)
 当发现页面加载极慢时，可能是某些 SQL 语句卡住锁表了，运行以下命令查看：
 ```bash
-mysqladmin -u dengshanzu -pwsad824600 processlist
+mysqladmin --defaults-extra-file=/etc/yashe/mysql-client.cnf processlist
 ```
 *或者进入 MySQL 运行：`SHOW FULL PROCESSLIST;`。如果有大量的 `Sleep` 或者是运行时间很长的 `Query`，可以使用 `kill <Id>;` 命令强行结束该连接。*
 
@@ -128,9 +129,9 @@ WHERE table_schema = 'yashe_db';
 3. 重启 MySQL 生效：`systemctl restart mysqld`。
 
 ### 2. 修改数据库用户的密码
-如果后续需要修改 `dengshanzu` 账户的密码，登录 MySQL 后运行：
+如果后续需要修改应用账户密码，登录 MySQL 后运行：
 ```sql
-ALTER USER 'dengshanzu'@'localhost' IDENTIFIED BY '新密码';
+ALTER USER '<YASHE_DB_USERNAME>'@'localhost' IDENTIFIED BY '<YASHE_DB_PASSWORD>';
 FLUSH PRIVILEGES;
 ```
 *⚠️ 修改完后，请记得同步更新后端 Spring Boot 配置文件 `/var/www/yashe/backend/.env` 中的 `DB_PASSWORD` 密码，并重启服务。*

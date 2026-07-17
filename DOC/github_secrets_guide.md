@@ -1,23 +1,23 @@
 # GitHub Actions 阿里云服务器自动化部署密钥 (Secrets) 配置指南
 
-在您配置的自动化部署中，`.github/workflows/deploy.yml` 需要连接并操控您的阿里云服务器。为了**绝对保障您服务器的安全**，且保证部署流程不与任何开发人员的“个人私钥”绑定，我们为您生成并配置了一把 **“机器专用部署密钥 (Deploy Key)”**。
+在您配置的自动化部署中，`.github/workflows/deploy.yml` 需要连接阿里云服务器。部署必须使用独立的非 root 账号和专用密钥，密钥材料只能保存在服务器及 GitHub Secrets 中。
 
 以下是完整的配置与使用步骤：
 
 ---
 
 ## 🔑 第一步：在阿里云服务器上挂载“公钥”锁头
-您需要将以下这行专用公钥，写入您服务器的授权列表中，允许 GitHub 虚拟机连接：
+先生成一把新的机器专用密钥，再将公钥写入服务器授权列表：
 
-1. 复制下方这行完整的公钥内容：
-   ```text
-   ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2a6s1aPGasfXvJVbq0G7MQnw18TmGAxYGoe9kyTdPU github-actions
+1. 在受信任的本地终端生成密钥：
+   ```bash
+   ssh-keygen -t ed25519 -C "github-actions-yashe"
    ```
-2. 登录您的阿里云服务器终端，打开授权文件：
+2. 将生成的公钥 `<DEPLOY_PUBLIC_KEY>` 添加到专用部署账号：
    ```bash
    nano ~/.ssh/authorized_keys
    ```
-3. 在文件末尾，**另起一行**，粘贴刚刚复制的公钥内容。
+3. 在文件末尾另起一行粘贴公钥，不要把私钥复制到服务器或仓库。
 4. 按 `Ctrl + O` 保存，回车确认，按 `Ctrl + X` 退出。
 
 ---
@@ -29,12 +29,12 @@
 
 ### 1. `SERVER_IP` (服务器公网 IP)
 * **Name** 填写：`SERVER_IP`
-* **Value** 填写：`8.163.51.48`
+* **Value** 填写：`<SERVER_IP>`
 * 保存。
 
 ### 2. `SERVER_USER` (SSH 登录账号)
 * **Name** 填写：`SERVER_USER`
-* **Value** 填写：`root`
+* **Value** 填写：`<NON_ROOT_DEPLOY_USER>`
 * 保存。
 
 ### 3. `SERVER_PORT` (SSH 登录端口)
@@ -44,17 +44,11 @@
 
 ### 4. `SERVER_KEY` (流水线专属私钥) —— ⚠️ 重点步骤
 * **Name** 填写：`SERVER_KEY`
-* **Value** 请**完整复制并粘贴**以下虚线框内的全部私钥内容（必须包含最开头和最末尾的 `-----BEGIN...` 和 `-----END...` 标识）：
-  ```text
-  -----BEGIN OPENSSH PRIVATE KEY-----
-  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-  QyNTUxOQAAACB9murNWjxmrH17yVW6tBuzEJ8NfE5hgMWBqHvZMk3T1AAAAJh+TVkNfk1Z
-  DQAAAAtzc2gtZWQyNTUxOQAAACB9murNWjxmrH17yVW6tBuzEJ8NfE5hgMWBqHvZMk3T1A
-  AAAECzd0UI7ZUCodyBiqU/xi+ISnTmOTSL8yNOPiGaJGA7W32a6s1aPGasfXvJVbq0G7MQ
-  nw18TmGAxYGoe9kyTdPUAAAADmdpdGh1Yi1hY3Rpb25zAQIDBAUGBw==
-  -----END OPENSSH PRIVATE KEY-----
-  ```
+* **Value**：从本地私钥文件直接粘贴到 GitHub Secret，仓库文档中仅记录 `<PASTE_INTO_GITHUB_SECRET_ONLY>`。
 * 保存。
+
+> [!CAUTION]
+> 如果旧部署密钥曾进入 Git，请立即从服务器 `authorized_keys` 撤销对应公钥，并重新创建 `SERVER_KEY` Secret。
 
 ---
 
@@ -65,7 +59,7 @@
    ```bash
    git add .
    git commit -m "chore: configure github actions deploy keys"
-   git push origin main
+   git push origin <feature-branch>
    ```
 2. **监控构建与发布**：
    * 打开 GitHub 项目页面，点击顶部的 **Actions**。

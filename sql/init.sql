@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
   promo_code  VARCHAR(50)  DEFAULT NULL COMMENT '优惠码',
   role        VARCHAR(20)  DEFAULT 'member' COMMENT '角色：member / admin',
   status      TINYINT      DEFAULT 1 COMMENT '状态：1=正常 0=禁用',
+  token_version INT        NOT NULL DEFAULT 0 COMMENT '令牌版本，递增后使旧令牌失效',
   created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP,
   updated_at  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uk_email (email)
@@ -65,6 +66,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   email       VARCHAR(100) NOT NULL COMMENT '邮箱',
   phone       VARCHAR(20)  DEFAULT NULL COMMENT '电话',
   subject     VARCHAR(100) DEFAULT NULL COMMENT '主题',
+  budget      VARCHAR(20)  DEFAULT NULL COMMENT '预算范围',
   message     TEXT         NOT NULL COMMENT '留言内容',
   is_read     TINYINT      DEFAULT 0 COMMENT '0=未读 1=已读',
   created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP
@@ -88,7 +90,8 @@ CREATE TABLE IF NOT EXISTS notifications (
   type        VARCHAR(30)  DEFAULT '公告' COMMENT '公告 / 优惠 / 设计提醒 / 活动',
   status      TINYINT      DEFAULT 1 COMMENT '1=发布 0=隐藏',
   created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP,
-  updated_at  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_notifications_status_created (status, created_at)
 ) ENGINE=InnoDB COMMENT='站内通知';
 
 INSERT INTO notifications (title, content, type, status)

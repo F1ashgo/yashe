@@ -4,12 +4,12 @@
 <mapper namespace="com.yashe.mapper.UserMapper">
 
   <select id="findByEmail" resultType="com.yashe.entity.User">
-    SELECT id, name, email, phone, password, promo_code, role, status, created_at, updated_at
+    SELECT id, name, email, phone, password, promo_code, role, status, token_version, created_at, updated_at
     FROM users WHERE email = #{email}
   </select>
 
   <select id="findById" resultType="com.yashe.entity.User">
-    SELECT id, name, email, phone, password, promo_code, role, status, created_at, updated_at
+    SELECT id, name, email, phone, password, promo_code, role, status, token_version, created_at, updated_at
     FROM users WHERE id = #{id}
   </select>
 
@@ -24,7 +24,7 @@
 
   <!-- 管理员 -->
   <select id="findAll" resultType="com.yashe.entity.User">
-    SELECT id, name, email, phone, promo_code, role, status, created_at, updated_at
+    SELECT id, name, email, phone, promo_code, role, status, token_version, created_at, updated_at
     FROM users ORDER BY created_at DESC LIMIT #{offset}, #{limit}
   </select>
 
@@ -37,7 +37,7 @@
   </select>
 
   <select id="searchByEmail" resultType="com.yashe.entity.User">
-    SELECT id, name, email, phone, promo_code, role, status, created_at, updated_at
+    SELECT id, name, email, phone, promo_code, role, status, token_version, created_at, updated_at
     FROM users WHERE email LIKE CONCAT('%', #{keyword}, '%')
     ORDER BY created_at DESC LIMIT #{offset}, #{limit}
   </select>

@@ -344,7 +344,7 @@ function Member() {
 
               <div className="mem-form__group">
                 <label><Mail size={16} /> 邮箱</label>
-                <input type="email" maxLength={254} value={form.email} onChange={update('email')} placeholder="请输入邮箱地址" required />
+                <input type="email" maxLength={254} value={form.email} onChange={update('email')} placeholder="请输入邮箱地址" required autoComplete="username" />
               </div>
 
               {mode === 'register' && (
@@ -357,7 +357,7 @@ function Member() {
               <div className="mem-form__group">
                 <label><Lock size={16} /> 密码</label>
                 <div className="mem-form__pwd-wrap">
-                  <input type={showPwd ? 'text' : 'password'} minLength={mode === 'register' ? 10 : undefined} maxLength={128} value={form.password} onChange={update('password')} placeholder="请输入密码" required />
+                  <input type={showPwd ? 'text' : 'password'} minLength={mode === 'register' ? 10 : undefined} maxLength={128} value={form.password} onChange={update('password')} placeholder="请输入密码" required autoComplete={mode === 'register' ? 'new-password' : 'current-password'} />
                   <button type="button" className="mem-form__pwd-toggle" onClick={() => setShowPwd(!showPwd)}>
                     {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -367,7 +367,7 @@ function Member() {
               {mode === 'register' && (
                 <div className="mem-form__group">
                   <label><Lock size={16} /> 确认密码</label>
-                  <input type="password" value={form.confirmPwd} onChange={update('confirmPwd')} placeholder="请再次输入密码" />
+                  <input type="password" value={form.confirmPwd} onChange={update('confirmPwd')} placeholder="请再次输入密码" autoComplete="new-password" />
                 </div>
               )}
 

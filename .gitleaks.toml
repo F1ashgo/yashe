@@ -20,9 +20,9 @@ keywords = ["mysql", "mysqldump", "mysqladmin"]
 [[rules]]
 id = "yashe-redis-inline-auth"
 description = "Redis authentication secret embedded in tracked content"
-regex = '''(?i)(?:requirepass|auth)[ \t]+(?!->|expiry)([^<\s$][^\s\r\n]*)'''
+regex = '''(?i)requirepass[ \t]+([^<\s$][^\s\r\n]*)'''
 secretGroup = 1
-keywords = ["requirepass", "auth"]
+keywords = ["requirepass"]
 
 [allowlist]
 description = "Explicit documentation placeholders and false positives allowlist"

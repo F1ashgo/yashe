@@ -50,6 +50,12 @@
 > [!CAUTION]
 > 如果旧部署密钥曾进入 Git，请立即从服务器 `authorized_keys` 撤销对应公钥，并重新创建 `SERVER_KEY` Secret。
 
+### 前端构建变量
+
+在同一页面的 **Variables** 区域新增仓库变量 `TURNSTILE_SITE_KEY`，填写 Cloudflare Turnstile
+组件的公开 Site Key。它会在构建时写入前端；Turnstile Secret Key 不得放在这里，必须仅以
+`YASHE_TURNSTILE_SECRET_KEY` 保存于后端服务器的服务环境中。
+
 ---
 
 ## 🚀 第三步：如何测试并查看自动化部署

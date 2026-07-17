@@ -6,19 +6,27 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
     @NotBlank(message = "姓名不能为空")
+    @Size(max = 50, message = "姓名不能超过50个字符")
     private String name;
 
     @NotBlank(message = "邮箱不能为空")
     @Email(message = "邮箱格式不正确")
+    @Size(max = 100, message = "邮箱过长")
     private String email;
 
+    @Size(max = 20, message = "电话号码过长")
     private String phone;
 
     @NotBlank(message = "密码不能为空")
-    @Size(min = 6, message = "密码长度至少6位")
+    @Size(min = 10, max = 128, message = "密码长度需为10到128位")
     private String password;
 
+    @Size(max = 50, message = "优惠码过长")
     private String promoCode;
+
+    @NotBlank(message = "请完成人机验证")
+    @Size(max = 2048, message = "人机验证参数无效")
+    private String turnstileToken;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -30,4 +38,6 @@ public class RegisterRequest {
     public void setPassword(String password) { this.password = password; }
     public String getPromoCode() { return promoCode; }
     public void setPromoCode(String promoCode) { this.promoCode = promoCode; }
+    public String getTurnstileToken() { return turnstileToken; }
+    public void setTurnstileToken(String turnstileToken) { this.turnstileToken = turnstileToken; }
 }

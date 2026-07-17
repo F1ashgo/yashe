@@ -1,12 +1,12 @@
 server:
   port: ${SERVER_PORT:8080}
-  address: ${SERVER_ADDRESS:0.0.0.0}
+  address: ${SERVER_ADDRESS:127.0.0.1}
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
-    username: ${DB_USERNAME:dengshanzu}
-    password: ${DB_PASSWORD:}
+    url: ${YASHE_DB_URL:jdbc:mysql://localhost:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
+    username: ${YASHE_DB_USERNAME}
+    password: ${YASHE_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
@@ -20,9 +20,13 @@ mybatis:
     map-underscore-to-camel-case: true
 
 jwt:
-  secret: ${JWT_SECRET:}
-  expiration: ${JWT_EXPIRATION:604800000}
+  secret: ${YASHE_JWT_SECRET}
+  expiration: ${YASHE_JWT_ACCESS_TTL:PT60M}
+  issuer: ${YASHE_JWT_ISSUER:yashe-api}
+  audience: ${YASHE_JWT_AUDIENCE:yashe-web}
 
 app:
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+    allowed-origins: ${YASHE_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+  turnstile:
+    secret: ${YASHE_TURNSTILE_SECRET_KEY}

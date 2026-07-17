@@ -48,4 +48,7 @@
   .proj-grid { grid-template-columns: 1fr; }
   .proj-hero__content h1 { font-size: 1.8rem; }
   .proj-lightbox__img { max-width: 95vw; max-height: 55vh; }
+  .proj-grid-section { padding: 60px 0; }
+  .proj-card { min-width: 0; }
+  .proj-lightbox__content { max-height: calc(100dvh - 24px); overflow-y: auto; }
 }

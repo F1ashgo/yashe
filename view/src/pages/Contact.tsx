@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, Loader2 } from 'lucide-react'
 import './Contact.css'
 import { API_BASE_URL } from '../config/api'
+import { SOCIAL_LINKS } from '../config/social'
+import TurnstileWidget from '../components/TurnstileWidget'
 
 const API = API_BASE_URL
 
@@ -11,6 +13,8 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileReset, setTurnstileReset] = useState(0)
 
   const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [k]: e.target.value })
@@ -19,18 +23,27 @@ function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    if (!turnstileToken) {
+      setError('请先完成人机验证')
+      return
+    }
     setLoading(true)
     try {
       const res = await fetch(`${API}/contact/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
       if (res.ok) {
         setSubmitted(true)
         setForm({ name: '', email: '', phone: '', subject: '', message: '', budget: '' })
+        setTurnstileToken('')
+        setTurnstileReset((value) => value + 1)
       } else {
-        setError('发送失败，请稍后再试')
+        const body = await res.json().catch(() => null)
+        setError(body?.message || '发送失败，请稍后再试')
+        setTurnstileToken('')
+        setTurnstileReset((value) => value + 1)
       }
     } catch {
       setError('无法连接服务器，请确保后端已启动')
@@ -74,26 +87,26 @@ function Contact() {
                   <div className="con-form__row">
                     <div className="con-form__group">
                       <label>姓名 *</label>
-                      <input type="text" value={form.name} onChange={update('name')} placeholder="您的姓名" required />
+                      <input type="text" maxLength={60} value={form.name} onChange={update('name')} placeholder="您的姓名" required />
                     </div>
                     <div className="con-form__group">
                       <label>邮箱 *</label>
-                      <input type="email" value={form.email} onChange={update('email')} placeholder="your@email.com" required />
+                      <input type="email" maxLength={254} value={form.email} onChange={update('email')} placeholder="your@email.com" required />
                     </div>
                   </div>
                   <div className="con-form__row">
                     <div className="con-form__group">
                       <label>电话</label>
-                      <input type="tel" value={form.phone} onChange={update('phone')} placeholder="您的联系电话" />
+                      <input type="tel" maxLength={30} value={form.phone} onChange={update('phone')} placeholder="您的联系电话" />
                     </div>
                     <div className="con-form__group">
                       <label>主题</label>
-                      <input type="text" value={form.subject} onChange={update('subject')} placeholder="咨询类型" />
+                      <input type="text" maxLength={120} value={form.subject} onChange={update('subject')} placeholder="咨询类型" />
                     </div>
                   </div>
                   <div className="con-form__group">
                     <label>留言内容 *</label>
-                    <textarea value={form.message} onChange={update('message')} placeholder="请描述您的项目需求及期望风格..." rows={5} required />
+                    <textarea minLength={5} maxLength={5000} value={form.message} onChange={update('message')} placeholder="请描述您的项目需求及期望风格..." rows={5} required />
                   </div>
                   <div className="con-form__group">
                     <label>预算范围</label>
@@ -105,6 +118,7 @@ function Contact() {
                       <option value="150万以上">150万以上</option>
                     </select>
                   </div>
+                  <TurnstileWidget action="contact-message" onToken={setTurnstileToken} resetKey={turnstileReset} />
                   <button type="submit" className="con-form__submit" disabled={loading}>
                     {loading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
                     {loading ? '发送中...' : '发送讯息'}
@@ -128,15 +142,15 @@ function Contact() {
               <div className="con-info__card">
                 <h3>关注我们</h3>
                 <div className="con-social">
-                  <a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer" className="con-social__link">
+                  <a href={SOCIAL_LINKS.xiaohongshu} target="_blank" rel="noopener noreferrer" className="con-social__link">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.5 14.5h-7v-7h7v7zm-3.5-9c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
                     <span>小红书</span>
                   </a>
-                  <a href="https://www.douyin.com" target="_blank" rel="noopener noreferrer" className="con-social__link">
+                  <a href={SOCIAL_LINKS.douyin} target="_blank" rel="noopener noreferrer" className="con-social__link">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.89a2.89 2.89 0 0 1-2.88 2.57 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.31 0 .61.05.89.14v-3.5a6.33 6.33 0 0 0-.89-.06A6.34 6.34 0 0 0 3 15.62a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.79a8.25 8.25 0 0 0 4.82 1.54v-3.5a4.78 4.78 0 0 1-.91-.14z"/></svg>
                     <span>抖音</span>
                   </a>
-                  <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="con-social__link">
+                  <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="con-social__link">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
                     <span>Instagram</span>
                   </a>

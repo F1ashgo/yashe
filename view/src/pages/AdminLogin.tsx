@@ -31,13 +31,13 @@ function AdminLogin() {
           headers: { Authorization: `Bearer ${token}` }
         })
         const meJson = await meRes.json()
-        if (meJson.data.role !== 'admin') {
+        if (!meRes.ok || meJson.data?.role !== 'admin') {
           setError('非管理员账号，无法登录后台')
           setLoading(false)
           return
         }
         localStorage.setItem('admin_token', token)
-        navigate('/admin/dashboard')
+        navigate('/admin/notifications')
       } else {
         setError(json.message || '登录失败')
       }
@@ -53,6 +53,7 @@ function AdminLogin() {
       <div className="admin-login__card">
         <div className="admin-login__header">
           <Shield size={36} />
+          <span className="admin-login__company">广州雅舍室内设计有限公司</span>
           <h1>管理后台</h1>
           <p>Atelier des Miyabi</p>
         </div>

@@ -175,16 +175,19 @@ mvn clean package -DskipTests
 SERVER_PORT=8080
 SERVER_ADDRESS=127.0.0.1
 
-DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-DB_USERNAME=<YASHE_DB_USERNAME>
-DB_PASSWORD=<YASHE_DB_PASSWORD>
+YASHE_DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+YASHE_DB_USERNAME=<YASHE_DB_USERNAME>
+YASHE_DB_PASSWORD=<YASHE_DB_PASSWORD>
 
 # 从安全密码管理器生成并注入不少于 32 字节的随机签名密钥
 YASHE_JWT_SECRET=<YASHE_JWT_SECRET>
-JWT_EXPIRATION=3600000
+YASHE_JWT_ACCESS_TTL=PT60M
+YASHE_JWT_ISSUER=yashe-api
+YASHE_JWT_AUDIENCE=yashe-web
+YASHE_TURNSTILE_SECRET_KEY=<TURNSTILE_SECRET_KEY>
 
 # 跨域白名单（允许前端部署的域名访问接口）
-CORS_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
+YASHE_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
 ```
 
 ### 4. 使用 Systemd 守护进程运行

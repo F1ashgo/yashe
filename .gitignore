@@ -42,6 +42,8 @@ my.cnf
 *.pem
 *.key
 *.ppk
+*.pub
+id_ed25519*
 
 # Database dumps and backups
 sql/yashe_db_*.sql

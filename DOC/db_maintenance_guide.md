@@ -134,7 +134,7 @@ WHERE table_schema = 'yashe_db';
 ALTER USER '<YASHE_DB_USERNAME>'@'localhost' IDENTIFIED BY '<YASHE_DB_PASSWORD>';
 FLUSH PRIVILEGES;
 ```
-*⚠️ 修改完后，请记得同步更新后端 Spring Boot 配置文件 `/var/www/yashe/backend/.env` 中的 `DB_PASSWORD` 密码，并重启服务。*
+*⚠️ 修改完后，请记得同步更新后端 Spring Boot 配置文件 `/var/www/yashe/backend/.env` 中的 `YASHE_DB_PASSWORD`，并重启服务。*
 
 ### 3. 数据表碎片整理与优化
 如果某个表经历了大量的 `DELETE` 或 `UPDATE` 操作，会产生磁盘碎片，导致查询变慢。可以定期运行优化命令收缩空间：

@@ -14,8 +14,8 @@
   </select>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO users (name, email, phone, password, promo_code, role)
-    VALUES (#{name}, #{email}, #{phone}, #{password}, #{promoCode}, #{role})
+    INSERT INTO users (name, email, phone, password, promo_code, role, status, token_version)
+    VALUES (#{name}, #{email}, #{phone}, #{password}, #{promoCode}, #{role}, #{status}, #{tokenVersion})
   </insert>
 
   <update id="updatePassword">
@@ -25,25 +25,25 @@
   <!-- 管理员 -->
   <select id="findAll" resultType="com.yashe.entity.User">
     SELECT id, name, email, phone, promo_code, role, status, token_version, created_at, updated_at
-    FROM users ORDER BY created_at DESC LIMIT #{offset}, #{limit}
+    FROM users WHERE role = 'member' ORDER BY created_at DESC LIMIT #{offset}, #{limit}
   </select>
 
   <select id="countAll" resultType="int">
-    SELECT COUNT(*) FROM users
+    SELECT COUNT(*) FROM users WHERE role = 'member'
   </select>
 
   <select id="countToday" resultType="int">
-    SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()
+    SELECT COUNT(*) FROM users WHERE role = 'member' AND DATE(created_at) = CURDATE()
   </select>
 
   <select id="searchByEmail" resultType="com.yashe.entity.User">
     SELECT id, name, email, phone, promo_code, role, status, token_version, created_at, updated_at
-    FROM users WHERE email LIKE CONCAT('%', #{keyword}, '%')
+    FROM users WHERE role = 'member' AND email LIKE CONCAT('%', #{keyword}, '%')
     ORDER BY created_at DESC LIMIT #{offset}, #{limit}
   </select>
 
   <select id="countSearch" resultType="int">
-    SELECT COUNT(*) FROM users WHERE email LIKE CONCAT('%', #{keyword}, '%')
+    SELECT COUNT(*) FROM users WHERE role = 'member' AND email LIKE CONCAT('%', #{keyword}, '%')
   </select>
 
 </mapper>

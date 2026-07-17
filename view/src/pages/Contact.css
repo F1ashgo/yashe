@@ -60,7 +60,19 @@
 
 @media (max-width: 768px) {
   .contact { padding-left: 0; }
+  .con-hero { padding: 64px 0 48px; }
+  .con-main { padding: 60px 0; }
   .con-grid { grid-template-columns: 1fr; gap: 40px; }
   .con-form__row { grid-template-columns: 1fr; }
   .con-hero__content h1 { font-size: 1.8rem; }
+  .con-info__card { padding: 22px; }
+  .con-form__submit { width: 100%; min-height: 48px; justify-content: center; }
+  .con-social__link { min-height: 48px; }
+  .con-info { gap: 16px; }
+  .turnstile-widget { max-width: 100%; }
+}
+
+@media (max-width: 360px) {
+  .con-info__card { padding: 18px; }
+  .con-hero__tag { letter-spacing: 4px; }
 }

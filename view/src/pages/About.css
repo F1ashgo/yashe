@@ -157,3 +157,11 @@
   .about-cta__card { padding: 40px 24px; }
   .about-cta__card h2 { font-size: 1.2rem; }
 }
+
+@media (max-width: 480px) {
+  .about-hero, .about-intro, .about-honors, .about-cert, .about-cta { padding-top: 60px; padding-bottom: 60px; }
+  .about-intro__grid { gap: 28px; }
+  .about-intro__stats { gap: 10px; }
+  .cert-grid { gap: 18px; }
+  .cert-modal__content { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); overflow: auto; }
+}

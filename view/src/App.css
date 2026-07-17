@@ -8,4 +8,29 @@
 .main-content {
   flex: 1;
   margin-left: 0;
+  min-width: 0;
+}
+
+.admin-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--color-dark);
+  color: var(--color-gold);
+  letter-spacing: 2px;
+}
+
+@media (max-width: 1024px) {
+  .home,
+  .about,
+  .services,
+  .projects,
+  .member,
+  .contact {
+    padding-left: 0;
+  }
+
+  .footer {
+    margin-left: 0;
+  }
 }

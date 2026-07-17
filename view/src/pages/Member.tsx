@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy, Star, Bell } from 'lucide-react'
 import './Member.css'
 import { API_BASE_URL } from '../config/api'
+import TurnstileWidget from '../components/TurnstileWidget'
 
 const API = API_BASE_URL
 
 interface UserInfo { id: number; name: string; email: string; phone: string; role: string }
-interface NotificationItem { id: number; title: string; content: string; type: string; status: number; createdAt: string }
+interface NotificationItem { title: string; content: string; type: string; createdAt: string }
 
 function Member() {
   const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -16,6 +17,8 @@ function Member() {
   const [error, setError] = useState('')
   const [user, setUser] = useState<UserInfo | null>(null)
   const [notifications, setNotifications] = useState<NotificationItem[]>([])
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileReset, setTurnstileReset] = useState(0)
   const [form, setForm] = useState({
     name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '',
   })
@@ -39,8 +42,12 @@ function Member() {
   }
 
   const fetchNotifications = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) return
     try {
-      const res = await fetch(`${API}/notifications/latest?limit=5`)
+      const res = await fetch(`${API}/notifications/latest?limit=5`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       if (res.ok) {
         const json = await res.json()
         setNotifications(json.data.list || [])
@@ -102,6 +109,10 @@ function Member() {
       setError('两次输入的密码不一致')
       return
     }
+    if (mode === 'register' && !turnstileToken) {
+      setError('请先完成人机验证')
+      return
+    }
 
     setLoading(true)
     try {
@@ -111,6 +122,7 @@ function Member() {
         body.name = form.name
         if (form.phone) body.phone = form.phone
         if (form.promo) body.promoCode = form.promo
+        body.turnstileToken = turnstileToken
       }
 
       const res = await fetch(`${API}${endpoint}`, {
@@ -123,6 +135,8 @@ function Member() {
       if (res.ok && json.code === 200) {
         localStorage.setItem('token', json.data.token)
         await fetchUser(json.data.token)
+        await Promise.all([fetchReviews(), fetchNotifications()])
+        await Promise.all([fetchReviews(), fetchNotifications()])
         // 注册成功时给个新 token，再查一次 me
         if (mode === 'register') {
           const meRes = await fetch(`${API}/auth/me`, {
@@ -134,8 +148,14 @@ function Member() {
           }
         }
         setForm({ name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '' })
+        setTurnstileToken('')
+        setTurnstileReset((value) => value + 1)
       } else {
         setError(json.message || '操作失败')
+        if (mode === 'register') {
+          setTurnstileToken('')
+          setTurnstileReset((value) => value + 1)
+        }
       }
     } catch {
       setError('无法连接服务器，请确认后端已启动')
@@ -264,7 +284,7 @@ function Member() {
                 <h3><Bell size={16} /> 最新通知</h3>
                 <div className="mem-notices__list">
                   {notifications.length > 0 ? notifications.map((item) => (
-                    <article key={item.id} className="mem-notice-card">
+                    <article key={`${item.createdAt}-${item.title}`} className="mem-notice-card">
                       <div className="mem-notice-card__meta">
                         <span>{item.type}</span>
                         <span>{item.createdAt?.slice(0, 10)}</span>
@@ -304,10 +324,10 @@ function Member() {
         <div className="container">
           <div className="mem-form-wrapper">
             <div className="mem-tabs">
-              <button className={`mem-tab ${mode === 'login' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('login'); setError('') }}>
+              <button className={`mem-tab ${mode === 'login' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('login'); setError(''); setTurnstileToken('') }}>
                 会员登入
               </button>
-              <button className={`mem-tab ${mode === 'register' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('register'); setError('') }}>
+              <button className={`mem-tab ${mode === 'register' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('register'); setError(''); setTurnstileReset((value) => value + 1) }}>
                 注册会员
               </button>
             </div>
@@ -318,26 +338,26 @@ function Member() {
               {mode === 'register' && (
                 <div className="mem-form__group">
                   <label><User size={16} /> 姓名</label>
-                  <input type="text" value={form.name} onChange={update('name')} placeholder="请输入您的姓名" required={mode === 'register'} />
+                  <input type="text" maxLength={60} value={form.name} onChange={update('name')} placeholder="请输入您的姓名" required={mode === 'register'} />
                 </div>
               )}
 
               <div className="mem-form__group">
                 <label><Mail size={16} /> 邮箱</label>
-                <input type="email" value={form.email} onChange={update('email')} placeholder="请输入邮箱地址" required />
+                <input type="email" maxLength={254} value={form.email} onChange={update('email')} placeholder="请输入邮箱地址" required />
               </div>
 
               {mode === 'register' && (
                 <div className="mem-form__group">
                   <label><Phone size={16} /> 手机号</label>
-                  <input type="tel" value={form.phone} onChange={update('phone')} placeholder="请输入手机号码" />
+                  <input type="tel" maxLength={30} value={form.phone} onChange={update('phone')} placeholder="请输入手机号码" />
                 </div>
               )}
 
               <div className="mem-form__group">
                 <label><Lock size={16} /> 密码</label>
                 <div className="mem-form__pwd-wrap">
-                  <input type={showPwd ? 'text' : 'password'} value={form.password} onChange={update('password')} placeholder="请输入密码" required />
+                  <input type={showPwd ? 'text' : 'password'} minLength={mode === 'register' ? 10 : undefined} maxLength={128} value={form.password} onChange={update('password')} placeholder="请输入密码" required />
                   <button type="button" className="mem-form__pwd-toggle" onClick={() => setShowPwd(!showPwd)}>
                     {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -350,6 +370,8 @@ function Member() {
                   <input type="password" value={form.confirmPwd} onChange={update('confirmPwd')} placeholder="请再次输入密码" />
                 </div>
               )}
+
+              {mode === 'register' && <TurnstileWidget action="member-register" onToken={setTurnstileToken} resetKey={turnstileReset} />}
 
               <button type="submit" className="mem-form__submit" disabled={loading}>
                 {loading ? <Loader2 size={18} className="spin" /> : (mode === 'login' ? '登入' : '注册会员')}

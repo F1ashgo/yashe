@@ -7,45 +7,49 @@ import com.yashe.mapper.UserMapper;
 import com.yashe.util.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Locale;
 
 @Service
 public class UserService {
 
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserMapper userMapper, JwtUtil jwtUtil) {
+    public UserService(UserMapper userMapper, JwtUtil jwtUtil, BCryptPasswordEncoder encoder) {
         this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
+        this.encoder = encoder;
     }
 
     /* 注册 */
     public String register(RegisterRequest req) {
+        String email = req.getEmail().trim().toLowerCase(Locale.ROOT);
         // 检查邮箱是否已注册
-        User exist = userMapper.findByEmail(req.getEmail());
+        User exist = userMapper.findByEmail(email);
         if (exist != null) {
             throw new RuntimeException("该邮箱已被注册");
         }
 
         User user = new User();
-        user.setName(req.getName());
-        user.setEmail(req.getEmail());
-        user.setPhone(req.getPhone());
+        user.setName(req.getName().trim());
+        user.setEmail(email);
+        user.setPhone(blankToNull(req.getPhone()));
         user.setPassword(encoder.encode(req.getPassword()));
-        user.setPromoCode(req.getPromoCode());
+        user.setPromoCode(blankToNull(req.getPromoCode()));
         user.setRole("member");
         user.setStatus(1);
+        user.setTokenVersion(0);
 
         userMapper.insert(user);
 
         // 返回 JWT
-        return jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
+        return jwtUtil.generateAccessToken(user);
     }
 
     /* 登录 */
     public String login(LoginRequest req) {
-        User user = userMapper.findByEmail(req.getEmail());
+        User user = userMapper.findByEmail(req.getEmail().trim().toLowerCase(Locale.ROOT));
         if (user == null) {
             throw new RuntimeException("邮箱或密码错误");
         }
@@ -56,7 +60,7 @@ public class UserService {
             throw new RuntimeException("邮箱或密码错误");
         }
 
-        return jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
+        return jwtUtil.generateAccessToken(user);
     }
 
     /* 获取当前用户 */
@@ -66,5 +70,9 @@ public class UserService {
             user.setPassword(null); // 不返回密码
         }
         return user;
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 }

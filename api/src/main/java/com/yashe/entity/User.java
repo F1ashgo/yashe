@@ -1,5 +1,6 @@
 package com.yashe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 
 public class User {
@@ -7,10 +8,12 @@ public class User {
     private String name;
     private String email;
     private String phone;
+    @JsonIgnore
     private String password;
     private String promoCode;
     private String role;
     private Integer status;
+    @JsonIgnore
     private Integer tokenVersion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

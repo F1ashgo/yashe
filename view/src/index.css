@@ -31,6 +31,7 @@
   --sidebar-width: 60px;
   --max-width: 1200px;
   --section-padding: 100px 0;
+  --touch-target: 44px;
 
   /* Transitions */
   --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -81,10 +82,79 @@ button {
   font-family: var(--font-body);
 }
 
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+input,
+textarea,
+select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+p,
+span,
+a {
+  overflow-wrap: break-word;
+}
+
+.turnstile-widget {
+  min-height: 65px;
+  overflow: hidden;
+}
+
+.turnstile-config-error {
+  padding: 10px 12px;
+  border: 1px solid #e5b8b8;
+  border-radius: 4px;
+  background: #fff5f5;
+  color: #a33;
+  font-size: 0.8rem;
+}
+
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 40px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 68px;
+    --section-padding: 64px 0;
+  }
+
+  .container {
+    padding-inline: 18px;
+  }
+
+  button,
+  [role='button'] {
+    min-height: var(--touch-target);
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding-inline: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ===== Scrollbar ===== */

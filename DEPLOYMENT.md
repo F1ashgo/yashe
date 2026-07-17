@@ -9,6 +9,7 @@
 
 ```env
 VITE_API_BASE_URL=https://api.admys.cn/api
+VITE_TURNSTILE_SITE_KEY=<TURNSTILE_SITE_KEY>
 ```
 
 `view/public/_redirects` 已配置 SPA 路由回退，刷新 `/about`、`/member`、`/admin/login` 不会 404。
@@ -33,19 +34,21 @@ VITE_API_BASE_URL=https://api.admys.cn/api
 ```env
 SERVER_PORT=8080
 SERVER_ADDRESS=127.0.0.1
-DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-DB_USERNAME=<YASHE_DB_USERNAME>
-DB_PASSWORD=<YASHE_DB_PASSWORD>
+YASHE_DB_URL=jdbc:mysql://127.0.0.1:3306/yashe_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+YASHE_DB_USERNAME=<YASHE_DB_USERNAME>
+YASHE_DB_PASSWORD=<YASHE_DB_PASSWORD>
 YASHE_JWT_SECRET=<YASHE_JWT_SECRET>
-JWT_EXPIRATION=3600000
-CORS_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
+YASHE_JWT_ACCESS_TTL=PT60M
+YASHE_ALLOWED_ORIGINS=https://www.admys.cn,https://admys.cn,https://yashe.pages.dev
+YASHE_TURNSTILE_SECRET_KEY=<TURNSTILE_SECRET_KEY>
 ```
 
 生产环境必须替换：
 
 - 数据库密码
 - YASHE_JWT_SECRET
-- CORS_ALLOWED_ORIGINS
+- YASHE_TURNSTILE_SECRET_KEY
+- YASHE_ALLOWED_ORIGINS
 - API 域名
 
 ## 4. MySQL 初始化
@@ -93,7 +96,8 @@ server {
 ## 6. 上线前必须确认
 
 - 前端环境变量 `VITE_API_BASE_URL` 已指向正式 API
-- 后端 `CORS_ALLOWED_ORIGINS` 已设置为正式前端域名
+- 前端 `VITE_TURNSTILE_SITE_KEY` 与后端 `YASHE_TURNSTILE_SECRET_KEY` 属于同一 Turnstile 组件
+- 后端 `YASHE_ALLOWED_ORIGINS` 已设置为正式前端域名
 - MySQL 3306 未暴露公网
 - `YASHE_JWT_SECRET` 已更换为至少 32 字节的生产随机密钥
 - 管理员账号密码已更换

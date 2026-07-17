@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -9,9 +10,12 @@ import Services from './pages/Services'
 import Projects from './pages/Projects'
 import Member from './pages/Member'
 import Contact from './pages/Contact'
-import AdminLogin from './pages/AdminLogin'
-import Dashboard from './pages/Dashboard'
 import './App.css'
+
+const AdminLogin = lazy(() => import('./pages/AdminLogin'))
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
+const AdminNotifications = lazy(() => import('./pages/AdminNotifications'))
+const AdminUsers = lazy(() => import('./pages/AdminUsers'))
 
 function App() {
   const location = useLocation()
@@ -21,10 +25,18 @@ function App() {
     return (
       <>
         <ScrollToTop />
-        <Routes>
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-        </Routes>
+        <Suspense fallback={<div className="admin-loading">管理后台加载中…</div>}>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route element={<AdminLayout />}>
+              <Route path="/admin" element={<Navigate to="/admin/notifications" replace />} />
+              <Route path="/admin/dashboard" element={<Navigate to="/admin/notifications" replace />} />
+              <Route path="/admin/notifications" element={<AdminNotifications />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/*" element={<Navigate to="/admin/notifications" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </>
     )
   }

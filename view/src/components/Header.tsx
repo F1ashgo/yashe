@@ -29,6 +29,20 @@ function Header() {
     setMenuOpen(false)
   }, [location])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [menuOpen])
+
   return (
     <header className={`header ${scrolled ? 'header--scrolled' : ''}`}>
       <div className="header__inner">
@@ -36,7 +50,8 @@ function Header() {
           <img src="/雅舍室内设计.png" alt="雅舍 Atelier des Miyabi" className="header__logo-img" />
           <span className="header__logo-text">雅舍</span>
         </Link>
-        <nav className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`}>
+        {menuOpen && <button className="header__backdrop" aria-label="关闭导航" onClick={() => setMenuOpen(false)} />}
+        <nav id="main-navigation" aria-label="主导航" className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`}>
           <ul className="header__nav-list">
             {NAV_LINKS.map((link) => (
               <li key={link.label} className="header__nav-item">
@@ -53,7 +68,9 @@ function Header() {
         <button
           className={`header__menu-btn ${menuOpen ? 'header__menu-btn--open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? '关闭导航' : '打开导航'}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation"
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

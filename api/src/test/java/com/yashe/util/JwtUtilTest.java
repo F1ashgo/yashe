@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 class JwtUtilTest {
 
-    private static final String SECRET = "0123456789abcdef0123456789abcdef";
+    private static final String SECRET = "0123456789abcdef0123456789abcdef"; // gitleaks:allow
 
     private JwtUtil jwtUtil;
     private User user;

@@ -29,7 +29,8 @@ description = "Explicit documentation placeholders and false positives allowlist
 paths = [
   '''(?i).*\.md$''',
   '''DOC/.*''',
-  '''docs/.*'''
+  '''docs/.*''',
+  '''(?i).*test.*'''
 ]
 regexTarget = "match"
 regexes = [

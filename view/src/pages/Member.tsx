@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy, Star, Bell } from 'lucide-react'
 import './Member.css'
 import { API_BASE_URL } from '../config/api'
-import TurnstileWidget from '../components/TurnstileWidget'
-
 const API = API_BASE_URL
 
 interface UserInfo { id: number; name: string; email: string; phone: string; role: string }
@@ -17,8 +15,6 @@ function Member() {
   const [error, setError] = useState('')
   const [user, setUser] = useState<UserInfo | null>(null)
   const [notifications, setNotifications] = useState<NotificationItem[]>([])
-  const [turnstileToken, setTurnstileToken] = useState('')
-  const [turnstileReset, setTurnstileReset] = useState(0)
   const [form, setForm] = useState({
     name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '',
   })
@@ -109,10 +105,6 @@ function Member() {
       setError('两次输入的密码不一致')
       return
     }
-    if (mode === 'register' && !turnstileToken) {
-      setError('请先完成人机验证')
-      return
-    }
 
     setLoading(true)
     try {
@@ -122,7 +114,6 @@ function Member() {
         body.name = form.name
         if (form.phone) body.phone = form.phone
         if (form.promo) body.promoCode = form.promo
-        body.turnstileToken = turnstileToken
       }
 
       const res = await fetch(`${API}${endpoint}`, {
@@ -148,14 +139,8 @@ function Member() {
           }
         }
         setForm({ name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '' })
-        setTurnstileToken('')
-        setTurnstileReset((value) => value + 1)
       } else {
         setError(json.message || '操作失败')
-        if (mode === 'register') {
-          setTurnstileToken('')
-          setTurnstileReset((value) => value + 1)
-        }
       }
     } catch {
       setError('无法连接服务器，请确认后端已启动')
@@ -324,10 +309,10 @@ function Member() {
         <div className="container">
           <div className="mem-form-wrapper">
             <div className="mem-tabs">
-              <button className={`mem-tab ${mode === 'login' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('login'); setError(''); setTurnstileToken('') }}>
+              <button className={`mem-tab ${mode === 'login' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('login'); setError('') }}>
                 会员登入
               </button>
-              <button className={`mem-tab ${mode === 'register' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('register'); setError(''); setTurnstileReset((value) => value + 1) }}>
+              <button className={`mem-tab ${mode === 'register' ? 'mem-tab--active' : ''}`} onClick={() => { setMode('register'); setError('') }}>
                 注册会员
               </button>
             </div>
@@ -370,8 +355,6 @@ function Member() {
                   <input type="password" value={form.confirmPwd} onChange={update('confirmPwd')} placeholder="请再次输入密码" autoComplete="new-password" />
                 </div>
               )}
-
-              {mode === 'register' && <TurnstileWidget action="member-register" onToken={setTurnstileToken} resetKey={turnstileReset} />}
 
               <button type="submit" className="mem-form__submit" disabled={loading}>
                 {loading ? <Loader2 size={18} className="spin" /> : (mode === 'login' ? '登入' : '注册会员')}

@@ -24,10 +24,6 @@ public class RegisterRequest {
     @Size(max = 50, message = "优惠码过长")
     private String promoCode;
 
-    @NotBlank(message = "请完成人机验证")
-    @Size(max = 2048, message = "人机验证参数无效")
-    private String turnstileToken;
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
@@ -38,6 +34,4 @@ public class RegisterRequest {
     public void setPassword(String password) { this.password = password; }
     public String getPromoCode() { return promoCode; }
     public void setPromoCode(String promoCode) { this.promoCode = promoCode; }
-    public String getTurnstileToken() { return turnstileToken; }
-    public void setTurnstileToken(String turnstileToken) { this.turnstileToken = turnstileToken; }
 }

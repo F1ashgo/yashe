@@ -37,9 +37,6 @@ public class AuthController {
             return ResponseEntity.status(429).header("Retry-After", "60")
                 .body(ApiResponse.error(429, "请求过于频繁，请稍后再试"));
         }
-        if (!protection.verifyTurnstile(req.getTurnstileToken(), request, "member-register")) {
-            return ResponseEntity.status(403).body(ApiResponse.error(403, "人机验证失败，请重试"));
-        }
         try {
             String token = userService.register(req);
             return ResponseEntity.ok(

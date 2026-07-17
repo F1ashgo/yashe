@@ -46,6 +46,30 @@ finally {
     }
 }
 
+$shortPasswordRepo = Join-Path ([System.IO.Path]::GetTempPath()) ("yashe-security-short-password-test-" + [guid]::NewGuid().ToString('N'))
+
+try {
+    New-Item -ItemType Directory -Path $shortPasswordRepo | Out-Null
+    $shortPasswordAssignment = 'DB_' + 'PASS="fixture-secret"'
+    Set-Content -LiteralPath (Join-Path $shortPasswordRepo 'maintenance.sh') -Value $shortPasswordAssignment -Encoding UTF8
+
+    git -C $shortPasswordRepo init --quiet
+    if ($LASTEXITCODE -ne 0) { throw "failed to initialize short-password fixture repository" }
+    git -C $shortPasswordRepo add -- maintenance.sh
+    if ($LASTEXITCODE -ne 0) { throw "failed to track short-password fixture" }
+
+    $shortPasswordResult = & $scanner -RepositoryRoot $shortPasswordRepo 2>&1
+    if ($LASTEXITCODE -ne 1) { throw "scanner should reject a DB_PASS assignment" }
+    if (($shortPasswordResult -join "`n") -notmatch 'inline database password') {
+        throw "scanner should report the redacted database-password rule name"
+    }
+}
+finally {
+    if (Test-Path -LiteralPath $shortPasswordRepo) {
+        Remove-Item -LiteralPath $shortPasswordRepo -Recurse -Force
+    }
+}
+
 $defaultRootRepo = Join-Path ([System.IO.Path]::GetTempPath()) ("yashe-security-default-root-test-" + [guid]::NewGuid().ToString('N'))
 
 try {

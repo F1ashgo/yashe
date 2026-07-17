@@ -61,11 +61,11 @@ function AdminLogin() {
         <form onSubmit={handleLogin}>
           <div className="admin-login__group">
             <label><Mail size={16} /> 管理员邮箱</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@yashe.design" required />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@yashe.design" required autoComplete="email" />
           </div>
           <div className="admin-login__group">
             <label><Lock size={16} /> 密码</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="输入密码" required />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="输入密码" required autoComplete="current-password" />
           </div>
           <button type="submit" className="admin-login__btn" disabled={loading}>
             {loading ? <Loader2 size={18} className="spin" /> : '登入后台'}

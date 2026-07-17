@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Ruler, Lightbulb, Trees, PaintBucket, Cog, ShieldCheck } from 'lucide-react'
-import './Expertise.css'
+import { Ruler, Lightbulb, Trees, PaintBucket, Cog, ShieldCheck } from 'lucide-react'
+import './ExpertiseContent.css'
 
 const CAPABILITIES = [
   {
@@ -56,22 +55,16 @@ const PROCESS_STEPS = [
   { step: '06', title: '交付验收', desc: '全面验收与细节调整，交付完整的空间使用手册与维护指南。' },
 ]
 
-function Expertise() {
+export default function ExpertiseContent() {
   return (
-    <main className="expertise">
-      <section className="exp-hero">
-        <div className="exp-hero__overlay" />
-        <div className="container exp-hero__content">
-          <Link to="/" className="exp-hero__back"><ArrowLeft size={18} /> 返回首页</Link>
-          <span className="exp-hero__tag">Professional Capabilities</span>
-          <h1>专业能力</h1>
-          <p>十年沉淀，六大核心能力，为每一个项目保驾护航</p>
-        </div>
-      </section>
-
-      {/* 六大能力卡片 */}
+    <>
       <section className="exp-capabilities">
         <div className="container">
+          <div className="exp-process__header">
+            <span>Professional Capabilities</span>
+            <h2>专业能力</h2>
+            <p>十年沉淀，六大核心能力，为每一个项目保驾护航</p>
+          </div>
           <div className="capabilities-grid">
             {CAPABILITIES.map((cap) => (
               <div key={cap.title} className="cap-card">
@@ -80,9 +73,7 @@ function Expertise() {
                 <span className="cap-card__en">{cap.en}</span>
                 <p className="cap-card__desc">{cap.desc}</p>
                 <ul className="cap-card__points">
-                  {cap.points.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
+                  {cap.points.map((point) => <li key={point}>{point}</li>)}
                 </ul>
               </div>
             ))}
@@ -90,7 +81,6 @@ function Expertise() {
         </div>
       </section>
 
-      {/* 服务流程 */}
       <section className="exp-process">
         <div className="container">
           <div className="exp-process__header">
@@ -99,18 +89,16 @@ function Expertise() {
             <p>严谨的六步流程，确保每一个项目从构想到落地都精准可控</p>
           </div>
           <div className="process-steps">
-            {PROCESS_STEPS.map((s) => (
-              <div key={s.step} className="process-step">
-                <span className="process-step__num">{s.step}</span>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
+            {PROCESS_STEPS.map((item) => (
+              <div key={item.step} className="process-step">
+                <span className="process-step__num">{item.step}</span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-    </main>
+    </>
   )
 }
-
-export default Expertise

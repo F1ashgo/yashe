@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, MessageCircle, Loader2 } from 'lucide-react'
+import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, Loader2 } from 'lucide-react'
 import './Contact.css'
+import { API_BASE_URL } from '../config/api'
 
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : `${window.location.protocol}//${window.location.host}/api`
+const API = API_BASE_URL
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', budget: '' })
@@ -98,11 +99,10 @@ function Contact() {
                     <label>预算范围</label>
                     <select value={form.budget} onChange={update('budget')}>
                       <option value="">请选择预算范围</option>
-                      <option value="10万以下">10万以下</option>
-                      <option value="10-30万">10-30万</option>
-                      <option value="30-50万">30-50万</option>
-                      <option value="50-100万">50-100万</option>
-                      <option value="100万以上">100万以上</option>
+                      <option value="0-30万">0-30万</option>
+                      <option value="30-80万">30-80万</option>
+                      <option value="80-150万">80-150万</option>
+                      <option value="150万以上">150万以上</option>
                     </select>
                   </div>
                   <button type="submit" className="con-form__submit" disabled={loading}>
@@ -144,12 +144,10 @@ function Contact() {
               </div>
 
               <div className="con-info__card con-info__card--qr">
-                <h3>企业微信</h3>
+                <h3>企业服务号</h3>
                 <div className="con-qr">
-                  <div className="con-qr__placeholder">
-                    <MessageCircle size={36} />
-                  </div>
-                  <span>扫码添加企业微信</span>
+                  <img className="con-qr__image" src="/fuwuhao.jpg" alt="企业服务号二维码" />
+                  <span>扫码关注企业服务号</span>
                 </div>
               </div>
             </div>

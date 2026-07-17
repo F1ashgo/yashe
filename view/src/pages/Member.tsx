@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy, Star } from 'lucide-react'
+import { ArrowLeft, User, Mail, Phone, Lock, Gift, Eye, EyeOff, LogOut, Loader2, Copy, Star, Bell } from 'lucide-react'
 import './Member.css'
+import { API_BASE_URL } from '../config/api'
 
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : `${window.location.protocol}//${window.location.host}/api`
+const API = API_BASE_URL
 
 interface UserInfo { id: number; name: string; email: string; phone: string; role: string }
+interface NotificationItem { id: number; title: string; content: string; type: string; status: number; createdAt: string }
 
 function Member() {
   const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -13,6 +15,7 @@ function Member() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [user, setUser] = useState<UserInfo | null>(null)
+  const [notifications, setNotifications] = useState<NotificationItem[]>([])
   const [form, setForm] = useState({
     name: '', email: '', phone: '', password: '', confirmPwd: '', promo: '',
   })
@@ -31,6 +34,16 @@ function Member() {
       if (res.ok) {
         const json = await res.json()
         setReviews(json.data.list)
+      }
+    } catch {}
+  }
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch(`${API}/notifications/latest?limit=5`)
+      if (res.ok) {
+        const json = await res.json()
+        setNotifications(json.data.list || [])
       }
     } catch {}
   }
@@ -60,7 +73,7 @@ function Member() {
   // 页面加载时检查本地 token
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (token) { fetchUser(token); fetchReviews() }
+    if (token) { fetchUser(token); fetchReviews(); fetchNotifications() }
   }, [])
 
   const fetchUser = async (token: string) => {
@@ -152,62 +165,67 @@ function Member() {
 
         <section className="mem-form-section">
           <div className="container">
-            <div className="mem-form-wrapper">
-              <div className="mem-profile">
-                <div className="mem-profile__avatar">{user.name[0]}</div>
-                <div className="mem-profile__info">
-                  <h3>{user.name}</h3>
-                  <p>{user.email}</p>
-                  {user.phone && <p>{user.phone}</p>}
-                  <span className="mem-profile__role">
-                    {user.role === 'admin' ? '管理员' : '会员'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mem-benefits">
-                <h3>会员专属权益</h3>
-                <ul>
-                  <li><Gift size={16} /> 首次注册即享设计咨询费 9 折优惠</li>
-                  <li><Gift size={16} /> 推荐好友加入，双方各得 ¥2000 设计抵扣券</li>
-                  <li><Gift size={16} /> 会员专享季度软装新品优先预览与折扣</li>
-                  <li><Gift size={16} /> 生日当月享设计服务双倍积分</li>
-                </ul>
-              </div>
-
-              <div className="mem-promo-section">
-                <h3>我的优惠码</h3>
-                <p className="mem-promo-section__desc">复制优惠码，在预约设计咨询时出示即可享受对应折扣</p>
-                <div className="mem-promo-codes">
-                  <div className="mem-promo-card">
-                    <div className="mem-promo-card__left">
-                      <span className="mem-promo-card__code">YASHE2024</span>
-                      <span className="mem-promo-card__tag">新会员专享</span>
-                    </div>
-                    <div className="mem-promo-card__right">
-                      <span className="mem-promo-card__discount">9 折</span>
-                      <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('YASHE2024')}>
-                        <Copy size={14} /> 复制
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mem-promo-card">
-                    <div className="mem-promo-card__left">
-                      <span className="mem-promo-card__code">WELCOME2000</span>
-                      <span className="mem-promo-card__tag">设计抵扣券</span>
-                    </div>
-                    <div className="mem-promo-card__right">
-                      <span className="mem-promo-card__discount">减 ¥2000</span>
-                      <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('WELCOME2000')}>
-                        <Copy size={14} /> 复制
-                      </button>
-                    </div>
+            <div className="mem-form-wrapper mem-form-wrapper--member">
+              <section className="mem-member-column">
+                <div className="mem-profile">
+                  <div className="mem-profile__avatar">{user.name[0]}</div>
+                  <div className="mem-profile__info">
+                    <h3>{user.name}</h3>
+                    <p>{user.email}</p>
+                    {user.phone && <p>{user.phone}</p>}
+                    <span className="mem-profile__role">
+                      {user.role === 'admin' ? '管理员' : '会员'}
+                    </span>
                   </div>
                 </div>
-              </div>
 
-              {/* 我的评价 */}
-              <div className="mem-reviews">
+                <div className="mem-benefits">
+                  <h3>会员专属权益</h3>
+                  <ul>
+                    <li><Gift size={16} /> 首次注册即享设计咨询费 9 折优惠</li>
+                    <li><Gift size={16} /> 会员享家装全流程一对一专属管家全程跟进</li>
+                    <li><Gift size={16} /> 会员专享季度软装新品优先预览与折扣</li>
+                    <li><Gift size={16} /> 生日当月享设计服务双倍积分</li>
+                  </ul>
+                </div>
+
+                <div className="mem-promo-section">
+                  <h3>我的优惠码</h3>
+                  <p className="mem-promo-section__desc">复制优惠码，在预约设计咨询时出示即可享受对应折扣</p>
+                  <div className="mem-promo-codes">
+                    <div className="mem-promo-card">
+                      <div className="mem-promo-card__left">
+                        <span className="mem-promo-card__code">YASHE2024</span>
+                        <span className="mem-promo-card__tag">新会员专享</span>
+                      </div>
+                      <div className="mem-promo-card__right">
+                        <span className="mem-promo-card__discount">9 折</span>
+                        <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('YASHE2024')}>
+                          <Copy size={14} /> 复制
+                        </button>
+                      </div>
+                    </div>
+                    <div className="mem-promo-card">
+                      <div className="mem-promo-card__left">
+                        <span className="mem-promo-card__code">WELCOME2000</span>
+                        <span className="mem-promo-card__tag">设计抵扣券</span>
+                      </div>
+                      <div className="mem-promo-card__right">
+                        <span className="mem-promo-card__discount">减 ¥2000</span>
+                        <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('WELCOME2000')}>
+                          <Copy size={14} /> 复制
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button className="mem-logout" onClick={logout}>
+                  <LogOut size={16} /> 退出登录
+                </button>
+              </section>
+
+              <section className="mem-reviews">
                 <h3>我的评价</h3>
                 {reviews.length > 0 && (
                   <div className="mem-reviews__list">
@@ -240,11 +258,28 @@ function Member() {
                     {reviewSubmitting ? '提交中...' : '提交评价'}
                   </button>
                 </form>
-              </div>
+              </section>
 
-              <button className="mem-logout" onClick={logout}>
-                <LogOut size={16} /> 退出登录
-              </button>
+              <section className="mem-notices">
+                <h3><Bell size={16} /> 最新通知</h3>
+                <div className="mem-notices__list">
+                  {notifications.length > 0 ? notifications.map((item) => (
+                    <article key={item.id} className="mem-notice-card">
+                      <div className="mem-notice-card__meta">
+                        <span>{item.type}</span>
+                        <span>{item.createdAt?.slice(0, 10)}</span>
+                      </div>
+                      <h4>{item.title}</h4>
+                      <p>{item.content}</p>
+                    </article>
+                  )) : (
+                    <article className="mem-notice-card mem-notice-card--empty">
+                      <h4>暂无最新通知</h4>
+                      <p>新的会员服务信息会在这里显示。</p>
+                    </article>
+                  )}
+                </div>
+              </section>
             </div>
           </div>
         </section>
@@ -332,7 +367,7 @@ function Member() {
               <h3>会员专属权益</h3>
               <ul>
                 <li><Gift size={16} /> 首次注册即享设计咨询费 9 折优惠</li>
-                <li><Gift size={16} /> 推荐好友加入，双方各得 ¥2000 设计抵扣券</li>
+                <li><Gift size={16} /> 会员享家装全流程一对一专属管家全程跟进</li>
                 <li><Gift size={16} /> 会员专享季度软装新品优先预览与折扣</li>
                 <li><Gift size={16} /> 生日当月享设计服务双倍积分</li>
               </ul>

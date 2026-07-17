@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowDown, Award, Target, Eye, Compass, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ArrowDown, ArrowRight, Award, Target, Eye, Compass, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import './Home.css'
 
 /* Hero 轮播图 */
@@ -16,21 +16,21 @@ const HERO_IMAGES = [
 const FEATURED_PROJECTS = [
   {
     image: '/幼儿园/课室正面.jpeg',
-    title: '蒙特梭利幼儿园',
+    title: '幼儿园',
     category: '教育空间',
     style: '自然成长',
     desc: '以儿童视角为设计原点，打造安全、温暖、激发探索欲的成长乐园。',
   },
   {
     image: '/幼儿园/閱讀室.jpeg',
-    title: '幼儿园阅读室',
+    title: '幼儿园图书阁',
     category: '教育空间',
     style: '趣味阅读',
     desc: '圆形下沉式阅读区与自然采光结合，让孩子爱上阅读的每个角落。',
   },
   {
     image: '/中药铺/中药铺3.jpeg',
-    title: '同仁堂中药体验馆',
+    title: '中药铺百子柜',
     category: '商业空间',
     style: '新中式',
     desc: '将传统中医药文化与现代零售体验融合，以木作与铜件传递匠心温度。',
@@ -83,43 +83,6 @@ const CORE_VALUES = [
     title: '诚信务实',
     enTitle: 'Integrity & Pragmatism',
     desc: '以诚信为基石，以专业为导向，确保每个项目按时、按质、按预算交付，让客戶安心、放心。',
-  },
-]
-
-/* 发展历程 — 三段式叙事 */
-const JOURNEY_PHASES = [
-  {
-    num: '壹',
-    numEn: '01',
-    title: '原点',
-    subtitle: '始于对真实的敬畏',
-    enSubtitle: 'Origin · Reverence for the Authentic',
-    paragraphs: [
-      '雅舍的故事，并非始于一张完美无瑕的渲染图，而是源于我们在深耕工程营造的岁月里，无数次面对过被现实环境击碎的「设计理想」。',
-      '基于以往累积的丰富经验，我们深刻意识到，如果设计失去了对在地环境的考量与现实痛点的洞察，任何华丽的视觉表达都只是一场短暂的幻梦。真正的美，必须根植于真实，不为毫无意义的形式而设计，让空间在时间的洗鍊下依然保有耐久与从容。这，是雅舍出发的原点。',
-    ],
-  },
-  {
-    num: '貳',
-    numEn: '02',
-    title: '共生',
-    subtitle: '理性构建与感性表达的交织',
-    enSubtitle: 'Symbiosis · Reason Woven with Emotion',
-    paragraphs: [
-      '漫长的空间实践，让我们学会了如何在理性的结构中寻找感性的诗意。我们选择纯粹的设计者角色，将过往累积的实务经验，转化为理性的思维骨架。我们乐意与您一同探索想像，但也始终保持着设计者的清醒与克制。',
-      '在隐蔽处考量、在细微处推敲，将每一处可能遇到的空间限制，温柔转化为精准的设计巧思。对雅舍而言，这不仅仅是一份设计图纸的交付，更是一场关于生活细节的美学修行。',
-    ],
-  },
-  {
-    num: '叄',
-    numEn: '03',
-    title: '使命',
-    subtitle: '打造承载美好的时间容器',
-    enSubtitle: 'Mission · Vessels of Time that Carry Beauty',
-    paragraphs: [
-      '将理性的严谨尺度融入感性的室内光影，雅舍始终留在纯粹的设计者定位。我们以匠人心思，不只为您描绘空间的美学意境，更用细致的图纸为您的未来居所引路。无论您未来将图纸交由哪一家优秀的施工单位，美学与想像都能顺畅、完美地融入您的真实生活之中。',
-      '雅舍愿与您一同出发，打破形式的束缚，用极致的专注，将每一处空间打造成一个不仅抵御岁月侵蚀，更能容纳光影流转、故事发生与精神栖息的完美容器。',
-    ],
   },
 ]
 
@@ -329,94 +292,28 @@ function Home() {
             <video src="/introduction.mp4" autoPlay muted loop playsInline className="intro-section__video" />
           </div>
 
-          {/* 三幕叙事卡片 */}
-          <div className="narrative-cards">
-            <div className="narrative-card">
-              <span className="narrative-card__num">01</span>
-              <h3 className="narrative-card__title">原点</h3>
-              <p className="narrative-card__sub">始于对真实的敬畏</p>
-              <p className="narrative-card__desc">
-                雅舍的故事孕育于对「图纸与现实落差」的深刻反思。创始团队曾深耕工程营造多年，
-                亲历华丽图纸无法落地的困境，也见证缺乏美学把控的空间。出于对纯粹设计的渴望，
-                雅舍应运而生。
-              </p>
-              <div className="narrative-card__stat">
-                <span className="narrative-card__num-big">10+</span>
-                <span>年行业深耕</span>
-              </div>
+          <div className="intro-section__summary">
+            <div className="intro-section__summary-title">
+              <span>Rooted in Reality</span>
+              <h3>从工程现实出发，回到纯粹设计</h3>
             </div>
-
-            <div className="narrative-card narrative-card--accent">
-              <span className="narrative-card__num">02</span>
-              <h3 className="narrative-card__title">共生</h3>
-              <p className="narrative-card__sub">理性构建与感性表达的交织</p>
-              <p className="narrative-card__desc">
-                我们果断剥离施工业务，转型为只专注于纯粹空间设计的精品工坊。
-                将巴黎工坊（Atelier）的专注与日式风雅（Miyabi）的细腻相融合，
-                在「天马行空的艺术感」与「脚踏实地的工程性」之间找到完美平衡。
+            <div className="intro-section__summary-copy">
+              <p>
+                雅舍设计（Atelier des Miyabi）作为 Chun King Limited 在内地的专业室内设计分部，
+                由同一位创始人掌舵，共享对品质与空间美学的坚持。
               </p>
-              <div className="narrative-card__stat">
-                <span className="narrative-card__num-big">800+</span>
-                <span>项目圆满交付</span>
-              </div>
-            </div>
-
-            <div className="narrative-card">
-              <span className="narrative-card__num">03</span>
-              <h3 className="narrative-card__title">使命</h3>
-              <p className="narrative-card__sub">空间美学的严密把关人</p>
-              <p className="narrative-card__desc">
-                坚持以「慢工出细活」的工坊模式，为每位委托人严格把控空间品质。
-                交付的不仅是渲染图，更是经得起现场检验的严密图纸——
-                理性为骨架，光影为灵魂，让美学愿景精准化为现实。
+              <p>
+                多年的工程营造经验，让我们看见图纸与现实之间的距离，也确立了雅舍的设计原点：
+                美必须根植于真实，在理性构建与感性表达之间寻找平衡，让空间经得起时间。
               </p>
-              <div className="narrative-card__stat">
-                <span className="narrative-card__num-big">15+</span>
-                <span>核心设计师团队</span>
-              </div>
+              <Link to="/about" className="intro-section__more">了解雅舍 <ArrowRight size={16} /></Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 发展历程 — 三段式叙事 ===== */}
-      <section className="journey-section reveal" ref={setRef(1)}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-header__tag">成长足迹</span>
-            <h2 className="section-header__title">发展历程</h2>
-            <p className="section-header__en">Notre Parcours</p>
-          </div>
-          <div className="journey-phases">
-            {JOURNEY_PHASES.map((phase, i) => (
-              <div
-                key={phase.num}
-                className={`journey-phase ${i % 2 === 0 ? 'journey-phase--odd' : 'journey-phase--even'}`}
-              >
-                <div className="journey-phase__header">
-                  <div className="journey-phase__num-group">
-                    <span className="journey-phase__num-cn">{phase.num}</span>
-                    <span className="journey-phase__num-en">{phase.numEn}</span>
-                  </div>
-                  <div className="journey-phase__titles">
-                    <h3 className="journey-phase__title">{phase.title}</h3>
-                    <span className="journey-phase__subtitle">{phase.subtitle}</span>
-                    <span className="journey-phase__en">{phase.enSubtitle}</span>
-                  </div>
-                </div>
-                <div className="journey-phase__body">
-                  {phase.paragraphs.map((p, pi) => (
-                    <p key={pi}>{p}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
 
       {/* ===== 核心价值 ===== */}
-      <section className="values-section reveal" ref={setRef(2)}>
+      <section className="values-section reveal" ref={setRef(1)}>
         <div className="container">
           <div className="section-header">
             <span className="section-header__tag">品牌理念</span>
@@ -437,35 +334,43 @@ function Home() {
       </section>
 
       {/* ===== 市场定位 ===== */}
-      <section className="positioning-section reveal" ref={setRef(3)}>
+      <section className="positioning-section reveal" ref={setRef(2)}>
         <div className="container">
           <div className="section-header">
             <span className="section-header__tag">品牌定位</span>
             <h2 className="section-header__title">市场定位</h2>
             <p className="section-header__en">Market Positioning</p>
           </div>
-          <div className="positioning-section__grid">
-            <div className="positioning-card">
-              <div className="positioning-card__num">01</div>
-              <h3>高端客群</h3>
-              <p>
-                服务于追求品质生活的精英阶层，涵盖企业家、高管、艺术收藏家等对空间美学有高标准要求的客户群体。
-              </p>
+
+          <div className="positioning-content">
+            <p className="positioning-content__statement">
+              面向内地市场，雅舍专注于兼顾
+              <strong>美学表达、现实条件与落地精度</strong>
+              的专业室内设计服务，为住宅与商业空间提供从概念构想到完整设计图纸的系统解决方案。
+            </p>
+
+            <div className="positioning-directions" aria-label="服务方向">
+              <div className="positioning-direction">
+                <h3>住宅空间</h3>
+                <span>Residential</span>
+              </div>
+              <div className="positioning-direction">
+                <h3>商业空间</h3>
+                <span>Commercial</span>
+              </div>
+              <div className="positioning-direction">
+                <h3>软装陈设</h3>
+                <span>Soft Furnishing</span>
+              </div>
+              <div className="positioning-direction">
+                <h3>设计顾问</h3>
+                <span>Design Consulting</span>
+              </div>
             </div>
-            <div className="positioning-card">
-              <div className="positioning-card__num">02</div>
-              <h3>全案设计</h3>
-              <p>
-                提供从建筑规划、室内设计、软装陈设到园林景观的整体设计方案，确保空间的整体性与一致性。
-              </p>
-            </div>
-            <div className="positioning-card">
-              <div className="positioning-card__num">03</div>
-              <h3>国际标准</h3>
-              <p>
-                以国际顶级设计标准为标杆，引进全球优质材料与工艺，确保每个项目的设计品质与落地效果达到国际水准。
-              </p>
-            </div>
+
+            <Link to="/services" className="positioning-content__link">
+              查看服务范畴 <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>

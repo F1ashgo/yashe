@@ -77,3 +77,20 @@ INSERT IGNORE INTO promo_codes (code, discount, amount, max_uses) VALUES
 ('YASHE2024', 0.90, NULL, 200),
 ('WELCOME2000', NULL, 2000.00, 500),
 ('VIP888', 0.85, NULL, 100);
+
+-- ==========================================
+-- 站内通知
+-- ==========================================
+CREATE TABLE IF NOT EXISTS notifications (
+  id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title       VARCHAR(120) NOT NULL COMMENT '通知标题',
+  content     TEXT         NOT NULL COMMENT '通知内容',
+  type        VARCHAR(30)  DEFAULT '公告' COMMENT '公告 / 优惠 / 设计提醒 / 活动',
+  status      TINYINT      DEFAULT 1 COMMENT '1=发布 0=隐藏',
+  created_at  DATETIME     DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='站内通知';
+
+INSERT INTO notifications (title, content, type, status)
+SELECT '欢迎加入雅舍会员中心', '会员可在个人中心查看专属权益、提交项目评价，并接收最新设计服务通知。', '公告', 1
+WHERE NOT EXISTS (SELECT 1 FROM notifications WHERE title = '欢迎加入雅舍会员中心');

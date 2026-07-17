@@ -62,3 +62,44 @@
   .dash-stats { grid-template-columns: 1fr; }
   .dash-detail { grid-template-columns: 1fr 1fr; padding: 16px; }
 }
+
+/* Notification panel */
+.dash-panel { margin-bottom: 24px; padding: 24px; background: #fff; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+.dash-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.dash-panel__eyebrow { display: block; margin-bottom: 6px; color: var(--color-gold); font-family: var(--font-en-display); font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; }
+.dash-panel__head h2 { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--color-dark); font-size: 1.05rem; font-weight: 600; letter-spacing: 1px; }
+.dash-panel__head h2 svg { color: var(--color-gold); }
+.dash-panel__head p { max-width: 420px; margin: 0; color: var(--color-gray); font-size: 0.78rem; line-height: 1.7; }
+.dash-notice-form { display: flex; flex-direction: column; gap: 12px; padding: 18px; margin-bottom: 18px; background: #fafaf8; border: 1px solid var(--color-gray-light); border-radius: 6px; }
+.dash-notice-form__row { display: grid; grid-template-columns: 1fr 130px 130px; gap: 12px; }
+.dash-notice-form input, .dash-notice-form select, .dash-notice-form textarea { width: 100%; padding: 11px 13px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; color: var(--color-dark); font-family: var(--font-body); font-size: 0.86rem; outline: none; }
+.dash-notice-form textarea { resize: vertical; line-height: 1.7; }
+.dash-notice-form input:focus, .dash-notice-form select:focus, .dash-notice-form textarea:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.08); }
+.dash-notice-form__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dash-notice-form__foot span { color: var(--color-gray); font-size: 0.8rem; }
+.dash-notice-form__foot button { display: flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 4px; background: var(--color-gold); color: #fff; font-size: 0.82rem; letter-spacing: 1px; transition: var(--transition-fast); }
+.dash-notice-form__foot button:hover:not(:disabled) { background: var(--color-gold-dark); }
+.dash-notice-form__foot button:disabled { opacity: 0.6; cursor: default; }
+.dash-notice-list { display: flex; flex-direction: column; gap: 10px; }
+.dash-notice-empty { padding: 26px; border: 1px dashed var(--color-gray-light); border-radius: 6px; color: var(--color-gray); font-size: 0.85rem; text-align: center; }
+.dash-notice-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 18px 20px; border: 1px solid var(--color-gray-light); border-left: 3px solid #d8d8d0; border-radius: 6px; background: #fff; }
+.dash-notice-item--published { border-left-color: var(--color-gold); }
+.dash-notice-item__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.dash-notice-item__meta span { padding: 3px 8px; border-radius: 999px; background: var(--color-cream); color: var(--color-gray-dark); font-size: 0.68rem; letter-spacing: 1px; }
+.dash-notice-item h3 { margin: 0 0 6px; color: var(--color-dark); font-size: 0.95rem; font-weight: 600; }
+.dash-notice-item p { margin: 0; color: var(--color-gray-dark); font-size: 0.83rem; line-height: 1.8; }
+.dash-notice-item__actions { display: flex; flex-shrink: 0; gap: 8px; }
+.dash-notice-item__actions button { display: flex; align-items: center; gap: 5px; padding: 7px 12px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; color: var(--color-gray-dark); font-size: 0.76rem; transition: var(--transition-fast); }
+.dash-notice-item__actions button:hover { border-color: var(--color-gold); color: var(--color-gold); }
+.dash-notice-item__delete:hover { border-color: #d66; color: #c33; }
+
+@media (max-width: 768px) {
+  .dash-panel { padding: 18px; }
+  .dash-panel__head { flex-direction: column; gap: 10px; }
+  .dash-notice-form__row { grid-template-columns: 1fr; }
+  .dash-notice-form__foot { align-items: stretch; flex-direction: column; }
+  .dash-notice-form__foot button { justify-content: center; }
+  .dash-notice-item { flex-direction: column; }
+  .dash-notice-item__actions { width: 100%; }
+  .dash-notice-item__actions button { flex: 1; justify-content: center; }
+}

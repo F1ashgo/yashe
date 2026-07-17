@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yashe.mapper.NotificationMapper">
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO notifications (title, content, type, status)
+    VALUES (#{title}, #{content}, #{type}, #{status})
+  </insert>
+
+  <update id="update">
+    UPDATE notifications
+    SET title = #{title},
+        content = #{content},
+        type = #{type},
+        status = #{status}
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateStatus">
+    UPDATE notifications SET status = #{status} WHERE id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    DELETE FROM notifications WHERE id = #{id}
+  </delete>
+
+  <select id="findAll" resultType="com.yashe.entity.Notification">
+    SELECT id, title, content, type, status, created_at, updated_at
+    FROM notifications
+    ORDER BY created_at DESC
+  </select>
+
+  <select id="findPublished" resultType="com.yashe.entity.Notification">
+    SELECT id, title, content, type, status, created_at, updated_at
+    FROM notifications
+    WHERE status = 1
+    ORDER BY created_at DESC
+    LIMIT #{limit}
+  </select>
+
+</mapper>

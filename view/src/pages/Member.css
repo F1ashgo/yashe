@@ -91,3 +91,430 @@
   .mem-form-wrapper { padding: 0 20px; }
   .mem-hero__content h1 { font-size: 1.8rem; }
 }
+
+.mem-notices { padding: 28px; background: var(--color-white); border: 1px solid var(--color-gray-light); border-radius: 4px; margin-bottom: 16px; }
+.mem-notices h3 { display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 600; margin-bottom: 16px; letter-spacing: 1px; }
+.mem-notices h3 svg { color: var(--color-gold); }
+.mem-notices__list { display: flex; flex-direction: column; gap: 10px; }
+.mem-notice-card { padding: 16px 18px; background: var(--color-cream); border-left: 3px solid var(--color-gold); border-radius: 4px; }
+.mem-notice-card__meta { display: flex; gap: 8px; margin-bottom: 8px; }
+.mem-notice-card__meta span { color: var(--color-gold); font-size: 0.68rem; letter-spacing: 1.5px; }
+.mem-notice-card h4 { margin: 0 0 6px; color: var(--color-dark); font-size: 0.95rem; font-weight: 600; }
+.mem-notice-card p { margin: 0; color: var(--color-gray-dark); font-size: 0.84rem; line-height: 1.8; }
+
+/* Logged-in member dashboard layout */
+.mem-form-wrapper--member {
+  max-width: 1180px;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.35fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.mem-form-wrapper--member > .mem-profile,
+.mem-form-wrapper--member > .mem-benefits,
+.mem-form-wrapper--member > .mem-promo-section,
+.mem-form-wrapper--member > .mem-logout {
+  grid-column: 1;
+}
+
+.mem-form-wrapper--member > .mem-notices,
+.mem-form-wrapper--member > .mem-reviews {
+  grid-column: 2;
+}
+
+.mem-form-wrapper--member > .mem-profile,
+.mem-form-wrapper--member > .mem-benefits,
+.mem-form-wrapper--member > .mem-promo-section,
+.mem-form-wrapper--member > .mem-notices,
+.mem-form-wrapper--member > .mem-reviews {
+  margin-bottom: 0;
+}
+
+.mem-form-wrapper--member > .mem-benefits,
+.mem-form-wrapper--member > .mem-promo-section,
+.mem-form-wrapper--member > .mem-notices,
+.mem-form-wrapper--member > .mem-reviews {
+  box-shadow: 0 10px 34px rgba(0,0,0,0.045);
+}
+
+.mem-form-wrapper--member .mem-notices__list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mem-form-wrapper--member .mem-reviews__list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mem-form-wrapper--member .mem-notices__list::-webkit-scrollbar,
+.mem-form-wrapper--member .mem-reviews__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mem-form-wrapper--member .mem-notices__list::-webkit-scrollbar-thumb,
+.mem-form-wrapper--member .mem-reviews__list::-webkit-scrollbar-thumb {
+  background: rgba(201,169,110,0.45);
+  border-radius: 999px;
+}
+
+.mem-form-wrapper--member .mem-logout {
+  width: fit-content;
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .mem-form-wrapper--member {
+    max-width: 760px;
+    grid-template-columns: 1fr;
+  }
+
+  .mem-form-wrapper--member > .mem-profile,
+  .mem-form-wrapper--member > .mem-benefits,
+  .mem-form-wrapper--member > .mem-promo-section,
+  .mem-form-wrapper--member > .mem-logout,
+  .mem-form-wrapper--member > .mem-notices,
+  .mem-form-wrapper--member > .mem-reviews {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .mem-form-wrapper--member {
+    padding: 0 20px;
+  }
+
+  .mem-form-wrapper--member .mem-notices__list,
+  .mem-form-wrapper--member .mem-reviews__list {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+/* Three-column member dashboard refinement */
+.mem-form-wrapper--member {
+  width: 100%;
+  max-width: 1320px;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(360px, 1.15fr) minmax(300px, 0.9fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.mem-form-wrapper--member > .mem-profile {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.mem-form-wrapper--member > .mem-benefits {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.mem-form-wrapper--member > .mem-promo-section {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.mem-form-wrapper--member > .mem-logout {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.mem-form-wrapper--member > .mem-reviews {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+}
+
+.mem-form-wrapper--member > .mem-notices {
+  grid-column: 3;
+  grid-row: 1 / span 4;
+}
+
+.mem-form-wrapper--member > .mem-profile,
+.mem-form-wrapper--member > .mem-benefits,
+.mem-form-wrapper--member > .mem-promo-section,
+.mem-form-wrapper--member > .mem-notices,
+.mem-form-wrapper--member > .mem-reviews {
+  border: 1px solid rgba(201,169,110,0.16);
+}
+
+.mem-form-wrapper--member > .mem-profile,
+.mem-form-wrapper--member > .mem-benefits,
+.mem-form-wrapper--member > .mem-promo-section {
+  padding: 26px;
+}
+
+.mem-form-wrapper--member > .mem-reviews,
+.mem-form-wrapper--member > .mem-notices {
+  height: 680px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mem-form-wrapper--member > .mem-reviews h3,
+.mem-form-wrapper--member > .mem-notices h3 {
+  flex-shrink: 0;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.mem-form-wrapper--member .mem-reviews__list,
+.mem-form-wrapper--member .mem-notices__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 18px;
+}
+
+.mem-form-wrapper--member .mem-reviews__form {
+  flex-shrink: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-gray-light);
+  background: var(--color-cream);
+}
+
+.mem-form-wrapper--member .mem-reviews__card,
+.mem-form-wrapper--member .mem-notice-card {
+  transition: var(--transition-fast);
+}
+
+.mem-form-wrapper--member .mem-reviews__card:hover,
+.mem-form-wrapper--member .mem-notice-card:hover {
+  border-color: rgba(201,169,110,0.45);
+  transform: translateY(-1px);
+}
+
+.mem-form-wrapper--member .mem-promo-card {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.mem-form-wrapper--member .mem-promo-card__right {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@media (max-width: 1280px) {
+  .mem-form-wrapper--member {
+    max-width: 980px;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .mem-form-wrapper--member > .mem-profile,
+  .mem-form-wrapper--member > .mem-benefits,
+  .mem-form-wrapper--member > .mem-promo-section,
+  .mem-form-wrapper--member > .mem-logout {
+    grid-column: 1;
+  }
+
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    grid-column: 2;
+    grid-row: auto;
+    height: 520px;
+  }
+}
+
+@media (max-width: 900px) {
+  .mem-form-wrapper--member {
+    max-width: 680px;
+    grid-template-columns: 1fr;
+  }
+
+  .mem-form-wrapper--member > .mem-profile,
+  .mem-form-wrapper--member > .mem-benefits,
+  .mem-form-wrapper--member > .mem-promo-section,
+  .mem-form-wrapper--member > .mem-logout,
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    height: auto;
+    min-height: 0;
+  }
+
+  .mem-form-wrapper--member .mem-reviews__list,
+  .mem-form-wrapper--member .mem-notices__list {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+/* Subtle member vector decoration */
+.mem-form-wrapper--member > .mem-reviews,
+.mem-form-wrapper--member > .mem-notices {
+  position: relative;
+}
+
+.mem-form-wrapper--member .mem-reviews__list,
+.mem-form-wrapper--member .mem-notices__list {
+  position: relative;
+}
+
+.mem-form-wrapper--member .mem-reviews__list > *,
+.mem-form-wrapper--member .mem-notices__list > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mem-form-wrapper--member .mem-reviews__list::after,
+.mem-form-wrapper--member .mem-notices__list::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  z-index: 0;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.22;
+}
+
+.mem-form-wrapper--member .mem-reviews__list::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 76c0-18.2 15.2-33 34-33h32c18.8 0 34 14.8 34 33v14c0 18.2-15.2 33-34 33H83l-28 20v-20H74c-18.8 0-34-14.8-34-33V76Z' stroke='%23C9A96E' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='m76 77 7 14 15 2-11 11 3 15-14-7-14 7 3-15-11-11 15-2 7-14Z' stroke='%23C9A96E' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M111 82h17M106 99h22' stroke='%23C9A96E' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='36' cy='39' r='5' fill='%23C9A96E' fill-opacity='0.45'/%3E%3Ccircle cx='145' cy='137' r='4' fill='%23C9A96E' fill-opacity='0.35'/%3E%3C/svg%3E");
+}
+
+.mem-form-wrapper--member .mem-notices__list::after {
+  background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M91 139c11 0 20-8.5 20-19H71c0 10.5 9 19 20 19Z' stroke='%23C9A96E' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M52 115h78c-8-9-12-20-12-36 0-20-11-34-27-34S64 59 64 79c0 16-4 27-12 36Z' stroke='%23C9A96E' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M91 45V31M45 67 32 60M137 67l13-7M44 125l-14 8M138 125l14 8' stroke='%23C9A96E' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M91 20c37 0 67 30 67 67' stroke='%23C9A96E' stroke-width='2' stroke-linecap='round' stroke-dasharray='5 10' opacity='0.7'/%3E%3Ccircle cx='35' cy='38' r='4' fill='%23C9A96E' fill-opacity='0.35'/%3E%3Ccircle cx='142' cy='142' r='5' fill='%23C9A96E' fill-opacity='0.35'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 900px) {
+  .mem-form-wrapper--member .mem-reviews__list::after,
+  .mem-form-wrapper--member .mem-notices__list::after {
+    width: 110px;
+    height: 110px;
+    opacity: 0.16;
+  }
+}
+/* Align review and notice content with left-side colored member data */
+@media (min-width: 1281px) {
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    margin-top: 138px;
+  }
+}
+/* Final equal-border three card alignment */
+.mem-form-wrapper--member {
+  width: 100%;
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(360px, 1.15fr) minmax(300px, 0.9fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.mem-form-wrapper--member > .mem-member-column,
+.mem-form-wrapper--member > .mem-reviews,
+.mem-form-wrapper--member > .mem-notices {
+  grid-row: auto;
+  margin-top: 0;
+  height: 680px;
+  border: 1px solid rgba(201,169,110,0.18);
+  border-radius: 4px;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.045);
+}
+
+.mem-form-wrapper--member > .mem-member-column {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.mem-form-wrapper--member > .mem-reviews {
+  grid-column: 2;
+}
+
+.mem-form-wrapper--member > .mem-notices {
+  grid-column: 3;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-profile,
+.mem-form-wrapper--member .mem-member-column > .mem-benefits,
+.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
+  margin-bottom: 0;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-profile {
+  flex-shrink: 0;
+  padding: 26px;
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-benefits,
+.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
+  padding: 24px 26px;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-logout {
+  flex-shrink: 0;
+  width: calc(100% - 52px);
+  justify-content: center;
+  margin: 0 26px 24px;
+}
+
+@media (max-width: 1280px) {
+  .mem-form-wrapper--member {
+    max-width: 980px;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .mem-form-wrapper--member > .mem-member-column {
+    grid-column: 1;
+  }
+
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    grid-column: 2;
+    height: 520px;
+  }
+
+  .mem-form-wrapper--member > .mem-member-column {
+    height: auto;
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 900px) {
+  .mem-form-wrapper--member {
+    max-width: 680px;
+    grid-template-columns: 1fr;
+  }
+
+  .mem-form-wrapper--member > .mem-member-column,
+  .mem-form-wrapper--member > .mem-reviews,
+  .mem-form-wrapper--member > .mem-notices {
+    grid-column: 1;
+    height: auto;
+    min-height: 0;
+  }
+}

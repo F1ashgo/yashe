@@ -41,3 +41,10 @@ application-prod.yml
 my.cnf
 *.pem
 *.key
+
+# Environment files
+.env
+.env.production
+.env.development
+!.env.example
+backup/

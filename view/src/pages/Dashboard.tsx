@@ -1,13 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Users, UserPlus, Search, LogOut, ChevronDown, ChevronUp, RefreshCw, Home } from 'lucide-react'
+import { Users, UserPlus, Search, LogOut, ChevronDown, ChevronUp, RefreshCw, Home, Bell, Send, Trash2 } from 'lucide-react'
 import './Dashboard.css'
+import { API_BASE_URL } from '../config/api'
 
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : `${window.location.protocol}//${window.location.host}/api`
+const API = API_BASE_URL
 
 interface Member {
   id: number; name: string; email: string; phone: string | null;
   promoCode: string | null; role: string; status: number; createdAt: string;
+}
+
+interface NotificationItem {
+  id: number; title: string; content: string; type: string; status: number; createdAt: string;
 }
 
 function Dashboard() {
@@ -20,6 +25,10 @@ function Dashboard() {
   const [total, setTotal] = useState(0)
   const [expanded, setExpanded] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
+  const [notifications, setNotifications] = useState<NotificationItem[]>([])
+  const [noticeSaving, setNoticeSaving] = useState(false)
+  const [noticeMsg, setNoticeMsg] = useState('')
+  const [noticeForm, setNoticeForm] = useState({ title: '', content: '', type: '公告', status: 1 })
 
   const headers = { Authorization: `Bearer ${token}` }
 
@@ -31,7 +40,7 @@ function Dashboard() {
         setStats({ total: json.data.total, today: json.data.today })
       }
     } catch {}
-  }, [])
+  }, [token])
 
   const fetchMembers = useCallback(async () => {
     setLoading(true)
@@ -44,25 +53,83 @@ function Dashboard() {
         setTotal(json.data.data.total)
       }
     } catch {} finally { setLoading(false) }
-  }, [keyword, page])
+  }, [keyword, page, token])
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/admin/notifications`, { headers })
+      if (res.status === 403) { logout(); return }
+      if (res.ok) {
+        const json = await res.json()
+        setNotifications(json.data.list || [])
+      }
+    } catch {}
+  }, [token])
 
   useEffect(() => {
     if (!token) { navigate('/admin/login'); return }
     fetchStats()
-  }, [token])
+    fetchNotifications()
+  }, [token, fetchStats, fetchNotifications, navigate])
 
-  useEffect(() => { if (token) fetchMembers() }, [keyword, page, token])
+  useEffect(() => { if (token) fetchMembers() }, [keyword, page, token, fetchMembers])
 
   const logout = () => {
     localStorage.removeItem('admin_token')
     navigate('/admin/login')
   }
 
+  const submitNotification = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!noticeForm.title.trim() || !noticeForm.content.trim()) {
+      setNoticeMsg('请填写通知标题和内容')
+      return
+    }
+    setNoticeSaving(true)
+    setNoticeMsg('')
+    try {
+      const res = await fetch(`${API}/admin/notifications`, {
+        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify(noticeForm),
+      })
+      if (res.ok) {
+        setNoticeForm({ title: '', content: '', type: '公告', status: 1 })
+        setNoticeMsg('通知已发布')
+        fetchNotifications()
+      } else {
+        setNoticeMsg('发布失败，请稍后再试')
+      }
+    } catch {
+      setNoticeMsg('无法连接服务器')
+    } finally {
+      setNoticeSaving(false)
+    }
+  }
+
+  const toggleNotification = async (item: NotificationItem) => {
+    try {
+      const nextStatus = item.status === 1 ? 0 : 1
+      const res = await fetch(`${API}/admin/notifications/${item.id}/status?status=${nextStatus}`, {
+        method: 'PATCH',
+        headers,
+      })
+      if (res.ok) fetchNotifications()
+    } catch {}
+  }
+
+  const deleteNotification = async (id: number) => {
+    if (!window.confirm('确定删除这条通知吗？')) return
+    try {
+      const res = await fetch(`${API}/admin/notifications/${id}`, { method: 'DELETE', headers })
+      if (res.ok) fetchNotifications()
+    } catch {}
+  }
+
   const totalPages = Math.ceil(total / 20)
 
   return (
     <main className="dashboard">
-      {/* 顶部导航 */}
       <header className="dash-header">
         <div className="dash-header__left">
           <ShieldIcon />
@@ -77,8 +144,6 @@ function Dashboard() {
 
       <div className="dash-body">
         <div className="dash-body__inner">
-
-          {/* 统计卡片 */}
           <div className="dash-stats">
             <div className="dash-stat">
               <Users size={28} />
@@ -94,7 +159,7 @@ function Dashboard() {
                 <span className="dash-stat__label">今日新增</span>
               </div>
             </div>
-            <div className="dash-stat dash-stat--refresh" onClick={() => { fetchStats(); fetchMembers(); }}>
+            <div className="dash-stat dash-stat--refresh" onClick={() => { fetchStats(); fetchMembers(); fetchNotifications(); }}>
               <RefreshCw size={28} />
               <div>
                 <span className="dash-stat__num">刷新</span>
@@ -103,7 +168,59 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* 搜索栏 */}
+          <section className="dash-panel dash-notice-panel">
+            <div className="dash-panel__head">
+              <div>
+                <span className="dash-panel__eyebrow">Notification</span>
+                <h2><Bell size={18} /> 推送通知</h2>
+              </div>
+              <p>发布后会显示在会员中心，适合用于优惠、活动和服务提醒。</p>
+            </div>
+
+            <form className="dash-notice-form" onSubmit={submitNotification}>
+              <div className="dash-notice-form__row">
+                <input value={noticeForm.title} onChange={(e) => setNoticeForm({ ...noticeForm, title: e.target.value })} placeholder="通知标题" />
+                <select value={noticeForm.type} onChange={(e) => setNoticeForm({ ...noticeForm, type: e.target.value })}>
+                  <option value="公告">公告</option>
+                  <option value="优惠">优惠</option>
+                  <option value="设计提醒">设计提醒</option>
+                  <option value="活动">活动</option>
+                </select>
+                <select value={noticeForm.status} onChange={(e) => setNoticeForm({ ...noticeForm, status: Number(e.target.value) })}>
+                  <option value={1}>立即发布</option>
+                  <option value={0}>保存草稿</option>
+                </select>
+              </div>
+              <textarea value={noticeForm.content} onChange={(e) => setNoticeForm({ ...noticeForm, content: e.target.value })} rows={3} placeholder="通知内容，例如：新会员预约设计咨询可享专属优惠。" />
+              <div className="dash-notice-form__foot">
+                {noticeMsg && <span>{noticeMsg}</span>}
+                <button type="submit" disabled={noticeSaving}><Send size={15} /> {noticeSaving ? '发布中...' : '发布通知'}</button>
+              </div>
+            </form>
+
+            <div className="dash-notice-list">
+              {notifications.length === 0 ? (
+                <div className="dash-notice-empty">暂无通知</div>
+              ) : notifications.map((item) => (
+                <article key={item.id} className={`dash-notice-item ${item.status === 1 ? 'dash-notice-item--published' : ''}`}>
+                  <div className="dash-notice-item__main">
+                    <div className="dash-notice-item__meta">
+                      <span>{item.type}</span>
+                      <span>{item.status === 1 ? '已发布' : '已隐藏'}</span>
+                      <span>{item.createdAt?.slice(0, 10)}</span>
+                    </div>
+                    <h3>{item.title}</h3>
+                    <p>{item.content}</p>
+                  </div>
+                  <div className="dash-notice-item__actions">
+                    <button onClick={() => toggleNotification(item)}>{item.status === 1 ? '隐藏' : '发布'}</button>
+                    <button className="dash-notice-item__delete" onClick={() => deleteNotification(item.id)}><Trash2 size={14} /> 删除</button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <div className="dash-search">
             <Search size={18} />
             <input
@@ -114,7 +231,6 @@ function Dashboard() {
             />
           </div>
 
-          {/* 会员表格 */}
           <div className="dash-table-wrap">
             <table className="dash-table">
               <thead>
@@ -183,7 +299,6 @@ function Dashboard() {
             </table>
           </div>
 
-          {/* 分页 */}
           {totalPages > 1 && (
             <div className="dash-pagination">
               <button disabled={page <= 1} onClick={() => setPage(page - 1)}>上一页</button>

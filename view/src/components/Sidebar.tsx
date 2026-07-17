@@ -4,10 +4,10 @@ import './Sidebar.css'
 
 const SOCIAL_LINKS = [
   {
-    name: '微信',
+    name: '企业服务号',
     icon: <MessageCircle size={20} />,
     qrCode: true,
-    id: 'wechat-qr',
+    id: 'service-account-qr',
   },
   {
     name: '小紅書',
@@ -42,10 +42,15 @@ function Sidebar() {
   const [showQR, setShowQR] = useState(false)
   const [qrPosition, setQrPosition] = useState({ top: 0 })
 
-  const handleWechatClick = (e: React.MouseEvent) => {
+  const handleQrClick = (e: React.MouseEvent) => {
     e.preventDefault()
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    setQrPosition({ top: rect.top - 80 })
+    const popoverHeight = 225
+    const viewportPadding = 24
+    const preferredTop = rect.top - 80
+    const maxTop = window.innerHeight - popoverHeight - viewportPadding
+    const safeTop = Math.max(viewportPadding, Math.min(preferredTop, maxTop))
+    setQrPosition({ top: safeTop })
     setShowQR(!showQR)
   }
 
@@ -59,7 +64,7 @@ function Sidebar() {
               {link.qrCode ? (
                 <button
                   className="sidebar__link"
-                  onClick={handleWechatClick}
+                  onClick={handleQrClick}
                   aria-label={link.name}
                 >
                   {link.icon}
@@ -86,7 +91,7 @@ function Sidebar() {
         </div>
       </aside>
 
-      {/* WeChat QR Popover */}
+      {/* Service Account QR Popover */}
       {showQR && (
         <div
           className="qr-popover"
@@ -94,12 +99,9 @@ function Sidebar() {
           onClick={() => setShowQR(false)}
         >
           <div className="qr-popover__card" onClick={(e) => e.stopPropagation()}>
-            <div className="qr-popover__qr-placeholder">
-              <MessageCircle size={48} />
-              <span>企業微信</span>
-            </div>
+            <img className="qr-popover__image" src="/fuwuhao.jpg" alt="企业服务号二维码" />
             <p className="qr-popover__text">
-              掃碼添加<br />企業微信諮詢
+              扫码关注<br />企业服务号
             </p>
           </div>
         </div>

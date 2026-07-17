@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { MessageCircle, Phone, Mail, MapPin } from 'lucide-react'
+import { Phone, Mail, MapPin } from 'lucide-react'
 import './Footer.css'
 
 function Footer() {
@@ -50,14 +50,12 @@ function Footer() {
               </ul>
             </div>
 
-            {/* WeChat QR */}
+            {/* Service Account QR */}
             <div className="footer__col footer__col--qr">
-              <h3 className="footer__heading">企业微信</h3>
+              <h3 className="footer__heading">企业服务号</h3>
               <div className="footer__qr-wrapper">
-                <div className="footer__qr-placeholder">
-                  <MessageCircle size={40} />
-                </div>
-                <span className="footer__qr-text">扫码咨询</span>
+                <img className="footer__qr-image" src="/fuwuhao.jpg" alt="企业服务号二维码" />
+                <span className="footer__qr-text">扫码关注服务号</span>
               </div>
             </div>
           </div>

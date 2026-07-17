@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ChevronDown, Home, Building2, Palette, Compass, Star, Quote } from 'lucide-react'
+import ExpertiseContent from '../components/ExpertiseContent'
 import './Services.css'
 
 /* 服务范围数据 */
@@ -197,6 +198,9 @@ function Services() {
           </div>
         </div>
       </section>
+
+      {/* ===== 专业能力与服务流程 ===== */}
+      <ExpertiseContent />
 
       {/* ===== 客户评价 ===== */}
       <section className="svc-reviews">

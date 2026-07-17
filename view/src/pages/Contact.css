@@ -51,6 +51,7 @@
 /* QR */
 .con-qr { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .con-qr__placeholder { width: 100px; height: 100px; background: var(--color-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--color-gray); border: 1px dashed var(--color-gray-light); }
+.con-qr__image { display: block; width: 100px; height: 100px; border-radius: 8px; object-fit: cover; background: var(--color-white); border: 1px solid var(--color-gray-light); }
 .con-qr span { font-size: 0.8rem; color: var(--color-gray); letter-spacing: 1px; }
 
 .con-error { background: #fff0f0; color: #c33; padding: 10px 14px; border-radius: 4px; font-size: 0.82rem; margin-bottom: 16px; }

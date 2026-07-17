@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Shield, Mail, Lock, Loader2 } from 'lucide-react'
 import './AdminLogin.css'
+import { API_BASE_URL } from '../config/api'
 
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : `${window.location.protocol}//${window.location.host}/api`
+const API = API_BASE_URL
 
 function AdminLogin() {
   const [email, setEmail] = useState('')

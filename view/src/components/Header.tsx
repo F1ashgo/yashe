@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { label: '首页', path: '/' },
   { label: '关于我们', path: '/about' },
   { label: '服务范畴', path: '/services' },
-  { label: '专业能力', path: '/expertise' },
   { label: '成功案例', path: '/projects' },
   { label: '会员中心', path: '/member' },
   { label: '联络我们', path: '/contact' },

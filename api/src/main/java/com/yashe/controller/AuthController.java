@@ -47,6 +47,7 @@ public class AuthController {
 //
 
         } catch (RuntimeException e) {
+            e.printStackTrace();
             String message = "该邮箱已被注册".equals(e.getMessage()) ? e.getMessage() : "注册失败，请稍后再试";
             return ResponseEntity.badRequest().body(
                 ApiResponse.error(400, message)
@@ -71,6 +72,7 @@ public class AuthController {
                 ApiResponse.success("登录成功").put("token", token)
             );
         } catch (RuntimeException e) {
+            e.printStackTrace();
             String message = "该账号已被禁用".equals(e.getMessage()) ? e.getMessage() : "邮箱或密码错误";
             return ResponseEntity.status(401).body(
                 ApiResponse.error(401, message)

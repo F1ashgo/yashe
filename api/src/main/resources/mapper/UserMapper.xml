@@ -5,7 +5,7 @@
 
   <select id="findByEmail" resultType="com.yashe.entity.User">
     SELECT id, name, email, phone, password, promo_code, role, status, token_version, created_at, updated_at
-    FROM users WHERE email = #{email}
+    FROM users WHERE LOWER(email) = LOWER(#{email})
   </select>
 
   <select id="findById" resultType="com.yashe.entity.User">

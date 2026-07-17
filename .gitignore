@@ -41,6 +41,16 @@ application-prod.yml
 my.cnf
 *.pem
 *.key
+*.ppk
+
+# Database dumps and backups
+sql/yashe_db_*.sql
+sql/*_backup_*.sql*
+sql/*_auto_*.sql*
+*.sql.gz
+*.dump
+*.bak
+!sql/init.sql
 
 # Environment files
 .env

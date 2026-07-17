@@ -11,8 +11,7 @@ yashe/
 ├── api/                  # 后端项目 (Spring Boot 3.2.0 + Java 17 + MyBatis)
 ├── view/                 # 前端项目 (Vite + React 18 + TypeScript + Lucide icons)
 ├── sql/                  # 数据库初始化脚本目录
-│   ├── init.sql          # 数据库基础建表结构与初始优惠码及通知数据
-│   └── yashe_db_xxxx.sql # 本地测试数据包 (手动导入)
+│   └── init.sql          # 数据库基础建表结构与虚构的初始化数据
 ├── DOC/                  # 📚 服务器部署与日常运维文档汇总
 │   ├── deployment_preparation_guide.md  # 1. 服务部署实施指南
 │   ├── github_secrets_guide.md          # 2. GitHub CI/CD 密钥配置指南
@@ -61,6 +60,13 @@ feat: 增加管理员后台会员列表筛选
 fix: 修复登录后 token 未写入 localStorage
 docs: 补充部署与提交规范说明
 ```
+
+### 3. 敏感数据规范
+
+- 禁止提交真实账号密码、访问令牌、SSH 私钥、生产服务器地址及个人身份信息。
+- 禁止提交生产数据库转储、备份文件或包含真实用户数据的测试数据。
+- 本地与生产配置必须通过未跟踪的环境文件或密钥管理服务注入；仓库仅保留明确的占位符示例。
+- 提交前须运行仓库安全检查：`powershell -NoProfile -File scripts/check_repository_security.ps1`。
 
 ---
 

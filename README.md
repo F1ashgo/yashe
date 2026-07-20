@@ -12,18 +12,13 @@ yashe/
 ├── view/                 # 前端项目 (Vite + React 18 + TypeScript + Lucide icons)
 ├── sql/                  # 数据库初始化脚本目录
 │   └── init.sql          # 数据库基础建表结构与虚构的初始化数据
-├── DOC/                  # 📚 归档文档（部署、测试、扫描报告、巡检记录）
+├── DOC/                  # 📚 归档文档（部署、运维、巡检）
 │   ├── deployment_preparation_guide.md  # 服务部署实施指南
 │   ├── DEPLOYMENT.md                    # 上线准备清单（Cloudflare + ECS）
 │   ├── github_secrets_guide.md          # GitHub CI/CD 密钥配置指南
 │   ├── db_maintenance_guide.md          # 数据库备份与恢复指南
 │   ├── server_operations_runbook.md     # 服务器日常运维操作手册
 │   ├── admys_scan_report.md             # 安全扫描原始报告
-│   ├── admys_scan_report (1).md         # 扫描报告补充原始稿
-│   ├── admys_scan_report(并发测试).md   # 并发测试原始报告
-│   ├── admys_scan_reportI(压力测试).md  # 压力测试原始报告
-│   ├── admys_网站综合测试报告.md         # 综合测试报告（整合版）
-│   ├── admys_商用网站完整测试计划.md     # 商用网站测试计划与用例
 │   └── admys_服务器日志巡检摘要.md       # 生产服务器日志巡检摘要
 ├── 服务器登录与CodeWhale运维指南.md     # 🌟 面向普通人的登录与运维入门（仓库根目录）
 ├── README.md             # 本文件：项目入口与文档索引
@@ -93,7 +88,7 @@ docs: 补充部署与提交规范说明
 ## 📚 文档索引（点击跳转）
 
 > **仓库根目录只保留两份「入口文档」**：本 [README.md](README.md) 与 [服务器登录与CodeWhale运维指南.md](服务器登录与CodeWhale运维指南.md)。  
-> 其余部署、测试、扫描、巡检文档统一归档在 `DOC/` 目录，通过下方链接访问。
+> 其余部署、运维、巡检文档统一归档在 `DOC/` 目录，通过下方链接访问。
 
 ### 🌟 普通人优先阅读
 
@@ -111,17 +106,7 @@ docs: 补充部署与提交规范说明
 | [GitHub Actions Secrets 配置指南](DOC/github_secrets_guide.md) | 部署密钥、服务器连接信息的 GitHub Secrets 配置步骤 |
 | [MySQL 数据库备份与恢复指南](DOC/db_maintenance_guide.md) | 手动/自动备份、恢复与性能监控 SQL |
 | [服务器日常运维操作手册 (Runbook)](DOC/server_operations_runbook.md) | 负载排查、服务启停、Nginx 日志分析、SSH 安全审计 |
-
-### 🧪 测试与扫描报告（归档于 DOC/）
-
-| 文档 | 说明 |
-| :--- | :--- |
-| [商用网站完整测试计划](DOC/admys_商用网站完整测试计划.md) | 功能、权限、安全、性能、兼容性等完整测试用例清单 |
-| [网站综合测试报告](DOC/admys_网站综合测试报告.md) | 三份扫描报告的整合版，含风险优先级与修复建议 |
 | [安全扫描原始报告](DOC/admys_scan_report.md) | 首轮安全扫描原始记录 |
-| [压力测试原始报告](DOC/admys_scan_reportI(压力测试).md) | 主站/API 压力测试原始数据 |
-| [并发测试原始报告](DOC/admys_scan_report(并发测试).md) | 并发场景测试原始数据 |
-| [扫描报告补充原始稿](DOC/admys_scan_report%20(1).md) | 与综合报告同源的原始扫描稿之一 |
 | [服务器日志巡检摘要](DOC/admys_服务器日志巡检摘要.md) | 生产环境 Nginx/API 日志只读巡检结论 |
 
 ---
@@ -240,10 +225,10 @@ powershell -NoProfile -File scripts/check_repository_security.ps1
 
 ## 📅 项目更新与优化记录 (Changelog)
 
-#### **2026-07-20 — 文档归档整理与 GitHub 工作流说明**
-* 📁 **文档结构优化**：扫描报告、测试计划、日志巡检摘要统一移入 `DOC/` 目录；仓库根目录仅保留 README 与《服务器登录与 CodeWhale 运维指南》两份入口文档。
-* 📖 **README 增强**：新增完整文档索引表、面向普通人的 GitHub 工作流说明（分支规范、提交前安全检查、Actions 流水线解读、密钥红线）。
-* 🐋 **运维指南**：新增面向非技术人员的 SSH 登录、CodeWhale 辅助巡检、定时任务与提示词大全。
+#### **2026-07-20 — 关于我们营业执照与运维文档**
+* 🏅 **荣誉与资质**：关于我们页底部新增居中展示的营业执照，复用证书灯箱。
+* 📁 **文档结构**：`DEPLOYMENT.md` 归入 `DOC/`；根目录保留 README 与《服务器登录与 CodeWhale 运维指南》。
+* 📖 **README 增强**：文档索引与面向普通人的 GitHub 工作流说明（分支规范、提交前安全检查、Actions 解读）。
 * **维护人**：Si_Nan
 
 #### **2026-07-17 — 安全整改、后台拆页与全站手机端优化**

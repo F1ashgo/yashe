@@ -4,7 +4,25 @@ import { ArrowLeft, ZoomIn, X } from 'lucide-react'
 import CompanyStory from '../components/CompanyStory'
 import './About.css'
 
-const CERTIFICATES = [
+type CertificateItem = {
+  type: string
+  title: string
+  issuer: string
+  image: string
+  theme: 'dark' | 'light'
+  layout?: 'portrait' | 'landscape'
+}
+
+const BUSINESS_LICENSE: CertificateItem = {
+  type: '资质认证',
+  title: '营业执照',
+  issuer: '广州雅舍室内设计有限公司 · 统一社会信用代码 91440115MAKBG4HD6A',
+  image: '/business-license.png',
+  theme: 'light',
+  layout: 'landscape',
+}
+
+const CERTIFICATES: CertificateItem[] = [
   {
     type: '荣誉奖项',
     title: '杰出承建商大奖 2024 · 嘉许证书',
@@ -23,7 +41,7 @@ const CERTIFICATES = [
 
 function About() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
-  const [selectedCertificate, setSelectedCertificate] = useState<(typeof CERTIFICATES)[number] | null>(null)
+  const [selectedCertificate, setSelectedCertificate] = useState<CertificateItem | null>(null)
 
   useEffect(() => { window.scrollTo(0, 0) }, [])
 
@@ -77,6 +95,24 @@ function About() {
             <h2>荣誉与资质</h2>
             <p>专业认可与行业资质，共同见证我们的品质标准</p>
           </div>
+          <div className="cert-license">
+            <article className={`cert-card cert-card--${BUSINESS_LICENSE.theme} cert-card--landscape`}>
+              <button
+                type="button"
+                className="cert-card__image"
+                onClick={() => setSelectedCertificate(BUSINESS_LICENSE)}
+                aria-label={`放大查看${BUSINESS_LICENSE.title}`}
+              >
+                <img src={BUSINESS_LICENSE.image} alt={BUSINESS_LICENSE.title} loading="lazy" />
+                <span className="cert-card__zoom"><ZoomIn size={18} /> 点击查看大图</span>
+              </button>
+              <div className="cert-card__content">
+                <span className="cert-card__type">{BUSINESS_LICENSE.type}</span>
+                <h3>{BUSINESS_LICENSE.title}</h3>
+                <p>{BUSINESS_LICENSE.issuer}</p>
+              </div>
+            </article>
+          </div>
           <div className="cert-grid">
             {CERTIFICATES.map((certificate) => (
               <article key={certificate.title} className={`cert-card cert-card--${certificate.theme}`}>
@@ -116,7 +152,10 @@ function About() {
           >
             <X size={24} />
           </button>
-          <div className="cert-lightbox__body" onClick={(event) => event.stopPropagation()}>
+          <div
+            className={`cert-lightbox__body${selectedCertificate.layout === 'landscape' ? ' cert-lightbox__body--landscape' : ''}`}
+            onClick={(event) => event.stopPropagation()}
+          >
             <img src={selectedCertificate.image} alt={selectedCertificate.title} />
             <div className="cert-lightbox__caption">
               <span>{selectedCertificate.type}</span>

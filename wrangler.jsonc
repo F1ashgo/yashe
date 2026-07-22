@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yashe",
+  "compatibility_date": "2026-07-22",
+  "assets": {
+    // Vite 产物目录（须先执行根目录 npm run build）
+    "directory": "./view/dist",
+    "not_found_handling": "single-page-application"
+  }
+}

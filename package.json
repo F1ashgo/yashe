@@ -1,0 +1,12 @@
+{
+  "name": "yashe",
+  "private": true,
+  "description": "Monorepo root scripts for Cloudflare Pages / Workers Builds",
+  "scripts": {
+    "build": "npm ci --prefix view && npm run build --prefix view",
+    "build:view": "npm run build --prefix view"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

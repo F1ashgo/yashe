@@ -26,6 +26,9 @@ dist/
 .env.local
 .env.*.local
 *.local
+.wrangler
+.dev.vars*
+frontend-deploy.tar.gz
 
 # =====================
 # OS

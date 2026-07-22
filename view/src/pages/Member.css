@@ -465,8 +465,8 @@
 }
 
 .mem-form-wrapper--member .mem-member-column > .mem-profile,
-.mem-form-wrapper--member .mem-member-column > .mem-benefits,
-.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
+.mem-form-wrapper--member .mem-member-column .mem-benefits,
+.mem-form-wrapper--member .mem-member-column .mem-promo-section {
   margin-bottom: 0;
   border: 0;
   box-shadow: none;
@@ -479,15 +479,29 @@
   border-bottom: 1px solid var(--color-gray-light);
 }
 
-.mem-form-wrapper--member .mem-member-column > .mem-benefits,
-.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
-  padding: 24px 26px;
-}
-
-.mem-form-wrapper--member .mem-member-column > .mem-promo-section {
+.mem-form-wrapper--member .mem-member-column > .mem-member-scroll {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-member-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mem-form-wrapper--member .mem-member-column > .mem-member-scroll::-webkit-scrollbar-thumb {
+  background: rgba(201,169,110,0.45);
+  border-radius: 999px;
+}
+
+.mem-form-wrapper--member .mem-member-column .mem-benefits,
+.mem-form-wrapper--member .mem-member-column .mem-promo-section {
+  padding: 24px 26px;
+}
+
+.mem-form-wrapper--member .mem-member-column .mem-benefits {
+  border-bottom: 1px solid var(--color-gray-light);
 }
 
 .mem-form-wrapper--member .mem-member-column > .mem-logout {

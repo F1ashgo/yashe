@@ -184,42 +184,44 @@ function Member() {
                   </div>
                 </div>
 
-                <div className="mem-benefits">
-                  <h3>会员专属权益</h3>
-                  <ul>
-                    <li><Gift size={16} /> 首次注册即享设计咨询费 9 折优惠</li>
-                    <li><Gift size={16} /> 会员享家装全流程一对一专属管家全程跟进</li>
-                    <li><Gift size={16} /> 会员专享季度软装新品优先预览与折扣</li>
-                    <li><Gift size={16} /> 生日当月享设计服务双倍积分</li>
-                  </ul>
-                </div>
+                <div className="mem-member-scroll">
+                  <div className="mem-benefits">
+                    <h3>会员专属权益</h3>
+                    <ul>
+                      <li><Gift size={16} /> 首次注册即享设计咨询费 9 折优惠</li>
+                      <li><Gift size={16} /> 会员享家装全流程一对一专属管家全程跟进</li>
+                      <li><Gift size={16} /> 会员专享季度软装新品优先预览与折扣</li>
+                      <li><Gift size={16} /> 生日当月享设计服务双倍积分</li>
+                    </ul>
+                  </div>
 
-                <div className="mem-promo-section">
-                  <h3>我的优惠码</h3>
-                  <p className="mem-promo-section__desc">复制优惠码，在预约设计咨询时出示即可享受对应折扣</p>
-                  <div className="mem-promo-codes">
-                    <div className="mem-promo-card">
-                      <div className="mem-promo-card__left">
-                        <span className="mem-promo-card__code">YASHE2024</span>
-                        <span className="mem-promo-card__tag">新会员专享</span>
+                  <div className="mem-promo-section">
+                    <h3>我的优惠码</h3>
+                    <p className="mem-promo-section__desc">复制优惠码，在预约设计咨询时出示即可享受对应折扣</p>
+                    <div className="mem-promo-codes">
+                      <div className="mem-promo-card">
+                        <div className="mem-promo-card__left">
+                          <span className="mem-promo-card__code">YASHE2024</span>
+                          <span className="mem-promo-card__tag">新会员专享</span>
+                        </div>
+                        <div className="mem-promo-card__right">
+                          <span className="mem-promo-card__discount">9 折</span>
+                          <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('YASHE2024')}>
+                            <Copy size={14} /> 复制
+                          </button>
+                        </div>
                       </div>
-                      <div className="mem-promo-card__right">
-                        <span className="mem-promo-card__discount">9 折</span>
-                        <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('YASHE2024')}>
-                          <Copy size={14} /> 复制
-                        </button>
-                      </div>
-                    </div>
-                    <div className="mem-promo-card">
-                      <div className="mem-promo-card__left">
-                        <span className="mem-promo-card__code">WELCOME2000</span>
-                        <span className="mem-promo-card__tag">设计抵扣券</span>
-                      </div>
-                      <div className="mem-promo-card__right">
-                        <span className="mem-promo-card__discount">减 ¥2000</span>
-                        <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('WELCOME2000')}>
-                          <Copy size={14} /> 复制
-                        </button>
+                      <div className="mem-promo-card">
+                        <div className="mem-promo-card__left">
+                          <span className="mem-promo-card__code">WELCOME2000</span>
+                          <span className="mem-promo-card__tag">设计抵扣券</span>
+                        </div>
+                        <div className="mem-promo-card__right">
+                          <span className="mem-promo-card__discount">减 ¥2000</span>
+                          <button className="mem-promo-card__copy" onClick={() => navigator.clipboard.writeText('WELCOME2000')}>
+                            <Copy size={14} /> 复制
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

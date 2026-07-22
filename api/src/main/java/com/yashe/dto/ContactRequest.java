@@ -29,10 +29,6 @@ public class ContactRequest {
     @Size(min = 5, max = 5000, message = "留言内容需为5到5000个字符")
     private String message;
 
-    @NotBlank(message = "请完成人机验证")
-    @Size(max = 2048, message = "人机验证参数无效")
-    private String turnstileToken;
-
     public ContactMessage toEntity() {
         ContactMessage entity = new ContactMessage();
         entity.setName(name.trim());
@@ -61,6 +57,4 @@ public class ContactRequest {
     public void setBudget(String budget) { this.budget = budget; }
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
-    public String getTurnstileToken() { return turnstileToken; }
-    public void setTurnstileToken(String turnstileToken) { this.turnstileToken = turnstileToken; }
 }

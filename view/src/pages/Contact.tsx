@@ -4,7 +4,6 @@ import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, Loader2 } from 'lucide-rea
 import './Contact.css'
 import { API_BASE_URL } from '../config/api'
 import { SOCIAL_LINKS } from '../config/social'
-import TurnstileWidget from '../components/TurnstileWidget'
 
 const API = API_BASE_URL
 
@@ -13,8 +12,6 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [turnstileToken, setTurnstileToken] = useState('')
-  const [turnstileReset, setTurnstileReset] = useState(0)
 
   const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [k]: e.target.value })
@@ -23,27 +20,19 @@ function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    if (!turnstileToken) {
-      setError('请先完成人机验证')
-      return
-    }
     setLoading(true)
     try {
       const res = await fetch(`${API}/contact/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, turnstileToken }),
+        body: JSON.stringify(form),
       })
       if (res.ok) {
         setSubmitted(true)
         setForm({ name: '', email: '', phone: '', subject: '', message: '', budget: '' })
-        setTurnstileToken('')
-        setTurnstileReset((value) => value + 1)
       } else {
         const body = await res.json().catch(() => null)
         setError(body?.message || '发送失败，请稍后再试')
-        setTurnstileToken('')
-        setTurnstileReset((value) => value + 1)
       }
     } catch {
       setError('无法连接服务器，请确保后端已启动')
@@ -118,7 +107,6 @@ function Contact() {
                       <option value="150万以上">150万以上</option>
                     </select>
                   </div>
-                  <TurnstileWidget action="contact-message" onToken={setTurnstileToken} resetKey={turnstileReset} />
                   <button type="submit" className="con-form__submit" disabled={loading}>
                     {loading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
                     {loading ? '发送中...' : '发送讯息'}

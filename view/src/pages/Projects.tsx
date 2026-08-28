@@ -15,13 +15,18 @@ const PROJECTS = [
   { image: '/中药铺/中药铺4.jpeg', title: '中药铺全景', category: '商业空间', location: '香港 · 西环', area: '350㎡', style: '新中式', desc: '百子柜的现代演绎——保留了抓药仪式感的同时，通过开放式布局让顾客亲眼见证每一味药材的选取。' },
   { image: '/中药铺/中藥鋪1.jpeg', title: '中药铺接待区', category: '商业空间', location: '香港 · 西环', area: '60㎡', style: '新中式', desc: '以温暖木色与石材的碰撞营造沉稳专业的入口印象，让传统药铺形象焕发新的生命力。' },
   { image: '/中药铺/中藥鋪2.jpeg', title: '中药铺调剂台', category: '商业空间', location: '香港 · 西环', area: '45㎡', style: '新中式', desc: '定制铜质调剂台搭配暖光吊灯，将功能性抓药区域转化为空间的视觉焦点。' },
-  /* Ice Bath 项目 */
-  { image: '/ice bath/泳池正面.jpeg', title: 'Ice Bath 冷疗中心', category: '康体空间', location: '香港 · 坚尼地城', area: '600㎡', style: '极简工业', desc: '以冷色调材质与暖光照明形成对比，为冷疗体验营造专业而不失温度的空间感受。' },
-  { image: '/ice bath/泳池側面.jpeg', title: '泳池休闲区', category: '康体空间', location: '香港 · 坚尼地城', area: '200㎡', style: '现代简约', desc: '室内恒温泳池与冷疗区的无缝衔接，形成完整的水疗体验闭环。' },
-  { image: '/ice bath/咖啡厅.jpeg', title: 'Ice Bath 咖啡厅', category: '康体空间', location: '香港 · 坚尼地城', area: '120㎡', style: '现代简约', desc: '冷疗后的温暖休憩空间，天然木材与柔软布艺的使用让身体和心灵同时得到放松。' },
-  { image: '/ice bath/桑拿房正面.jpeg', title: '桑拿房', category: '康体空间', location: '香港 · 坚尼地城', area: '50㎡', style: '北欧极简', desc: '芬兰云杉木墙面配合可控色温灯光系统，在高温中营造视觉与触觉的双重舒适。' },
-  { image: '/ice bath/休息區1.jpeg', title: '冷疗休息区', category: '康体空间', location: '香港 · 坚尼地城', area: '80㎡', style: '极简工业', desc: '冷暖材质的对比碰撞——冷峻的混凝土墙面搭配温暖的羊毛毯与皮质沙发，创造独特的停留体验。' },
-  { image: '/ice bath/淋浴正面.jpeg', title: '淋浴更衣区', category: '康体空间', location: '香港 · 坚尼地城', area: '90㎡', style: '极简工业', desc: '哑光黑不锈钢与无缝石材台面的结合，简洁利落的线条中暗藏人性化的细节设计。' },
+  /* 教室项目 */
+  { image: '/classroom/課室1.jpeg', title: '教室全景', category: '教育空间', location: '香港 · 九龙城', area: '200㎡', style: '童趣活泼', desc: '开阔通透的教室布局，让视线与动线自然流畅，兼顾讲授、讨论与自习的多元需求。' },
+  { image: '/classroom/課室.jpeg', title: '培训教室', category: '教育空间', location: '香港 · 九龙城', area: '200㎡', style: '童趣活泼', desc: '以自然采光与柔和色系营造专注而舒适的课堂氛围，模块化布局支持多样化的教学场景。' },
+  /* 家装项目 */
+  { image: '/house/家裝.png', title: '住宅样', category: '住宅空间', location: '香港 · 半山', area: '180㎡', style: '轻奢雅致', desc: '以温暖的木色与柔和的灯光打造舒适的居家氛围，让日常生活回归放松与从容。' },
+  { image: '/house/家裝2.jpeg', title: '住宅客厅', category: '住宅空间', location: '香港 · 半山', area: '60㎡', style: '轻奢雅致', desc: '开放式客厅布局串联起居、用餐与休闲，在功能与美感之间取得恰到好处的平衡。' },
+  /* 实验室项目 */
+  { image: '/lab/實驗室.jpeg', title: '实验室', category: '商业空间', location: '香港 · 九龙塘', area: '300㎡', style: '极简科研', desc: '以洁净明亮的材质与规范动线打造专业实验环境，兼顾安全、效率与视觉秩序。' },
+  { image: '/lab/實驗室2.jpeg', title: '实验室全景', category: '商业空间', location: '香港 · 九龙塘', area: '300㎡', style: '极简科研', desc: '模块化台面与充足采光让实验流程一目了然，营造严谨而高效的工作氛围。' },
+  /* 办公室项目 */
+  { image: '/office/辦公室2.jpeg', title: '办公室', category: '办公空间', location: '香港 · 西营盘', area: '250㎡', style: '简约办公', desc: '温暖而专业的会客区域，以材质与光线的细腻处理塑造企业的品牌形象。' },
+  { image: '/office/辦公室.jpeg', title: '办公室工位区', category: '办公空间', location: '香港 · 西营盘', area: '400㎡', style: '简约办公', desc: '以开放与半开放结合的布局促进协作，让办公空间既高效又充满活力。' },
 ]
 
 function Projects() {

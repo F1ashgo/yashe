@@ -34,7 +34,7 @@ const CERTIFICATES: CertificateItem[] = [
     type: '资质认证',
     title: '注册专业行业承造商证书',
     issuer: '香港建造业议会 · 室内装修专业资质',
-    image: '/IMG_5396.JPG',
+    image: '/專業行業承造商.png',
     theme: 'light',
   },
 ]

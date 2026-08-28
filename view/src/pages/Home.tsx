@@ -42,20 +42,6 @@ const FEATURED_PROJECTS = [
     style: '新中式',
     desc: '开放式调剂台与百子柜的现代演绎，让抓药成为一种可视化的文化体验。',
   },
-  {
-    image: '/ice bath/休息區1.jpeg',
-    title: 'Ice Bath 冷疗空间',
-    category: '康体空间',
-    style: '极简工业',
-    desc: '冷暖材质的对比碰撞，为冷疗体验营造既专业又放松的空间氛围。',
-  },
-  {
-    image: '/ice bath/咖啡厅.jpeg',
-    title: 'Ice Bath 休闲咖啡厅',
-    category: '康体空间',
-    style: '现代简约',
-    desc: '冷疗后的温暖休憩区，以柔和灯光与天然材质打造舒适的社交场景。',
-  },
 ]
 
 /* 核心价值卡片數据 */

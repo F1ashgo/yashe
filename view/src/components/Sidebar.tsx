@@ -28,7 +28,7 @@ const SOCIAL_LINKS = [
     ),
     href: SOCIAL_URLS.douyin,
   },
-  {
+  /* {
     name: 'Instagram',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -36,7 +36,7 @@ const SOCIAL_LINKS = [
       </svg>
     ),
     href: SOCIAL_URLS.instagram,
-  },
+  }, */
 ]
 
 function Sidebar() {

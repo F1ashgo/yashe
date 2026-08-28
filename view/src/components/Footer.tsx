@@ -28,8 +28,8 @@ function Footer() {
                 <li><Link to="/">首页</Link></li>
                 <li><Link to="/about">关于我们</Link></li>
                 <li><Link to="/social-media">社交媒体</Link></li>
-                <li><a href="#portfolio">设计作品</a></li>
-                <li><a href="#services">服务范围</a></li>
+                <li><Link to="/projects">设计作品</Link></li>
+                <li><Link to="/services">服务范围</Link></li>
               </ul>
             </div>
 

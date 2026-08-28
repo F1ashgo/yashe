@@ -10,6 +10,7 @@ import Services from './pages/Services'
 import Projects from './pages/Projects'
 import Member from './pages/Member'
 import Contact from './pages/Contact'
+import SocialMedia from './pages/SocialMedia'
 import './App.css'
 
 const AdminLogin = lazy(() => import('./pages/AdminLogin'))
@@ -53,6 +54,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/member" element={<Member />} />
+          <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />

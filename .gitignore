@@ -67,3 +67,5 @@ backup/
 # Git Worktrees
 .worktrees/
 
+# claude
+.claude/

@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: '服务范畴', path: '/services' },
   { label: '成功案例', path: '/projects' },
   { label: '会员中心', path: '/member' },
+  { label: '社交媒体', path: '/social-media' },
   { label: '联络我们', path: '/contact' },
 ]
 

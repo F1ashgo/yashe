@@ -27,6 +27,7 @@ function Footer() {
               <ul className="footer__links">
                 <li><Link to="/">首页</Link></li>
                 <li><Link to="/about">关于我们</Link></li>
+                <li><Link to="/social-media">社交媒体</Link></li>
                 <li><a href="#portfolio">设计作品</a></li>
                 <li><a href="#services">服务范围</a></li>
               </ul>

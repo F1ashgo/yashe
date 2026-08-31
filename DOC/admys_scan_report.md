@@ -141,16 +141,17 @@ JWT Payload:
 /中药铺/中藥鋪2.jpeg
 /中药铺/中药铺3.jpeg
 /中药铺/中药铺4.jpeg
-/ice bath/咖啡厅.jpeg
-/ice bath/桑拿房正面.jpeg
-/ice bath/淋浴正面.jpeg
-/ice bath/泳池正面.jpeg
-/ice bath/泳池側面.jpeg
-/ice bath/休息區1.jpeg
+/classroom/課室.jpeg
+/classroom/課室1.jpeg
+/classroom/課室2.jpeg
+/house/家裝.png
+/house/家裝2.jpeg
+/lab/實驗室.jpeg
+/lab/實驗室2.jpeg
+/office/辦公室.jpeg
+/office/辦公室2.jpeg
+/office/辦公室3.jpeg
 /lunbotu/课室侧面.jpeg
-/lunbotu/小泳池.jpeg
-/lunbotu/泳池2.JPG
-/lunbotu/泳池側面.jpeg
 /lunbotu/閱讀室-帶白板.jpeg
 ```
 

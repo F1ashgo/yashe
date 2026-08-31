@@ -5,9 +5,9 @@ import './Home.css'
 
 /* Hero 轮播图 */
 const HERO_IMAGES = [
-  '/lunbotu/小泳池.jpeg',
-  '/lunbotu/泳池2.JPG',
-  '/lunbotu/泳池側面.jpeg',
+  '/office/辦公室3.jpeg',
+  '/house/家裝2.jpeg',
+  '/classroom/課室2.jpeg',
   '/lunbotu/课室侧面.jpeg',
   '/lunbotu/閱讀室-帶白板.jpeg',
 ]

@@ -146,6 +146,8 @@
 .dash-content-image > button:hover:not(:disabled) { border-color: var(--color-gold); color: var(--color-gold); }
 .dash-content-image > button:disabled { opacity: 0.6; cursor: default; }
 .dash-content-image__preview { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-gray-light); flex-shrink: 0; }
+.dash-content-image__clear { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1px solid var(--color-gray-light); border-radius: 50%; background: #fff; color: var(--color-gray); flex-shrink: 0; cursor: pointer; }
+.dash-content-image__clear:hover { border-color: #d66; color: #c33; }
 .dash-content-item__main { display: flex; gap: 16px; align-items: flex-start; min-width: 0; }
 .dash-content-item__thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-gray-light); flex-shrink: 0; }
 .dash-content-item__url { font-size: 0.78rem; word-break: break-all; }
@@ -156,3 +158,28 @@
 .dash-notice-item[draggable='true'] { cursor: grab; }
 .dash-notice-item[draggable='true']:active { cursor: grabbing; }
 .dash-content-item--over { outline: 2px dashed var(--color-gold); outline-offset: -2px; }
+.dash-dropzone { margin-top: 18px; padding: 22px; border: 2px dashed var(--color-gray-light); border-radius: 6px; background: #fafaf8; transition: var(--transition-fast); }
+.dash-dropzone--over { border-color: var(--color-gold); background: rgba(201,169,110,0.06); }
+.dash-dropzone__inner { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--color-gray); text-align: center; }
+.dash-dropzone__inner svg { color: var(--color-gold); }
+.dash-dropzone__inner p { margin: 0; font-size: 0.85rem; }
+.dash-dropzone__row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.dash-dropzone__row select { padding: 9px 12px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; font-size: 0.84rem; color: var(--color-dark); font-family: var(--font-body); }
+.dash-dropzone__row button { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; color: var(--color-dark); font-size: 0.84rem; cursor: pointer; transition: var(--transition-fast); }
+.dash-dropzone__row button:hover:not(:disabled) { border-color: var(--color-gold); color: var(--color-gold); }
+.dash-dropzone__row button:disabled { opacity: 0.6; cursor: default; }
+.dash-pending { margin-top: 18px; }
+.dash-pending__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.dash-pending__head h3 { margin: 0; font-size: 0.95rem; color: var(--color-dark); letter-spacing: 1px; }
+.dash-pending__head span { font-size: 0.78rem; color: var(--color-gray); }
+.dash-pending__item { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--color-gray-light); border-radius: 6px; margin-bottom: 8px; background: #fff; }
+.dash-pending__item input { flex: 1; min-width: 0; padding: 9px 11px; border: 1px solid var(--color-gray-light); border-radius: 4px; font-size: 0.84rem; color: var(--color-dark); font-family: var(--font-body); }
+.dash-pending__item input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.08); outline: none; }
+.dash-pending__item button { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; color: var(--color-gray); flex-shrink: 0; cursor: pointer; }
+.dash-pending__item button:hover { border-color: #d66; color: #c33; }
+.dash-pending__foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.dash-pending__foot button { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 4px; font-size: 0.82rem; cursor: pointer; }
+.dash-pending__foot .dash-content-form__cancel { background: #fff; color: var(--color-gray-dark); border: 1px solid var(--color-gray-light); }
+.dash-pending__foot button:last-child { background: var(--color-gold); color: #fff; border: none; }
+.dash-pending__foot button:last-child:hover:not(:disabled) { background: var(--color-gold-dark); }
+.dash-pending__foot button:disabled { opacity: 0.6; cursor: default; }

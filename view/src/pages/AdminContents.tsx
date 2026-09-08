@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { GripVertical, Image as ImageIcon, Plus, Trash2, Upload, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -31,13 +31,24 @@ function AdminContents() {
   const [items, setItems] = useState<SocialMediaItem[]>([])
   const [filter, setFilter] = useState('')
   const [form, setForm] = useState({ ...EMPTY_FORM })
+  const [formFile, setFormFile] = useState<File | null>(null)
   const [editingId, setEditingId] = useState<number | null>(null)
   const [saving, setSaving] = useState(false)
-  const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState('')
   const [dragId, setDragId] = useState<number | null>(null)
   const [overId, setOverId] = useState<number | null>(null)
+  const [batchPlatform, setBatchPlatform] = useState('douyin')
+  const [batchUploading, setBatchUploading] = useState(false)
+  const [batchProgress, setBatchProgress] = useState('')
+  const [dragOver, setDragOver] = useState(false)
+  const [pending, setPending] = useState<{ file: File; previewUrl: string; caption: string; url: string; platform: string }[]>([])
   const fileRef = useRef<HTMLInputElement>(null)
+  const batchFileRef = useRef<HTMLInputElement>(null)
+
+  const formFilePreview = useMemo(() => (formFile ? URL.createObjectURL(formFile) : null), [formFile])
+  useEffect(() => {
+    return () => { if (formFilePreview) URL.revokeObjectURL(formFilePreview) }
+  }, [formFilePreview])
 
   const invalidateSession = useCallback(() => {
     localStorage.removeItem('admin_token')
@@ -61,6 +72,7 @@ function AdminContents() {
 
   const resetForm = () => {
     setForm({ ...EMPTY_FORM })
+    setFormFile(null)
     setEditingId(null)
     if (fileRef.current) fileRef.current.value = ''
   }
@@ -68,10 +80,21 @@ function AdminContents() {
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (!form.caption.trim()) return setMessage('请填写说明文字')
-    if (!form.image.trim()) return setMessage('请上传或填写图片')
+    if (!formFile && !form.image.trim()) return setMessage('请上传或填写图片')
     setSaving(true)
     setMessage('')
     try {
+      let imageValue = form.image
+      if (formFile) {
+        const data = new FormData()
+        data.append('file', formFile)
+        data.append('platform', form.platform)
+        const upRes = await fetch(`${API_BASE_URL}/admin/social-media/upload`, { method: 'POST', headers, body: data })
+        if (upRes.status === 401 || upRes.status === 403) return invalidateSession()
+        const upBody = await upRes.json()
+        if (!upRes.ok) throw new Error(upBody.message || '上传失败')
+        imageValue = upBody.data.url
+      }
       const url = editingId != null
         ? `${API_BASE_URL}/admin/social-media/${editingId}`
         : `${API_BASE_URL}/admin/social-media`
@@ -81,7 +104,7 @@ function AdminContents() {
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           platform: form.platform,
-          image: form.image,
+          image: imageValue,
           caption: form.caption,
           url: form.url || null,
           sortOrder: form.sortOrder === '' ? null : Number(form.sortOrder),
@@ -114,28 +137,75 @@ function AdminContents() {
     setMessage('')
   }
 
-  const upload = async (file: File) => {
-    setUploading(true)
-    setMessage('')
-    try {
-      const data = new FormData()
-      data.append('file', file)
-      data.append('platform', form.platform)
-      const response = await fetch(`${API_BASE_URL}/admin/social-media/upload`, {
-        method: 'POST',
-        headers,
-        body: data,
-      })
-      if (response.status === 401 || response.status === 403) return invalidateSession()
-      const body = await response.json()
-      if (!response.ok) throw new Error(body.message || '上传失败')
-      setForm((prev) => ({ ...prev, image: body.data.url }))
-      setMessage('图片已上传')
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : '上传失败')
-    } finally {
-      setUploading(false)
+  const addFiles = (files: FileList | File[]) => {
+    const list = Array.from(files).filter((f) => f.type.startsWith('image/'))
+    if (list.length === 0) {
+      setMessage('请选择 jpg/png/webp 图片')
+      return
     }
+    setPending((prev) => [...prev, ...list.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+      caption: '',
+      url: '',
+      platform: batchPlatform,
+    }))])
+    setMessage(`已添加 ${list.length} 张，请补充说明与链接`)
+  }
+
+  const updatePending = (idx: number, patch: { caption?: string; url?: string }) => {
+    setPending((prev) => prev.map((p, i) => (i === idx ? { ...p, ...patch } : p)))
+  }
+
+  const removePending = (idx: number) => {
+    const item = pending[idx]
+    if (item) URL.revokeObjectURL(item.previewUrl)
+    setPending((prev) => prev.filter((_, i) => i !== idx))
+  }
+
+  const clearPending = () => {
+    pending.forEach((p) => URL.revokeObjectURL(p.previewUrl))
+    setPending([])
+  }
+
+  const savePending = async () => {
+    if (pending.length === 0) return
+    setBatchUploading(true)
+    setMessage('')
+    let ok = 0
+    let fail = 0
+    for (let i = 0; i < pending.length; i++) {
+      const p = pending[i]
+      setBatchProgress(`保存中 ${i + 1}/${pending.length}`)
+      if (!p.caption.trim()) { fail++; continue }
+      try {
+        const data = new FormData()
+        data.append('file', p.file)
+        data.append('platform', p.platform)
+        const upRes = await fetch(`${API_BASE_URL}/admin/social-media/upload`, { method: 'POST', headers, body: data })
+        if (upRes.status === 401 || upRes.status === 403) { invalidateSession(); return }
+        const upBody = await upRes.json()
+        if (!upRes.ok) throw new Error(upBody.message || '上传失败')
+        const imageUrl = upBody.data.url
+        const res = await fetch(`${API_BASE_URL}/admin/social-media`, {
+          method: 'POST',
+          headers: { ...headers, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ platform: p.platform, image: imageUrl, caption: p.caption.trim(), url: p.url.trim() || null, sortOrder: null, status: 1 }),
+        })
+        if (res.status === 401 || res.status === 403) { invalidateSession(); return }
+        const body = await res.json()
+        if (!res.ok) throw new Error(body.message || '创建失败')
+        ok++
+      } catch {
+        fail++
+      }
+    }
+    pending.forEach((p) => URL.revokeObjectURL(p.previewUrl))
+    setPending([])
+    setBatchUploading(false)
+    setBatchProgress('')
+    setMessage(`已保存 ${ok} 条${fail > 0 ? `，失败 ${fail} 条` : ''}`)
+    await load()
   }
 
   const toggle = async (item: SocialMediaItem) => {
@@ -214,10 +284,15 @@ function AdminContents() {
               </select>
             </div>
             <div className="dash-content-image">
-              <input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="图片路径或完整 URL" />
-              <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f) }} />
-              <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}><Upload size={15} />{uploading ? '上传中…' : '上传图片'}</button>
-              {form.image && <img className="dash-content-image__preview" src={resolveImageUrl(form.image)} alt="预览" />}
+              <input value={form.image} onChange={(e) => { setForm({ ...form, image: e.target.value }); if (formFile) setFormFile(null) }} placeholder="图片路径或完整 URL" />
+              <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) setFormFile(f) }} />
+              <button type="button" onClick={() => fileRef.current?.click()}><Upload size={15} />上传图片</button>
+              {(formFilePreview || form.image) && (
+                <img className="dash-content-image__preview" src={formFilePreview || resolveImageUrl(form.image)} alt="预览" />
+              )}
+              {formFile && (
+                <button type="button" className="dash-content-image__clear" onClick={() => setFormFile(null)} aria-label="移除已选图片"><X size={13} /></button>
+              )}
             </div>
             <input value={form.caption} maxLength={255} onChange={(e) => setForm({ ...form, caption: e.target.value })} placeholder="说明文字" />
             <input value={form.url} maxLength={500} onChange={(e) => setForm({ ...form, url: e.target.value })} placeholder="原文链接（可选）" />
@@ -229,6 +304,48 @@ function AdminContents() {
               </div>
             </div>
           </form>
+
+          <div
+            className={`dash-dropzone${dragOver ? ' dash-dropzone--over' : ''}`}
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={(e) => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files) addFiles(e.dataTransfer.files) }}
+          >
+            <div className="dash-dropzone__inner">
+              <Upload size={22} />
+              <p>拖拽图片到这里，稍后统一保存</p>
+              <div className="dash-dropzone__row">
+                <select value={batchPlatform} onChange={(e) => setBatchPlatform(e.target.value)}>
+                  {PLATFORMS.map((p) => <option key={p.key} value={p.key}>{p.label}</option>)}
+                </select>
+                <button type="button" onClick={() => batchFileRef.current?.click()}>
+                  <Upload size={15} />选择多张图片
+                </button>
+                <input ref={batchFileRef} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => { const f = e.target.files; if (f && f.length) addFiles(f) }} />
+              </div>
+            </div>
+          </div>
+
+          {pending.length > 0 && (
+            <div className="dash-pending">
+              <div className="dash-pending__head">
+                <h3>待保存（{pending.length}）</h3>
+                <span>为每张图片补充说明与原文链接</span>
+              </div>
+              {pending.map((p, idx) => (
+                <div key={idx} className="dash-pending__item">
+                  <img className="dash-content-item__thumb" src={p.previewUrl} alt="" />
+                  <input value={p.caption} maxLength={255} placeholder="说明" onChange={(e) => updatePending(idx, { caption: e.target.value })} />
+                  <input value={p.url} maxLength={500} placeholder="原文链接（可选）" onChange={(e) => updatePending(idx, { url: e.target.value })} />
+                  <button type="button" onClick={() => removePending(idx)} aria-label="移除"><X size={14} /></button>
+                </div>
+              ))}
+              <div className="dash-pending__foot">
+                <button type="button" className="dash-content-form__cancel" onClick={clearPending}>取消</button>
+                <button type="button" onClick={savePending} disabled={batchUploading}>{batchUploading ? batchProgress : `保存全部（${pending.length}）`}</button>
+              </div>
+            </div>
+          )}
 
           <div className="dash-content-list">
             <div className="dash-content-filter">

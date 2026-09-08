@@ -334,7 +334,10 @@ function AdminContents() {
               </div>
               {pending.map((p, idx) => (
                 <div key={idx} className="dash-pending__item">
-                  <img className="dash-content-item__thumb" src={p.previewUrl} alt="" />
+                  <div className="dash-pending__thumb">
+                    <img className="dash-content-item__thumb" src={p.previewUrl} alt={p.file.name} />
+                    <span className="dash-pending__filename" title={p.file.name}>{p.file.name}</span>
+                  </div>
                   <input value={p.caption} maxLength={255} placeholder="说明" onChange={(e) => updatePending(idx, { caption: e.target.value })} />
                   <input value={p.url} maxLength={500} placeholder="原文链接（可选）" onChange={(e) => updatePending(idx, { url: e.target.value })} />
                   <button type="button" onClick={() => removePending(idx)} aria-label="移除"><X size={14} /></button>

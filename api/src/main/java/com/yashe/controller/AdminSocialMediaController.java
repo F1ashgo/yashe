@@ -3,6 +3,7 @@ package com.yashe.controller;
 import com.yashe.dto.ApiResponse;
 import com.yashe.entity.SocialMediaItem;
 import com.yashe.mapper.SocialMediaItemMapper;
+import com.yashe.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,7 +21,8 @@ import java.util.UUID;
 @RequestMapping("/api/admin/social-media")
 public class AdminSocialMediaController {
     private static final Set<String> ALLOWED_PLATFORMS = Set.of("douyin", "xiaohongshu", "wechat-channel");
-    private static final long MAX_UPLOAD_BYTES = 5L * 1024 * 1024;
+    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
+    private static final long MAX_UPLOAD_BYTES = 15L * 1024 * 1024;
 
     private final SocialMediaItemMapper socialMediaItemMapper;
     private final Path uploadDir;
@@ -130,24 +131,23 @@ public class AdminSocialMediaController {
         if (platform == null || !ALLOWED_PLATFORMS.contains(platform)) {
             return ResponseEntity.badRequest().body(ApiResponse.error(400, "平台无效"));
         }
-        String ext = switch (file.getContentType()) {
-            case "image/jpeg" -> ".jpg";
-            case "image/png" -> ".png";
-            case "image/webp" -> ".webp";
-            default -> null;
-        };
-        if (ext == null) {
+        if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
             return ResponseEntity.badRequest().body(ApiResponse.error(400, "仅支持 jpg/png/webp 图片"));
         }
         if (file.getSize() > MAX_UPLOAD_BYTES) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(400, "图片不能超过 5MB"));
+            return ResponseEntity.badRequest().body(ApiResponse.error(400, "图片不能超过 15MB"));
         }
-        String filename = UUID.randomUUID().toString() + ext;
+        String filename = UUID.randomUUID().toString() + ".jpg";
+        byte[] jpeg;
+        try {
+            jpeg = ImageUtil.toCompressedJpeg(file.getBytes());
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(400, "图片处理失败"));
+        }
         try {
             Path dir = uploadDir.resolve(platform);
             Files.createDirectories(dir);
-            Path target = dir.resolve(filename);
-            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            Files.write(dir.resolve(filename), jpeg);
         } catch (IOException e) {
             return ResponseEntity.status(500).body(ApiResponse.error(500, "上传失败"));
         }

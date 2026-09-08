@@ -17,6 +17,7 @@ const AdminLogin = lazy(() => import('./pages/AdminLogin'))
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'))
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'))
 const AdminUsers = lazy(() => import('./pages/AdminUsers'))
+const AdminContents = lazy(() => import('./pages/AdminContents'))
 
 function App() {
   const location = useLocation()
@@ -34,6 +35,7 @@ function App() {
               <Route path="/admin/dashboard" element={<Navigate to="/admin/notifications" replace />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/contents" element={<AdminContents />} />
               <Route path="/admin/*" element={<Navigate to="/admin/notifications" replace />} />
             </Route>
           </Routes>

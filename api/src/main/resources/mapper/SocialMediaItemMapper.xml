@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yashe.mapper.SocialMediaItemMapper">
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO social_media_items (platform, image, caption, url, sort_order, status)
+    VALUES (#{platform}, #{image}, #{caption}, #{url}, #{sortOrder}, #{status})
+  </insert>
+
+  <update id="update">
+    UPDATE social_media_items
+    SET platform = #{platform},
+        image = #{image},
+        caption = #{caption},
+        url = #{url},
+        sort_order = #{sortOrder},
+        status = #{status}
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateStatus">
+    UPDATE social_media_items SET status = #{status} WHERE id = #{id}
+  </update>
+
+  <update id="updateSortOrder">
+    UPDATE social_media_items SET sort_order = #{sortOrder} WHERE id = #{id}
+  </update>
+
+  <select id="findMaxSortOrder" resultType="java.lang.Integer">
+    SELECT COALESCE(MAX(sort_order), 0) FROM social_media_items WHERE platform = #{platform}
+  </select>
+
+  <select id="countByImage" resultType="int">
+    SELECT COUNT(*) FROM social_media_items WHERE image = #{image}
+  </select>
+
+  <delete id="deleteById">
+    DELETE FROM social_media_items WHERE id = #{id}
+  </delete>
+
+  <select id="findById" resultType="com.yashe.entity.SocialMediaItem">
+    SELECT id, platform, image, caption, url, sort_order, status, created_at, updated_at
+    FROM social_media_items
+    WHERE id = #{id}
+  </select>
+
+  <select id="findAll" resultType="com.yashe.entity.SocialMediaItem">
+    SELECT id, platform, image, caption, url, sort_order, status, created_at, updated_at
+    FROM social_media_items
+    ORDER BY platform ASC, sort_order ASC, id ASC
+  </select>
+
+  <select id="findByPlatformPublished" resultType="com.yashe.entity.SocialMediaItem">
+    SELECT id, platform, image, caption, url, sort_order, status, created_at, updated_at
+    FROM social_media_items
+    WHERE platform = #{platform} AND status = 1
+    ORDER BY sort_order ASC, id ASC
+  </select>
+
+</mapper>

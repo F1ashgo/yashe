@@ -30,3 +30,4 @@ app:
     allowed-origins: ${YASHE_ALLOWED_ORIGINS:${ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}}
   turnstile:
     secret: ${YASHE_TURNSTILE_SECRET_KEY:${TURNSTILE_SECRET_KEY:}}
+  upload-dir: ${YASHE_UPLOAD_DIR:./uploads}

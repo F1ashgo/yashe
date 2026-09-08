@@ -33,6 +33,9 @@ function AdminLayout() {
         <NavLink to="/admin/notifications" className={({ isActive }) => `dash-tab${isActive ? ' dash-tab--active' : ''}`}>
           通知推送
         </NavLink>
+        <NavLink to="/admin/contents" className={({ isActive }) => `dash-tab${isActive ? ' dash-tab--active' : ''}`}>
+          内容管理
+        </NavLink>
         <NavLink to="/admin/users" className={({ isActive }) => `dash-tab${isActive ? ' dash-tab--active' : ''}`}>
           用户管理
         </NavLink>

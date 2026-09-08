@@ -11,7 +11,8 @@ yashe/
 ├── api/                  # 后端项目 (Spring Boot 3.2.0 + Java 17 + MyBatis)
 ├── view/                 # 前端项目 (Vite + React 18 + TypeScript + Lucide icons)
 ├── sql/                  # 数据库初始化脚本目录
-│   └── init.sql          # 数据库基础建表结构与虚构的初始化数据
+│   ├── init.sql          # 数据库基础建表结构与虚构的初始化数据
+│   └── migrations/       # 增量迁移脚本（如社交媒体图库表）
 ├── DOC/                  # 📚 归档文档（部署、运维、巡检）
 │   ├── deployment_preparation_guide.md  # 服务部署实施指南
 │   ├── DEPLOYMENT.md                    # 上线准备清单（Cloudflare + ECS）
@@ -224,6 +225,14 @@ powershell -NoProfile -File scripts/check_repository_security.ps1
 ---
 
 ## 📅 项目更新与优化记录 (Changelog)
+
+#### **2026-09-08 — 社交媒体内容管理后台**
+* 🖼️ **内容管理页**：新增后台 `/admin/contents`，可对 `/social-media` 图库进行增删改查（图片、说明、原文链接、排序、显示状态）。
+* 🗄️ **图库入库**：图库内容由静态 `captions.json` 迁移至 MySQL `social_media_items` 表（迁移脚本 `sql/migrations/20260908_social_media.sql`），前端改由 `GET /api/social-media` 读取。
+* 🗜️ **图片处理**：上传图片自动转为 JPG 并压缩到 200KB 以内；图片统一存于后端 `uploads/` 目录，经 `/api/uploads/**` 对外提供。
+* 📦 **批量上传**：支持拖拽/多选批量上传，先补充说明与原文链接再统一保存，避免产生孤儿文件。
+* ↕️ **拖拽排序**：图库支持拖拽排序（序号从 1 开始）；跨平台移动内容时自动迁移图片并重置排序。
+* **维护人**：Larry128
 
 #### **2026-07-20 — 关于我们营业执照与运维文档**
 * 🏅 **荣誉与资质**：关于我们页底部新增居中展示的营业执照，复用证书灯箱。

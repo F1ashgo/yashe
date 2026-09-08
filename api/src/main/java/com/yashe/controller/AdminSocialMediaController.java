@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -60,8 +61,17 @@ public class AdminSocialMediaController {
     ) {
         ResponseEntity<ApiResponse> validation = validate(item);
         if (validation != null) return validation;
+        SocialMediaItem old = socialMediaItemMapper.findById(id);
+        if (old == null) {
+            return ResponseEntity.status(404).body(ApiResponse.error(404, "条目不存在"));
+        }
         normalize(item);
         item.setId(id);
+        if (!old.getPlatform().equals(item.getPlatform())) {
+            moveImage(old, item);
+            Integer max = socialMediaItemMapper.findMaxSortOrder(item.getPlatform());
+            item.setSortOrder((max == null ? 0 : max) + 1);
+        }
         if (socialMediaItemMapper.update(item) == 0) {
             return ResponseEntity.status(404).body(ApiResponse.error(404, "条目不存在"));
         }
@@ -104,6 +114,33 @@ public class AdminSocialMediaController {
             socialMediaItemMapper.updateSortOrder(ids.get(i), i + 1);
         }
         return ResponseEntity.ok(ApiResponse.success("排序已更新"));
+    }
+
+    private void moveImage(SocialMediaItem old, SocialMediaItem item) {
+        String image = item.getImage();
+        String oldPrefix = "/api/uploads/" + old.getPlatform() + "/";
+        if (image == null || !image.startsWith(oldPrefix)) return; // 非旧平台目录下的后端文件，不移动
+        String relative = image.substring(oldPrefix.length());
+        if (relative.isBlank()) return;
+        try {
+            Path from = uploadDir.resolve(old.getPlatform()).resolve(relative).normalize();
+            Path toDir = uploadDir.resolve(item.getPlatform());
+            Path to = toDir.resolve(relative).normalize();
+            if (!from.startsWith(uploadDir) || !to.startsWith(uploadDir)) return; // 路径穿越防护
+            if (Files.exists(to)) {
+                // 目标同名文件已存在：换一个唯一文件名，避免覆盖
+                int dot = relative.lastIndexOf('.');
+                String base = dot < 0 ? relative : relative.substring(0, dot);
+                String ext = dot < 0 ? "" : relative.substring(dot);
+                relative = base + "-" + UUID.randomUUID().toString().substring(0, 8) + ext;
+                to = toDir.resolve(relative).normalize();
+            }
+            Files.createDirectories(toDir);
+            Files.move(from, to, StandardCopyOption.REPLACE_EXISTING);
+            item.setImage("/api/uploads/" + item.getPlatform() + "/" + relative);
+        } catch (IOException ignored) {
+            // 移动失败时保留原路径（尽力而为）
+        }
     }
 
     private void deleteImageFile(String image) {

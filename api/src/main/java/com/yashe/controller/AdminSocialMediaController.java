@@ -65,6 +65,7 @@ public class AdminSocialMediaController {
         if (old == null) {
             return ResponseEntity.status(404).body(ApiResponse.error(404, "条目不存在"));
         }
+        String oldImage = old.getImage();
         normalize(item);
         item.setId(id);
         if (!old.getPlatform().equals(item.getPlatform())) {
@@ -75,6 +76,7 @@ public class AdminSocialMediaController {
         if (socialMediaItemMapper.update(item) == 0) {
             return ResponseEntity.status(404).body(ApiResponse.error(404, "条目不存在"));
         }
+        deleteReplacedImage(oldImage, item.getImage());
         return ResponseEntity.ok(ApiResponse.success("更新成功"));
     }
 
@@ -153,6 +155,14 @@ public class AdminSocialMediaController {
             Files.deleteIfExists(resolved);
         } catch (IOException ignored) {
             // 删除失败时保留文件（尽力而为）
+        }
+    }
+
+    private void deleteReplacedImage(String oldImage, String newImage) {
+        if (oldImage == null || oldImage.equals(newImage)) return; // 图片未变
+        if (!oldImage.startsWith("/api/uploads/")) return;         // 外部 URL 不删除
+        if (socialMediaItemMapper.countByImage(oldImage) == 0) {    // 无其他条目引用
+            deleteImageFile(oldImage);
         }
     }
 

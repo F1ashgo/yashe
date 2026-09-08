@@ -67,5 +67,8 @@ backup/
 # Git Worktrees
 .worktrees/
 
+# Runtime uploads (admin-uploaded images)
+api/uploads/
+
 # claude
 .claude/

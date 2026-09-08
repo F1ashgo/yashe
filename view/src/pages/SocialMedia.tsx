@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Loader2, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { API_BASE_URL, resolveImageUrl } from '../config/api'
 import './SocialMedia.css'
 
 interface GalleryItem { src: string; caption: string; url?: string }
-interface CaptionEntry { file: string; caption?: string; url?: string }
+interface CaptionEntry { image: string; caption?: string; url?: string }
 interface Platform { key: string; label: string }
 
 const PLATFORMS: Platform[] = [
@@ -12,13 +13,6 @@ const PLATFORMS: Platform[] = [
   { key: 'xiaohongshu', label: '小红书' },
   { key: 'wechat-channel', label: '微信视频号' },
 ]
-
-const SOCIAL_DIR = '/social-media/'
-const captionsUrl = (key: string) => `${SOCIAL_DIR}${key}/captions.json`
-
-function stripExt(name: string) {
-  return name.replace(/\.[^.]+$/, '')
-}
 
 function SocialMedia() {
   const [active, setActive] = useState(PLATFORMS[0].key)
@@ -37,16 +31,17 @@ function SocialMedia() {
     PLATFORMS.forEach((platform) => {
       void (async () => {
         try {
-          const res = await fetch(captionsUrl(platform.key))
+          const res = await fetch(`${API_BASE_URL}/social-media?platform=${platform.key}`)
           if (!res.ok) throw new Error(`captions ${res.status}`)
           const parsed: unknown = await res.json()
-          const order: CaptionEntry[] = Array.isArray(parsed) ? parsed : []
+          const body = parsed as { data?: { list?: CaptionEntry[] } }
+          const order: CaptionEntry[] = Array.isArray(body?.data?.list) ? body.data.list : []
 
           const gallery: GalleryItem[] = order
-            .filter((entry) => entry && entry.file)
+            .filter((entry) => entry && entry.image)
             .map((entry) => ({
-              src: `${SOCIAL_DIR}${platform.key}/${entry.file}`,
-              caption: entry.caption || stripExt(entry.file),
+              src: resolveImageUrl(entry.image),
+              caption: entry.caption || '',
               url: entry.url,
             }))
 

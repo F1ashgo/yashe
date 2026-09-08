@@ -133,3 +133,26 @@
   .dash-detail { grid-template-columns: 1fr; }
   .dash-stat { padding: 18px; }
 }
+
+/* Content editor (social-media) */
+.dash-content-list { margin-top: 18px; }
+.dash-content-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.dash-content-filter button { padding: 7px 16px; border: 1px solid var(--color-gray-light); border-radius: 999px; background: #fff; color: var(--color-gray-dark); font-size: 0.78rem; transition: var(--transition-fast); }
+.dash-content-filter button:hover { border-color: var(--color-gold); color: var(--color-gold); }
+.dash-content-filter button.dash-content-filter__active { border-color: var(--color-gold); background: var(--color-gold); color: #fff; }
+.dash-content-image { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dash-content-image > input { flex: 1; min-width: 200px; }
+.dash-content-image > button { display: flex; align-items: center; gap: 7px; padding: 11px 16px; border: 1px solid var(--color-gray-light); border-radius: 4px; background: #fff; color: var(--color-gray-dark); font-size: 0.82rem; transition: var(--transition-fast); flex-shrink: 0; }
+.dash-content-image > button:hover:not(:disabled) { border-color: var(--color-gold); color: var(--color-gold); }
+.dash-content-image > button:disabled { opacity: 0.6; cursor: default; }
+.dash-content-image__preview { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-gray-light); flex-shrink: 0; }
+.dash-content-item__main { display: flex; gap: 16px; align-items: flex-start; min-width: 0; }
+.dash-content-item__thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-gray-light); flex-shrink: 0; }
+.dash-content-item__url { font-size: 0.78rem; word-break: break-all; }
+.dash-content-form__actions { display: flex; gap: 8px; }
+.dash-notice-form__foot .dash-content-form__cancel { background: #fff; color: var(--color-gray-dark); }
+.dash-content-filter__hint { margin-left: auto; align-self: center; color: var(--color-gray); font-size: 0.75rem; }
+.dash-content-item__grip { color: var(--color-gray); cursor: grab; flex-shrink: 0; align-self: center; }
+.dash-notice-item[draggable='true'] { cursor: grab; }
+.dash-notice-item[draggable='true']:active { cursor: grabbing; }
+.dash-content-item--over { outline: 2px dashed var(--color-gold); outline-offset: -2px; }

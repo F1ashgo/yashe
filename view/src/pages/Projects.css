@@ -36,6 +36,24 @@
 .proj-lightbox__prev:hover, .proj-lightbox__next:hover { color: #fff; }
 .proj-lightbox__prev { left: 16px; } .proj-lightbox__next { right: 16px; }
 .proj-lightbox__info { text-align: center; margin-top: 24px; color: #fff; }
+
+/* Station gallery (站點 + CAD overlay) */
+.proj-lightbox__stage { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.proj-lightbox__cad {
+  position: absolute; left: 16px; bottom: 16px;
+  width: 32%; max-width: 320px;
+  border-radius: 4px; border: 2px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+.proj-lightbox__stations { display: flex; gap: 12px; margin-top: 16px; }
+.proj-lightbox__station-btn {
+  padding: 8px 18px; border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 2px; color: rgba(255,255,255,0.7); background: none;
+  letter-spacing: 2px; font-size: 0.85rem; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.proj-lightbox__station-btn--active,
+.proj-lightbox__station-btn:hover { color: var(--color-gold); border-color: var(--color-gold); }
 .proj-lightbox__info h3 { font-size: 1.3rem; margin-bottom: 8px; }
 .proj-lightbox__tags { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
 .proj-lightbox__tags span { font-size: 0.78rem; color: var(--color-gold); letter-spacing: 2px; }
@@ -48,6 +66,7 @@
   .proj-grid { grid-template-columns: 1fr; }
   .proj-hero__content h1 { font-size: 1.8rem; }
   .proj-lightbox__img { max-width: 95vw; max-height: 55vh; }
+  .proj-lightbox__cad { width: 45%; }
   .proj-grid-section { padding: 60px 0; }
   .proj-card { min-width: 0; }
   .proj-lightbox__content { max-height: calc(100dvh - 24px); overflow-y: auto; }

@@ -64,6 +64,9 @@ sql/*_auto_*.sql*
 !.env.example
 backup/
 
+# Uploads (runtime user files)
+api/uploads/
+
 # Git Worktrees
 .worktrees/
 

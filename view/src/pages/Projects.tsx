@@ -3,7 +3,20 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import './Projects.css'
 
-const PROJECTS = [
+type Station = { name: string; photo: string; cad: string }
+
+type Project = {
+  image: string
+  title: string
+  category: string
+  location: string
+  area: string
+  style: string
+  desc: string
+  stations?: Station[]
+}
+
+const PROJECTS: Project[] = [
   /* 幼儿园项目 */
   { image: '/幼儿园/课室正面.jpeg', title: '幼儿园', category: '教育空间', location: '香港 · 启德', area: '1200㎡', style: '自然成长', desc: '以儿童视角为设计原点，采用圆角、软包、天然木材，打造安全温暖的成长乐园。开放式课室布局促进互动与探索。' },
   { image: '/幼儿园/课室侧面.jpeg', title: '幼儿园活动区', category: '教育空间', location: '香港 · 启德', area: '180㎡', style: '趣味空间', desc: '灵活可变的模块化家具系统，让同一空间在课堂、游戏、午睡模式间自由切换。' },
@@ -27,14 +40,44 @@ const PROJECTS = [
   /* 办公室项目 */
   { image: '/office/辦公室2.jpeg', title: '办公室', category: '办公空间', location: '香港 · 西营盘', area: '250㎡', style: '简约办公', desc: '温暖而专业的会客区域，以材质与光线的细腻处理塑造企业的品牌形象。' },
   { image: '/office/辦公室.jpeg', title: '办公室工位区', category: '办公空间', location: '香港 · 西营盘', area: '400㎡', style: '简约办公', desc: '以开放与半开放结合的布局促进协作，让办公空间既高效又充满活力。' },
+  /* 汽车展厅项目 */
+  {
+    image: '/汽車展廳/站點1.jpeg',
+    title: '汽车展厅',
+    category: '商业空间',
+    location: '香港',
+    area: '500㎡',
+    style: '现代简约',
+    desc: '以现代简约的空间语言打造汽车展厅，将现场实景与CAD图纸对应呈现，展现设计落地细节。',
+    stations: [
+      { name: '站点1', photo: '/汽車展廳/站點1.jpeg', cad: '/汽車展廳/CAD1.png' },
+      { name: '站点2', photo: '/汽車展廳/站點2.jpeg', cad: '/汽車展廳/CAD2.png' },
+      { name: '站点3', photo: '/汽車展廳/站點3.jpeg', cad: '/汽車展廳/CAD3.png' },
+      { name: '站点4', photo: '/汽車展廳/站點4.jpeg', cad: '/汽車展廳/CAD4.png' },
+    ],
+  },
 ]
 
 function Projects() {
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [stationIdx, setStationIdx] = useState(0)
 
-  const close = () => setLightbox(null)
-  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setLightbox((p) => (p! - 1 + PROJECTS.length) % PROJECTS.length) }
-  const next = (e: React.MouseEvent) => { e.stopPropagation(); setLightbox((p) => (p! + 1) % PROJECTS.length) }
+  const current = lightbox === null ? null : PROJECTS[lightbox]
+  const stations = current?.stations
+  const hasStations = !!stations && stations.length > 0
+
+  const open = (i: number) => { setLightbox(i); setStationIdx(0) }
+  const close = () => { setLightbox(null); setStationIdx(0) }
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (hasStations) setStationIdx((s) => (s - 1 + stations!.length) % stations!.length)
+    else setLightbox((p) => (p! - 1 + PROJECTS.length) % PROJECTS.length)
+  }
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (hasStations) setStationIdx((s) => (s + 1) % stations!.length)
+    else setLightbox((p) => (p! + 1) % PROJECTS.length)
+  }
 
   return (
     <main className="projects">
@@ -52,7 +95,7 @@ function Projects() {
         <div className="container">
           <div className="proj-grid">
             {PROJECTS.map((proj, i) => (
-              <div key={proj.title} className="proj-card" onClick={() => setLightbox(i)}>
+              <div key={proj.title} className="proj-card" onClick={() => open(i)}>
                 <div className="proj-card__img">
                   <img src={proj.image} alt={proj.title} loading="lazy" />
                   <div className="proj-card__overlay"><span>查看详情</span></div>
@@ -74,21 +117,41 @@ function Projects() {
         </div>
       </section>
 
-      {lightbox !== null && (
+      {current !== null && (
         <div className="proj-lightbox" onClick={close}>
           <button className="proj-lightbox__close" onClick={close}><X size={28} /></button>
           <button className="proj-lightbox__prev" onClick={prev}><ChevronLeft size={40} /></button>
-          <img src={PROJECTS[lightbox].image} alt={PROJECTS[lightbox].title} className="proj-lightbox__img" onClick={(e) => e.stopPropagation()} />
-          <button className="proj-lightbox__next" onClick={next}><ChevronRight size={40} /></button>
-          <div className="proj-lightbox__info">
-            <h3>{PROJECTS[lightbox].title}</h3>
-            <div className="proj-lightbox__tags">
-              <span>{PROJECTS[lightbox].category}</span>
-              <span>{PROJECTS[lightbox].location}</span>
-              <span>{PROJECTS[lightbox].area}</span>
-              <span>{PROJECTS[lightbox].style}</span>
+          {hasStations ? (
+            <div className="proj-lightbox__stage" onClick={(e) => e.stopPropagation()}>
+              <img src={stations![stationIdx].photo} alt={stations![stationIdx].name} className="proj-lightbox__img" />
+              <img src={stations![stationIdx].cad} alt={`${stations![stationIdx].name} CAD`} className="proj-lightbox__cad" />
             </div>
-            <p>{PROJECTS[lightbox].desc}</p>
+          ) : (
+            <img src={current.image} alt={current.title} className="proj-lightbox__img" onClick={(e) => e.stopPropagation()} />
+          )}
+          <button className="proj-lightbox__next" onClick={next}><ChevronRight size={40} /></button>
+          {hasStations && (
+            <div className="proj-lightbox__stations" onClick={(e) => e.stopPropagation()}>
+              {stations!.map((s, i) => (
+                <button
+                  key={s.name}
+                  className={`proj-lightbox__station-btn${i === stationIdx ? ' proj-lightbox__station-btn--active' : ''}`}
+                  onClick={() => setStationIdx(i)}
+                >
+                  {s.name}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="proj-lightbox__info">
+            <h3>{current.title}</h3>
+            <div className="proj-lightbox__tags">
+              <span>{current.category}</span>
+              <span>{current.location}</span>
+              <span>{current.area}</span>
+              <span>{current.style}</span>
+            </div>
+            <p>{current.desc}</p>
           </div>
         </div>
       )}
